@@ -8,7 +8,7 @@
 class P5Grain {
     version = '0.1.0';
     ignoreErrors = false;
-    displayWarnings = true;
+    ignoreWarnings = false;
     _textureAnimate = {
         frameCount: 0,
     };
@@ -34,12 +34,12 @@ class P5Grain {
      * </code>
      * 
      * @example
-     * <p>Ignore errors and don't display warnings</p>
+     * <p>Ignore errors and warnings</p>
      * <code>
      *     // Dangerous, but might be more performant
      *     p5grain.setup({
      *         ignoreErrors: true,
-     *         displayWarnings: false,
+     *         ignoreWarnings: true,
      *     });
      * </code>
      * 
@@ -51,8 +51,8 @@ class P5Grain {
      *     Here you could use a deterministic random function.
      * @param {Boolean} [config.ignoreErrors] Specifies whether errors should 
      *     be ignored. This is dangerous, but it might be more performant.
-     * @param {Boolean} [config.displayWarnings] Specifies whether warnings 
-     *     should be displayed.
+     * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings 
+     *     should be ignored.
      */
     setup(config) {
         this._validateParameters('setup', arguments);
@@ -65,8 +65,8 @@ class P5Grain {
             if (typeof config.ignoreErrors === 'boolean') {
                 this.ignoreErrors = config.ignoreErrors;
             }
-            if (typeof config.displayWarnings === 'boolean') {
-                this.displayWarnings = config.displayWarnings;
+            if (typeof config.ignoreWarnings === 'boolean') {
+                this.ignoreWarnings = config.ignoreWarnings;
             }
         }
     }
@@ -391,8 +391,7 @@ class P5Grain {
 
     /**
      * Checks the validity of the given arguments to the respective function. 
-     * Errors and warnings are handled repectively depending on the errors 
-     * configurations set through ignoreErrors and displayWarnings.
+     * Unless ignoreErrors is false, errors will be thrown when necessary.
      * 
      * @private
      * @method _validateParameters
@@ -425,10 +424,10 @@ class P5Grain {
                             throw new Error(`[p5.grain] The optional config.ignoreErrors property passed to p5grain.${func}() must be of type boolean.`);
                         }
                         if (
-                            typeof args[0].displayWarnings !== 'undefined'
-                            && typeof args[0].displayWarnings !== 'boolean'
+                            typeof args[0].ignoreWarnings !== 'undefined'
+                            && typeof args[0].ignoreWarnings !== 'boolean'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.displayWarnings property passed to p5grain.${func}() must be of type boolean.`);
+                            throw new Error(`[p5.grain] The optional config.ignoreWarnings property passed to p5grain.${func}() must be of type boolean.`);
                         }
                     }
                     break;
@@ -553,7 +552,7 @@ if (!p5.prototype.hasOwnProperty('granulateSimple')) {
     p5.prototype.granulateSimple = function(amount, alpha) {
         return p5grain.granulateSimple(amount, alpha);
     };
-} else if (p5grain.displayWarnings) {
+} else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateSimple() could not be registered, since it\'s already defined.\nUse p5grain.granulateSimple() instead.');
 }
 
@@ -562,7 +561,7 @@ if (!p5.prototype.hasOwnProperty('granulateChannels')) {
     p5.prototype.granulateChannels = function(amount, alpha) {
         return p5grain.granulateChannels(amount, alpha);
     };
-} else if (p5grain.displayWarnings) {
+} else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateChannels() could not be registered, since it\'s already defined.\nUse p5grain.granulateChannels() instead.');
 }
 
@@ -571,7 +570,7 @@ if (!p5.prototype.hasOwnProperty('granulateFuzzify')) {
     p5.prototype.granulateFuzzify = function(amount, fuzziness, alpha) {
         return p5grain.granulateFuzzify(amount, fuzziness, alpha);
     };
-} else if (p5grain.displayWarnings) {
+} else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateFuzzify() could not be registered, since it\'s already defined.\nUse p5grain.granulateFuzzify() instead.');
 }
 
@@ -580,7 +579,7 @@ if (!p5.prototype.hasOwnProperty('textureAnimate')) {
     p5.prototype.textureAnimate = function(textureElement, atFrame, amount) {
         return p5grain.textureAnimate(textureElement, atFrame, amount);
     };
-} else if (p5grain.displayWarnings) {
+} else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined.\nUse p5grain.textureAnimate() instead.');
 }
 
@@ -589,6 +588,6 @@ if (!p5.prototype.hasOwnProperty('textureOverlay')) {
     p5.prototype.textureOverlay = function(textureImage, config) {
         return p5grain.textureOverlay(textureImage, config);
     };
-} else if (p5grain.displayWarnings) {
+} else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] textureOverlay() could not be registered, since it\'s already defined.\nUse p5grain.textureOverlay() instead.');
 }
