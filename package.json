@@ -1,0 +1,39 @@
+{
+  "name": "p5.grain",
+  "version": "0.1.0",
+  "description": "p5.grain is a p5.js addon for conveniently adding grain and texture overlays to artworks.",
+  "author": "meezwhite",
+  "license": "MIT",
+  "main": "p5.grain.js",
+  "directories": {
+    "example": "examples"
+  },
+  "files": [
+    "p5.grain.js",
+    "p5.grain.min.js"
+  ],
+  "scripts": {
+    "build": "mkdir dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.LICENSE.txt"
+  },
+  "keywords": [
+    "javascript",
+    "art",
+    "grain",
+    "noise",
+    "texture",
+    "creative-coding",
+    "fxhash",
+    "p5js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meezwhite/p5.grain.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meezwhite/p5.grain/issues"
+  },
+  "homepage": "https://github.com/meezwhite/p5.grain",
+  "devDependencies": {
+    "minify": "^9.1.0"
+  }
+}

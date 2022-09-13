@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.grain</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+    <main>
+        <svg id="texture" xmlns="http://www.w3.org/2000/svg">
+            <filter id="textureFilter" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="turbulence" baseFrequency="1"></feTurbulence>
+            </filter>
+            <rect x="0" y="0" width="100%" height="100%" filter="url(#textureFilter)" />
+        </svg>
+    </main>
+    <script src="./lib/p5.min.js"></script>
+    <script src="./lib/p5.grain.min.js"></script>
+    <!-- <script src="../../p5.grain.js"></script> -->
+    <script src="./sketch.js"></script>
+</body>
+</html>
