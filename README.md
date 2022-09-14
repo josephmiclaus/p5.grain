@@ -1,4 +1,4 @@
-# p5.grain
+# 🌾 p5.grain
 p5.grain is a [p5.js](https://github.com/processing/p5.js) addon for conveniently adding grain and texture overlays to artworks.
 
 p5.grain was also created with [fxhash](https://www.fxhash.xyz) projects in mind that use the deterministic `fxrand` random function.
