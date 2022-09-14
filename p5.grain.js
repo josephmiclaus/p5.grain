@@ -9,19 +9,23 @@ class P5Grain {
     version = '0.1.0';
     ignoreWarnings = false;
     ignoreErrors = false;
-    _textureAnimate = {
-        frameCount: 0,
-    };
-    _textureOverlay = {
-        frameCount: 0,
-        tX_anchor: 0,
-        tX: 0,
-        tY: 0,
-    };
+    
+    #random;
+    #textureAnimate;
+    #textureOverlay;
 
     constructor() {
-        // this._random = p5.prototype.random;
-        this._random = Math.random;
+        // this.#random = p5.prototype.random;
+        this.#random = Math.random;
+        this.#textureAnimate = {
+            frameCount: 0,
+        };
+        this.#textureOverlay = {
+            frameCount: 0,
+            tX_anchor: 0,
+            tX: 0,
+            tY: 0,
+        };
     }
 
     /**
@@ -55,12 +59,12 @@ class P5Grain {
      *     should be ignored.
      */
     setup(config) {
-        this._validateParameters('setup', arguments);
+        this.#validateArguments('setup', arguments);
         if (typeof config === 'undefined') {
-            this._random = random;
+            this.#random = random;
         } else if (typeof config === 'object') {
             if (typeof config.random === 'function') {
-                this._random = config.random;
+                this.#random = config.random;
             }
             if (typeof config.ignoreErrors === 'boolean') {
                 this.ignoreErrors = config.ignoreErrors;
@@ -86,14 +90,14 @@ class P5Grain {
      *     not be modified.
      */
     granulateSimple(amount, alpha) {
-        this._validateParameters('granulateSimple', arguments);
+        this.#validateArguments('granulateSimple', arguments);
         const _amount = round(amount);
         const _alpha = alpha || false;
         loadPixels();
         const d = pixelDensity();
         const pixelsCount = 4 * (width * d) * (height * d);
         for (let i = 0; i < pixelsCount; i += 4) {
-            const grainAmount = this._random(-_amount, _amount);
+            const grainAmount = this.#random(-_amount, _amount);
             pixels[i] = pixels[i] + grainAmount;
             pixels[i+1] = pixels[i+1] + grainAmount;
             pixels[i+2] = pixels[i+2] + grainAmount;
@@ -119,18 +123,18 @@ class P5Grain {
      *     not be modified.
      */
     granulateChannels(amount, alpha) {
-        this._validateParameters('granulateChannels', arguments);
+        this.#validateArguments('granulateChannels', arguments);
         const _amount = round(amount);
         const _alpha = alpha || false;
         loadPixels();
         const d = pixelDensity();
         const pixelsCount = 4 * (width * d) * (height * d);
         for (let i = 0; i < pixelsCount; i += 4) {
-            pixels[i] = pixels[i] + this._random(-_amount, _amount);
-            pixels[i+1] = pixels[i+1] + this._random(-_amount, _amount);
-            pixels[i+2] = pixels[i+2] + this._random(-_amount, _amount);
+            pixels[i] = pixels[i] + this.#random(-_amount, _amount);
+            pixels[i+1] = pixels[i+1] + this.#random(-_amount, _amount);
+            pixels[i+2] = pixels[i+2] + this.#random(-_amount, _amount);
             if (_alpha) {
-                pixels[i+3] = pixels[i+3] + this._random(-_amount, _amount);
+                pixels[i+3] = pixels[i+3] + this.#random(-_amount, _amount);
             }
         }
         updatePixels();
@@ -158,7 +162,7 @@ class P5Grain {
      *     not be modified.
      */
     granulateFuzzify(amount, fuzziness, alpha) {
-        this._validateParameters('granulateFuzzy', arguments);
+        this.#validateArguments('granulateFuzzy', arguments);
         loadPixels();
         const _amount = round(amount);
         const _fuzziness = fuzziness ? round(fuzziness) : 2;
@@ -179,11 +183,11 @@ class P5Grain {
                 }
             }
             // granulate
-            pixels[i] = pixels[i] + this._random(-_amount, _amount);
-            pixels[i+1] = pixels[i+1] + this._random(-_amount, _amount);
-            pixels[i+2] = pixels[i+2] + this._random(-_amount, _amount);
+            pixels[i] = pixels[i] + this.#random(-_amount, _amount);
+            pixels[i+1] = pixels[i+1] + this.#random(-_amount, _amount);
+            pixels[i+2] = pixels[i+2] + this.#random(-_amount, _amount);
             if (_alpha) {
-                pixels[i+3] = pixels[i+3] + this._random(-_amount, _amount);
+                pixels[i+3] = pixels[i+3] + this.#random(-_amount, _amount);
             }
         }
         updatePixels();
@@ -209,14 +213,14 @@ class P5Grain {
      *     width or height is used.
      */
     textureAnimate(textureElement, config) {
-        this._validateParameters('textureAnimate', arguments);
+        this.#validateArguments('textureAnimate', arguments);
         const _atFrame = config && config.atFrame ? round(config.atFrame) : 2;
-        this._textureAnimate.frameCount += 1;
-        if (this._textureAnimate.frameCount >= _atFrame) {
+        this.#textureAnimate.frameCount += 1;
+        if (this.#textureAnimate.frameCount >= _atFrame) {
             const _amount = config && config.amount 
                 ? round(config.amount) : min(width, height);
-            const bgPosX = floor(this._random()*_amount);
-            const bgPosY = floor(this._random()*_amount);
+            const bgPosX = floor(this.#random()*_amount);
+            const bgPosY = floor(this.#random()*_amount);
             const bgPos = `${bgPosX}px ${bgPosY}px`;
             if (textureElement instanceof HTMLElement) {
                 textureElement.style.backgroundPosition = bgPos;
@@ -226,7 +230,7 @@ class P5Grain {
             } else if (textureElement instanceof p5.Element) {
                 textureElement.style('background-position', bgPos);
             }
-            this._textureAnimate.frameCount = 0;
+            this.#textureAnimate.frameCount = 0;
         }
     }
 
@@ -270,7 +274,7 @@ class P5Grain {
      *     the minimum of the main canvas width or height is used.
      */
     textureOverlay(textureImage, config) {
-        this._validateParameters('textureOverlay', arguments);
+        this.#validateArguments('textureOverlay', arguments);
         // flag whether given context is an instance of p5.Graphics
         const isCtxGfx = config.context instanceof p5.Graphics;
         // width of the canvas or context
@@ -297,21 +301,21 @@ class P5Grain {
             ? config.height : textureImage.height;
         // animate the texture coordinates
         if (_animate) {
-            this._textureOverlay.frameCount += 1;
-            if (this._textureOverlay.frameCount >= _animateAtFrame) {
-                this._textureOverlay.tX_anchor = (
-                    -floor(this._random()*_animateAmount)
+            this.#textureOverlay.frameCount += 1;
+            if (this.#textureOverlay.frameCount >= _animateAtFrame) {
+                this.#textureOverlay.tX_anchor = (
+                    -floor(this.#random()*_animateAmount)
                 );
-                this._textureOverlay.tY = (
-                    -floor(this._random()*_animateAmount)
+                this.#textureOverlay.tY = (
+                    -floor(this.#random()*_animateAmount)
                 );
-                this._textureOverlay.frameCount = 0;
+                this.#textureOverlay.frameCount = 0;
             }
         }
         // texture current start x-coordinate
-        let tX = this._textureOverlay.tX_anchor;
+        let tX = this.#textureOverlay.tX_anchor;
         // texture current start y-coordinate
-        let tY = this._textureOverlay.tY;
+        let tY = this.#textureOverlay.tY;
         // flag that the first texture row is currently drawn
         let tRowFirst = true;
         // flag that the first texture column is currently drawn
@@ -375,7 +379,7 @@ class P5Grain {
                 tX += tW;
                 if (tX >= _width) {
                     tColFirst = true;
-                    tX = this._textureOverlay.tX_anchor;
+                    tX = this.#textureOverlay.tX_anchor;
                     tY += tH;
                     break;
                 } else {
@@ -402,12 +406,12 @@ class P5Grain {
      * Unless ignoreErrors is false, errors will be thrown when necessary.
      * 
      * @private
-     * @method _validateParameters
+     * @method validateArguments
      * 
      * @param {String} method Name of the method
      * @param {Array} args User given arguments to the respective method
      */
-    _validateParameters(method, args) {
+    #validateArguments(method, args) {
         // console.debug('args:', args);
         if (!this.ignoreErrors) {
             switch (method) {
