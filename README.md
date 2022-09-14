@@ -99,7 +99,7 @@ Go to standalone example:
   * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported)
 * Shader (soon)
 
-Here are a few examples of a basic implementation for each respective technique. *Note that these examples are non-deterministic.*
+Here are a few examples of a basic implementation for each respective technique. *Note: the examples below are non-deterministic.*
 
 ### Pixel manipulation
 
