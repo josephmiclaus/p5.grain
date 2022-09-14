@@ -584,8 +584,8 @@ if (!p5.prototype.hasOwnProperty('granulateFuzzify')) {
 
 // Register textureAnimate()
 if (!p5.prototype.hasOwnProperty('textureAnimate')) {
-    p5.prototype.textureAnimate = function(textureElement, atFrame, amount) {
-        return p5grain.textureAnimate(textureElement, atFrame, amount);
+    p5.prototype.textureAnimate = function(textureElement, config) {
+        return p5grain.textureAnimate(textureElement, config);
     };
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined.\nUse p5grain.textureAnimate() instead.');
