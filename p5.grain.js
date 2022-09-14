@@ -7,8 +7,8 @@
  */
 class P5Grain {
     version = '0.1.0';
-    ignoreErrors = false;
     ignoreWarnings = false;
+    ignoreErrors = false;
     _textureAnimate = {
         frameCount: 0,
     };
