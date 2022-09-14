@@ -9,10 +9,10 @@ You can read more in detail about the different techniques to achieve grain in a
 Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.min.js` (8 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
 
 ```html
-    <script src="./lib/p5.min.js"></script>
-    <!-- insert after p5.js -->
-    <script src="./lib/p5.grain.min.js"></script>
-    <script src="./sketch.js"></script>
+<script src="./lib/p5.min.js"></script>
+<!-- insert after p5.js -->
+<script src="./lib/p5.grain.min.js"></script>
+<script src="./sketch.js"></script>
 ```
 
 ## Usage
