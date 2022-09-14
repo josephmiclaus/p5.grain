@@ -10,9 +10,9 @@ function setup() {
     circle(width/2, height/2, min(width, height)/2);
 
     // Granulate artwork
-    granulateSimple(50);
-    // granulateChannels(50);
-    // granulateFuzzify(50);
+    granulateSimple(42);
+    // granulateChannels(42);
+    // granulateFuzzify(42);
 }
 
 function windowResized() {
