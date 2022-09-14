@@ -9,7 +9,7 @@ class P5Grain {
     version = '0.1.0';
     ignoreWarnings = false;
     ignoreErrors = false;
-    
+
     #random;
     #textureAnimate;
     #textureOverlay;
@@ -258,7 +258,7 @@ class P5Grain {
      *     MULTIPLY is be used.
      * @param {p5.Graphics} [config.context] The context on which the texture 
      *     image should be drawn onto. When no context is specified, the 
-     *     default canvas is be used.
+     *     main canvas is be used.
      * @param {Boolean} [config.reflect] Specifies whether the given texture
      *     image should reflect horizontally and vertically, in order to 
      *     provide seamless continuity.
