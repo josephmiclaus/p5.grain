@@ -25,7 +25,7 @@ class P5Grain {
     }
 
     /**
-     * Setup and configure certain p5grain features.
+     * Setup and configure certain p5.grain features.
      * 
      * @example
      * <p>Pass a custom random function to be used internally.</p>
@@ -45,7 +45,7 @@ class P5Grain {
      * 
      * @method setup
      * 
-     * @param {Object} [config] Config object to configure p5grain features.
+     * @param {Object} [config] Config object to configure p5.grain features.
      * @param {function} [config.random] The random function that should be
      *     used when for e.g. pixel manipulation, texture animation, etc. 
      *     Here you could use a deterministic random function.
