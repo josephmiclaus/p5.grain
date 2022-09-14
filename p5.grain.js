@@ -404,38 +404,38 @@ class P5Grain {
      * @private
      * @method _validateParameters
      * 
-     * @param {String} func Name of the function
+     * @param {String} method Name of the method
      * @param {Array} args User given arguments to the respective method
      */
-    _validateParameters(func, args) {
+    _validateParameters(method, args) {
         // console.debug('args:', args);
         if (!this.ignoreErrors) {
-            switch (func) {
+            switch (method) {
                 case 'setup':
                     if (
                         typeof args[0] !== 'undefined'
                         && typeof args[0] !== 'object'
                     ) {
-                        throw new Error(`[p5.grain] The optional config parameter passed to p5grain.${func}() must be of type object.`);
+                        throw new Error(`[p5.grain] The optional config parameter passed to p5grain.${method}() must be of type object.`);
                     }
                     if (typeof args[0] === 'object') {
                         if (
                             typeof args[0].random !== 'undefined'
                             && typeof args[0].random !== 'function'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.random property passed to p5grain.${func}() must be of type function.`);
+                            throw new Error(`[p5.grain] The optional config.random property passed to p5grain.${method}() must be of type function.`);
                         }
                         if (
                             typeof args[0].ignoreErrors !== 'undefined'
                             && typeof args[0].ignoreErrors !== 'boolean'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.ignoreErrors property passed to p5grain.${func}() must be of type boolean.`);
+                            throw new Error(`[p5.grain] The optional config.ignoreErrors property passed to p5grain.${method}() must be of type boolean.`);
                         }
                         if (
                             typeof args[0].ignoreWarnings !== 'undefined'
                             && typeof args[0].ignoreWarnings !== 'boolean'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.ignoreWarnings property passed to p5grain.${func}() must be of type boolean.`);
+                            throw new Error(`[p5.grain] The optional config.ignoreWarnings property passed to p5grain.${method}() must be of type boolean.`);
                         }
                     }
                     break;
@@ -443,31 +443,31 @@ class P5Grain {
                 case 'granulateSimple':
                 case 'granulateChannels':
                     if (typeof args[0] !== 'number') {
-                        throw new Error(`[p5.grain] The amount parameter passed to ${func}() must be of type number.`);
+                        throw new Error(`[p5.grain] The amount parameter passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'boolean'
                     ) {
-                        throw new Error(`[p5.grain] The alpha parameter passed to ${func}() must be of type boolean.`);
+                        throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
                     }
                     break;
 
                 case 'granulateFuzzify':
                     if (typeof args[0] !== 'number') {
-                        throw new Error(`[p5.grain] The amount parameter passed to ${func}() must be of type number.`);
+                        throw new Error(`[p5.grain] The amount parameter passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'number'
                     ) {
-                        throw new Error(`[p5.grain] The fuzziness parameter passed to ${func}() must be of type number.`);
+                        throw new Error(`[p5.grain] The fuzziness parameter passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[2] !== 'undefined'
                         && typeof args[2] !== 'boolean'
                     ) {
-                        throw new Error(`[p5.grain] The alpha parameter passed to ${func}() must be of type boolean.`);
+                        throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
                     }
                     break;
                 
@@ -479,70 +479,70 @@ class P5Grain {
                             || args[0] instanceof p5.Element
                         )
                     ) {
-                        throw new Error(`[p5.grain] The textureElement parameter passed to ${func}() must be an instance of HTMLElement, SVGElement or p5.Element.`);
+                        throw new Error(`[p5.grain] The textureElement parameter passed to ${method}() must be an instance of HTMLElement, SVGElement or p5.Element.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'object'
                     ) {
-                        throw new Error(`[p5.grain] The optional config parameter passed to ${func}() must be of type object.`);
+                        throw new Error(`[p5.grain] The optional config parameter passed to ${method}() must be of type object.`);
                     }
                     if (typeof args[1] === 'object') {
                         if (
                             typeof args[1].atFrame !== 'undefined'
                             && typeof args[1].atFrame !== 'number'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.atFrame property passed to ${func}() must be of type number.`);
+                            throw new Error(`[p5.grain] The optional config.atFrame property passed to ${method}() must be of type number.`);
                         }
                         if (
                             typeof args[1].amount !== 'undefined'
                             && typeof args[1].amount !== 'number'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.amount parameter passed to ${func}() must be of type number.`);
+                            throw new Error(`[p5.grain] The optional config.amount parameter passed to ${method}() must be of type number.`);
                         }
                     }
                     break;
 
                 case 'textureOverlay':
                     if (!(args[0] instanceof p5.Image)) {
-                        throw new Error(`[p5.grain] The texture parameter passed to ${func}() must be an instance of p5.Image.`);
+                        throw new Error(`[p5.grain] The texture parameter passed to ${method}() must be an instance of p5.Image.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'object'
                     ) {
-                        throw new Error(`[p5.grain] The optional config parameter passed to ${func}() must be of type object.`);
+                        throw new Error(`[p5.grain] The optional config parameter passed to ${method}() must be of type object.`);
                     }
                     if (typeof args[1] === 'object') {
                         if (
                             typeof args[1].width !== 'undefined'
                             && typeof args[1].width !== 'number'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.width property passed to ${func}() must be of type number.`);
+                            throw new Error(`[p5.grain] The optional config.width property passed to ${method}() must be of type number.`);
                         }
                         if (
                             typeof args[1].height !== 'undefined'
                             && typeof args[1].height !== 'number'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.height property passed to ${func}() must be of type number.`);
+                            throw new Error(`[p5.grain] The optional config.height property passed to ${method}() must be of type number.`);
                         }
                         if (
                             typeof args[1].mode !== 'undefined'
                             && typeof args[1].mode !== 'string'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.mode property passed to ${func}() must be of type string.`);
+                            throw new Error(`[p5.grain] The optional config.mode property passed to ${method}() must be of type string.`);
                         }
                         if ( 
                             typeof args[1].context !== 'undefined'
                             && ! ( args[1].context instanceof p5.Graphics )
                         ) {
-                            throw new Error(`[p5.grain] The optional config.context parameter passed to ${func}() must be an instance of p5.Graphics.`);
+                            throw new Error(`[p5.grain] The optional config.context parameter passed to ${method}() must be an instance of p5.Graphics.`);
                         }
                         if (
                             typeof args[1].reflect !== 'undefined'
                             && typeof args[1].reflect !== 'boolean'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.reflect property passed to ${func}() must be of type boolean.`);
+                            throw new Error(`[p5.grain] The optional config.reflect property passed to ${method}() must be of type boolean.`);
                         }
                     }
                     break;
