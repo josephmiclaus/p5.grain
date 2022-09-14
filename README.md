@@ -167,11 +167,15 @@ p5.grain exposes the following API.
 
 The library initializes the global `p5grain` variable to a new `P5Grain` instance. You can directly access the fields and methods below from the `p5grain` variable. The library also attempts to register all p5.grain methods except `setup` with p5 by adding them to `p5.prototype`. This way, instead of calling, for example, `p5grain.granulateSimple(42)`, you can conveniently call `granulateSimple(42)`, although the former is also possible.
 
+### Fields
+
 | Field | Type | Description |
 | --- | --- | --- |
 | `version` | `String` | Holds the p5.grain version in [SemVer](https://semver.org) format. |
 | `ignoreWarnings` | `Boolean` | Defines whether warnings should be ignored. (default: `false`) |
 | `ignoreErrors` | `Boolean` | Defines whether errors should be ignored. (default: `false`) |
+
+### Methods
 
 | Method | Description |
 | --- | --- |
