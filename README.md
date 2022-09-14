@@ -3,7 +3,7 @@ p5.grain is a [p5.js](https://github.com/processing/p5.js) addon for convenientl
 
 p5.grain was also created with [fxhash](https://www.fxhash.xyz) projects in mind that use the deterministic `fxrand` random function.
 
-You can read more in detail about the different techniques to achieve grain in artworks in the article "[All about that grain](https://www.fxhash.xyz/article/all-about-that-grain)" on fxhash by [Gorilla Sun](https://twitter.com/gorillasu) and [meezwhite](https://twitter.com/meezwhite).
+You can read more in detail about the different techniques to achieve grain in artworks in the article "[All about that grain](https://www.fxhash.xyz/article/all-about-that-grain)" by [Gorilla Sun](https://twitter.com/gorillasu) and [meezwhite](https://twitter.com/meezwhite).
 
 ## Getting started
 Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed either `p5.grain.js` (26 KB) or `p5.grain.min.js` (8 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
