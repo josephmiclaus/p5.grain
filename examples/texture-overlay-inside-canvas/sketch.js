@@ -1,4 +1,4 @@
-const shouldAnimate = false;
+const shouldAnimate = true;
 let textureImage;
 let tW, tH;
 let cW, cH, cD;
