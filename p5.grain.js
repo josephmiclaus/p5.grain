@@ -145,7 +145,7 @@ class P5Grain {
      *    then calculated as follows: Pcurrent = (Pcurrent + Pn) / 2
      * 2. A random value per pixel channel is generated. The random values 
      *    range from -amount to +amount. Each random value is added to the
-     *    respective RGB channel of the pixel.
+     *    respective RGB(A) channel of the pixel.
      *
      * @method granulateFuzzify
      * 
