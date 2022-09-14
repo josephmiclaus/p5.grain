@@ -74,7 +74,7 @@ class P5Grain {
     /**
      * Granulate the main canvas pixels by the given amount.
      *
-     * This function generates one random value per pixel. The random value 
+     * This method generates one random value per pixel. The random value 
      * ranges from -amount to +amount and is added to every RGB(A) pixel 
      * channel.
      *
@@ -82,8 +82,8 @@ class P5Grain {
      * 
      * @param {Number} amount The amount of granularity that should be applied.
      * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be granulated. When not specified the alpha channel will
-     *     not be granulated.
+     *     also be modified. When not specified the alpha channel will
+     *     not be modified.
      */
     granulateSimple(amount, alpha) {
         this._validateParameters('granulateSimple', arguments);
@@ -107,7 +107,7 @@ class P5Grain {
     /**
      * Granulate the main canvas pixels channels by the given amount.
      *
-     * This function generates one random value per pixel channel. The random 
+     * This method generates one random value per pixel channel. The random 
      * values range from -amount to +amount. Each random value is added to 
      * the respective RGB(A) channel of the pixel.
      *
@@ -115,8 +115,8 @@ class P5Grain {
      * 
      * @param {Number} amount The amount of granularity that should be applied.
      * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be granulated. When not specified the alpha channel will
-     *     not be granulated.
+     *     also be modified. When not specified the alpha channel will
+     *     not be modified.
      */
     granulateChannels(amount, alpha) {
         this._validateParameters('granulateChannels', arguments);
@@ -137,9 +137,9 @@ class P5Grain {
     }
 
     /**
-     * Granulate and fuzzify the main canvas pixels by the given amount.
+     * Fuzzify and granulate the main canvas pixels by the given amount.
      *
-     * Note: This function modifies pixels in two steps:
+     * Note: This method modifies pixels in two steps:
      * 1. Selects a pixel (Pn) that lies "width indices" + "2 pixel indices"
      *    further in the pixels array. The value of the current pixel is
      *    then calculated as follows: Pcurrent = (Pcurrent + Pn) / 2
@@ -154,8 +154,8 @@ class P5Grain {
      *     applied or the amount of pixels the cavans should be fuzzified by. 
      *     When not specified the amount of fuzziness will be 2.
      * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be granulated. When not specified the alpha channel will
-     *     not be granulated.
+     *     also be modified. When not specified the alpha channel will
+     *     not be modified.
      */
     granulateFuzzify(amount, fuzziness, alpha) {
         this._validateParameters('granulateFuzzy', arguments);
@@ -190,8 +190,8 @@ class P5Grain {
     }
 
     /**
-     * Animate the texture element by randomly shifting the CSS property 
-     * "background-position" of the texture element.
+     * Animate the given texture element by randomly shifting its background 
+     * position.
      * 
      * @method textureAnimate
      * 
@@ -205,8 +205,8 @@ class P5Grain {
      * @param {Number} [config.amount] The maximum amount of pixels by which 
      *     the texture should be shifted. The actual amount of pixels which 
      *     the texture is shifted by is generated randomly. When no 
-     *     amount is specified, the minimum of canvas width or 
-     *     height is used.
+     *     amount is specified, the minimum of the main canvas 
+     *     width or height is used.
      */
     textureAnimate(textureElement, config) {
         this._validateParameters('textureAnimate', arguments);
@@ -260,6 +260,14 @@ class P5Grain {
      *     provide seamless continuity.
      * @param {Boolean|Object} [config.animate] Specifies whether the given 
      *     texture image should be animated.
+     * @param {Number} [config.animate.atFrame] When animation is activated, 
+     *     the frame at which the texture should be shifted. When atFrame 
+     *     isn't specified, the texture is shifted every 2nd frame.
+     * @param {Number} [config.animate.amount] When animation is activated,
+     *     the maximum amount of pixels by which the texture should be 
+     *     shifted. The actual amount of pixels which the texture is 
+     *     shifted by is generated randomly. When no amount is specified, 
+     *     the minimum of the main canvas width or height is used.
      */
     textureOverlay(textureImage, config) {
         this._validateParameters('textureOverlay', arguments);
@@ -390,14 +398,14 @@ class P5Grain {
      ********************/
 
     /**
-     * Checks the validity of the given arguments to the respective function. 
+     * Checks the validity of the given arguments to the respective method. 
      * Unless ignoreErrors is false, errors will be thrown when necessary.
      * 
      * @private
      * @method _validateParameters
      * 
      * @param {String} func Name of the function
-     * @param {Array} args User given arguments to the respective function
+     * @param {Array} args User given arguments to the respective method
      */
     _validateParameters(func, args) {
         // console.debug('args:', args);
