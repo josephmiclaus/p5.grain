@@ -13,7 +13,8 @@
     "p5.grain.min.js"
   ],
   "scripts": {
-    "build": "mkdir dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.LICENSE.txt"
+    "build:macos": "mkdir -p dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.LICENSE.txt; npm run dist:macos",
+    "dist:macos": "echo examples/*/lib/p5.grain.min.js | xargs -n 1 cp dist/p5.grain.min.js"
   },
   "keywords": [
     "javascript",
