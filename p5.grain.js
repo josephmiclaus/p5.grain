@@ -255,10 +255,10 @@ class P5Grain {
      *     Either BLEND, DARKEST, LIGHTEST, DIFFERENCE, MULTIPLY, EXCLUSION, 
      *     SCREEN, REPLACE, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN, 
      *     ADD or NORMAL. When no mode is specified, the blend mode 
-     *     MULTIPLY is be used.
+     *     MULTIPLY will be used.
      * @param {p5.Graphics} [config.context] The context on which the texture 
      *     image should be drawn onto. When no context is specified, the 
-     *     main canvas is be used.
+     *     main canvas will be used.
      * @param {Boolean} [config.reflect] Specifies whether the given texture
      *     image should reflect horizontally and vertically, in order to 
      *     provide seamless continuity.
