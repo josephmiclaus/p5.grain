@@ -1,4 +1,4 @@
-const shouldAnimate = false;
+const shouldAnimate = true;
 let textureElement;
 let cW, cH, cD;
 
@@ -36,9 +36,9 @@ function draw() {
     circle(cW, cH, cD);
 
     // Animate SVG texture element, currently unsupported!
-    // if (shouldAnimate) {
-    //     textureAnimate(textureElement);
-    // }
+    if (shouldAnimate) {
+        textureAnimate(textureElement);
+    }
 }
 
 function windowResized() {

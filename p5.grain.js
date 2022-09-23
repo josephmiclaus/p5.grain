@@ -1,14 +1,17 @@
 /**!
  * p5.grain
  * 
- * @version 0.2.0
+ * @version 0.3.0
  * @license MIT
  * @copyright meezwhite, Gorilla Sun
  */
 class P5Grain {
-    version = '0.2.0';
+    version = '0.3.0';
+
+    /** @internal */
     ignoreWarnings = false;
     ignoreErrors = false;
+    /** @end */
 
     #random;
     #textureAnimate;
@@ -59,19 +62,22 @@ class P5Grain {
      *     should be ignored.
      */
     setup(config) {
+        /** @internal */
         this.#validateArguments('setup', arguments);
+        /** @end */
         if (typeof config === 'undefined') {
             this.#random = random;
         } else if (typeof config === 'object') {
             if (typeof config.random === 'function') {
                 this.#random = config.random;
             }
+            /** @internal */
             if (typeof config.ignoreErrors === 'boolean') {
                 this.ignoreErrors = config.ignoreErrors;
             }
             if (typeof config.ignoreWarnings === 'boolean') {
                 this.ignoreWarnings = config.ignoreWarnings;
-            }
+            } /** @end */
         }
     }
 
@@ -90,7 +96,9 @@ class P5Grain {
      *     not be modified.
      */
     granulateSimple(amount, alpha) {
+        /** @internal */
         this.#validateArguments('granulateSimple', arguments);
+        /** @end */
         const _amount = round(amount);
         const _alpha = alpha || false;
         loadPixels();
@@ -123,7 +131,9 @@ class P5Grain {
      *     not be modified.
      */
     granulateChannels(amount, alpha) {
+        /** @internal */
         this.#validateArguments('granulateChannels', arguments);
+        /** @end */
         const _amount = round(amount);
         const _alpha = alpha || false;
         loadPixels();
@@ -162,7 +172,9 @@ class P5Grain {
      *     not be modified.
      */
     granulateFuzzify(amount, fuzziness, alpha) {
+        /** @internal */
         this.#validateArguments('granulateFuzzy', arguments);
+        /** @end */
         loadPixels();
         const _amount = round(amount);
         const _fuzziness = fuzziness ? round(fuzziness) : 2;
@@ -213,7 +225,9 @@ class P5Grain {
      *     width or height is used.
      */
     textureAnimate(textureElement, config) {
+        /** @internal */
         this.#validateArguments('textureAnimate', arguments);
+        /** @end */
         const _atFrame = config && config.atFrame ? round(config.atFrame) : 2;
         this.#textureAnimate.frameCount += 1;
         if (this.#textureAnimate.frameCount >= _atFrame) {
@@ -225,8 +239,8 @@ class P5Grain {
             if (textureElement instanceof HTMLElement) {
                 textureElement.style.backgroundPosition = bgPos;
             } else if (textureElement instanceof SVGElement) {
-                // TODO
-                throw new Error('[p5.grain] Animating SVGElement currently unsupported.');
+                textureElement.style.top = `${-bgPosY}px`;
+                textureElement.style.left = `${-bgPosX}px`;
             } else if (textureElement instanceof p5.Element) {
                 textureElement.style('background-position', bgPos);
             }
@@ -274,7 +288,9 @@ class P5Grain {
      *     the minimum of the main canvas width or height is used.
      */
     textureOverlay(textureImage, config) {
+        /** @internal */
         this.#validateArguments('textureOverlay', arguments);
+        /** @end */
         // flag whether given context is an instance of p5.Graphics
         const isCtxGfx = config.context instanceof p5.Graphics;
         // width of the canvas or context
@@ -401,6 +417,7 @@ class P5Grain {
      * Internal methods *
      ********************/
 
+    /** @internal */
     /**
      * Checks the validity of the given arguments to the respective method. 
      * Unless ignoreErrors is false, errors will be thrown when necessary.
@@ -474,7 +491,7 @@ class P5Grain {
                         throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
                     }
                     break;
-                
+
                 case 'textureAnimate':
                     if (
                         ! ( 
@@ -555,51 +572,62 @@ class P5Grain {
             }
         }
     }
+    /** @end */
 }
 
 const p5grain = new P5Grain();
 
 // Register granulateSimple()
-if (!p5.prototype.hasOwnProperty('granulateSimple')) {
+/** @internal */
+if (!p5.prototype.hasOwnProperty('granulateSimple')) { /** @end */
     p5.prototype.granulateSimple = function(amount, alpha) {
         return p5grain.granulateSimple(amount, alpha);
     };
+/** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateSimple() could not be registered, since it\'s already defined.\nUse p5grain.granulateSimple() instead.');
-}
+} /** @end */
 
 // Register granulateChannels()
-if (!p5.prototype.hasOwnProperty('granulateChannels')) {
+/** @internal */
+if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
     p5.prototype.granulateChannels = function(amount, alpha) {
         return p5grain.granulateChannels(amount, alpha);
     };
+/** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateChannels() could not be registered, since it\'s already defined.\nUse p5grain.granulateChannels() instead.');
-}
+} /** @end */
 
 // Register granulateFuzzify()
-if (!p5.prototype.hasOwnProperty('granulateFuzzify')) {
+/** @internal */
+if (!p5.prototype.hasOwnProperty('granulateFuzzify')) { /** @end */
     p5.prototype.granulateFuzzify = function(amount, fuzziness, alpha) {
         return p5grain.granulateFuzzify(amount, fuzziness, alpha);
     };
+/** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateFuzzify() could not be registered, since it\'s already defined.\nUse p5grain.granulateFuzzify() instead.');
-}
+} /** @end */
 
 // Register textureAnimate()
-if (!p5.prototype.hasOwnProperty('textureAnimate')) {
+/** @internal */
+if (!p5.prototype.hasOwnProperty('textureAnimate')) { /** @end */
     p5.prototype.textureAnimate = function(textureElement, config) {
         return p5grain.textureAnimate(textureElement, config);
     };
+/** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined.\nUse p5grain.textureAnimate() instead.');
-}
+} /** @end */
 
 // Register textureOverlay()
-if (!p5.prototype.hasOwnProperty('textureOverlay')) {
+/** @internal */
+if (!p5.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     p5.prototype.textureOverlay = function(textureImage, config) {
         return p5grain.textureOverlay(textureImage, config);
     };
+/** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] textureOverlay() could not be registered, since it\'s already defined.\nUse p5grain.textureOverlay() instead.');
-}
+} /** @end */

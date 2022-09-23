@@ -1,6 +1,6 @@
 {
   "name": "p5.grain",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "p5.grain is a p5.js addon for conveniently adding grain and texture overlays to artworks.",
   "author": "meezwhite",
   "license": "MIT",
@@ -13,8 +13,10 @@
     "p5.grain.js"
   ],
   "scripts": {
-    "build:macos": "mkdir -p dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.LICENSE.txt",
-    "dist:macos": "echo examples/*/lib/p5.grain.min.js | xargs -n 1 cp dist/p5.grain.min.js"
+    "build:macos": "npm run build-min:macos; npm run build-core:macos; npm run dist-core:macos",
+    "build-core:macos": "mkdir -p dist; sed '/@internal/,/@end/d' p5.grain.js > p5.grain.core.js; minify p5.grain.core.js > dist/p5.grain.core.js; cp LICENSE dist/p5.grain.core.LICENSE.txt; rm p5.grain.core.js",
+    "build-min:macos": "mkdir -p dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.LICENSE.txt",
+    "dist-core:macos": "echo examples/*/lib/ | xargs -n 1 cp dist/p5.grain.core.js dist/p5.grain.core.LICENSE.txt"
   },
   "keywords": [
     "javascript",
