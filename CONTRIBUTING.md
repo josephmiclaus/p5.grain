@@ -30,7 +30,7 @@ Guidelines:
 
 1. Make sure the issue has not already been reported; use the search for issues.
 2. If possible, include a simple example demonstrating the issue (via [p5.js Web Editor](https://editor.p5js.org), [OpenProcessing](https://openprocessing.org/sketch/create), [CodePen](https://codepen.io/pen), etc.) using the latest p5.grain version.
-3. You are welcome to create an accompanying Pull Request with a fix. Checkout the section on [Pull Requests](#pull-requests).
+3. You are welcome to create an accompanying Pull Request with a fix. Check out the section on [Pull Requests](#pull-requests).
 
 ## Feature Requests
 
@@ -50,7 +50,7 @@ Guidelines:
 1. **Install system tools**
     * Any OS: `git`, `node >= 16.14.0`, `npm >= 8.3.0`
     * macOS: `sed`, `xargs` (both should be preinstalled)
-    * Windows: TBD, checkout [Roadmap](#roadmap)
+    * Windows: TBD, check out [Roadmap](#roadmap)
 2. **Fork, Clone, Configure remotes, Install dependencies**
     ```bash
     # Clone your fork of p5.grain
@@ -76,7 +76,7 @@ Guidelines:
         * temporarily change the `index.html` of the respective example to use `p5.grain.js` or
         * run the npm build command for your OS to build and distribute a `p5.grain.core.js` version to every example which will include your changes.
             * macOS: `npm run build:darwin`
-            * Windows: currently unavailable, checkout [Roadmap](#roadmap)
+            * Windows: currently unavailable, check out [Roadmap](#roadmap)
     * Encapsulate any code parts (e.g. errors and warnings for development purposes) that should not be part of the core version within `/** @internal */` and `/** @end */` markers. Everything encapsulated between these markers will be removed upon building p5.grain. Here is an example:
         ```js
         /** @internal */
@@ -98,7 +98,7 @@ Guidelines:
     * Before commiting your changes:
         * Run the npm build command for your OS to build and distribute a `p5.grain.core.js` version to every example.
             * macOS: `npm run build:darwin`
-            * Windows: currently unavailable, checkout [Roadmap](#roadmap)
+            * Windows: currently unavailable, check out [Roadmap](#roadmap)
             <br>*NOTE: If your OS is not supported yet, mention this in your Pull Request.*
         * Optionally, you can use [git rebase](https://help.github.com/articles/about-git-rebase) to clean up your commit history before submitting a Pull Request on GitHub.
     * Commit your changes following our [Commit Message Guidelines](#commit-message-guidelines)
