@@ -96,8 +96,8 @@ The best way to get you started with a technique is to checkout the provided sta
 Go to standalone example:
 * [Pixel manipulation](./examples/pixel-manipulation)
 * Texture overlay
-  * [Inside canvas](./examples/texture-overlay-inside-canvas) (texture animation supported)
-  * [Outside canvas](./examples/texture-overlay-outside-canvas) (texture animation supported)
+  * [Inside canvas](./examples/texture-overlay-inside) (texture animation supported)
+  * [Outside canvas](./examples/texture-overlay-outside) (texture animation supported)
 * SVG filter
   * [SVG element](./examples/svg-element) (texture animation supported; [limited compatibility in Safari](#limitations))
   * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported; [doesn't work in Safari](#limitations))
