@@ -16,7 +16,7 @@ Although p5.grain can already be used for p5.js sketches in production, it's sti
 
 ## Code of Conduct
 
-Let's keep p5.grain open and inclusive. Please read and follow our [Code of Conduct](./.github/CODE_OF_CONDUCT.md).
+Let's keep p5.grain open and inclusive. Please read and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Support Questions
 
