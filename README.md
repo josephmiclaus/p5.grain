@@ -91,7 +91,7 @@ p5.grain currently supports the techniques: pixel manipulation, texture overlay 
 
 Depending on how your artwork is created and whether you want to animate texture overlays, you would use p5.grain methods within the `setup` or `draw` functions of your sketch.
 
-The best way to get you started with a technique is to checkout the provided standalone [examples](./examples). There is an example for each technique currently supported by the library.
+The best way to get you started with a technique is to check out the provided standalone [examples](./examples). There is an example for each technique currently supported by the library.
 
 Go to standalone example:
 * [Pixel manipulation](./examples/pixel-manipulation)
