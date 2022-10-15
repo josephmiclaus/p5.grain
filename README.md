@@ -274,6 +274,9 @@ Animate the given texture element by randomly shifting its background position.
 * Safari: SVG element technique apparently only works for browser window resolutions with less than 2<sup>20</sup> pixels (e.g. 1024 x 1024 pixels).
 * Safari: SVG URL-encoded technique is currently unsupported.
 
+## Contributing
+
+Are you considering contributing to p5.grain? Check out our [Contributing guidelines](/.github/CONTRIBUTING.md).
 
 ## License
 
