@@ -20,11 +20,11 @@ Let's keep p5.grain open and inclusive. Please read and follow our [Code of Cond
 
 ## Support Questions
 
-For general support questions, [start a discussion](./discussions/new?category=q-a) in the Q&A category in Discussions.
+For general support questions, check out the [Q&A section](https://github.com/meezwhite/p5.grain/discussions/categories/q-a) in Discussions.
 
 ## Issues and Bugs
 
-If you find a bug in the source code or a mistake in the documentation, you can help by [submitting an issue](./issues/new).
+If you find a bug in the source code or a mistake in the documentation, you can help by [submitting an issue](https://github.com/meezwhite/p5.grain/issues).
 
 Guidelines:
 
@@ -34,7 +34,7 @@ Guidelines:
 
 ## Feature Requests
 
-You can request a new feature by [starting a discussion](./discussions/new?category=ideas) in the Ideas category in Discussions.
+You can request a new feature by starting a discussion in the [Ideas section](https://github.com/meezwhite/p5.grain/discussions/categories/ideas) in Discussions.
 
 Guidelines:
 
