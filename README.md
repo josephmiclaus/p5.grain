@@ -276,7 +276,7 @@ Animate the given texture element by randomly shifting its background position.
 
 ## Contributing
 
-Are you considering contributing to p5.grain? Check out our [Contributing guidelines](/.github/CONTRIBUTING.md).
+Are you considering contributing to p5.grain? Check out our [contributing guidelines](./CONTRIBUTING.md).
 
 ## License
 
