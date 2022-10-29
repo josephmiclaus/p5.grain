@@ -1,12 +1,12 @@
 /**!
  * p5.grain
  * 
- * @version 0.3.0
+ * @version 0.3.1
  * @license MIT
  * @copyright meezwhite, Gorilla Sun
  */
 class P5Grain {
-    version = '0.3.0';
+    version = '0.3.1';
 
     /** @internal */
     ignoreWarnings = false;
@@ -105,7 +105,7 @@ class P5Grain {
         const d = pixelDensity();
         const pixelsCount = 4 * (width * d) * (height * d);
         for (let i = 0; i < pixelsCount; i += 4) {
-            const grainAmount = this.#random(-_amount, _amount);
+            const grainAmount = this.#randomIntInclusive(-amount, amount);
             pixels[i] = pixels[i] + grainAmount;
             pixels[i+1] = pixels[i+1] + grainAmount;
             pixels[i+2] = pixels[i+2] + grainAmount;
@@ -140,11 +140,11 @@ class P5Grain {
         const d = pixelDensity();
         const pixelsCount = 4 * (width * d) * (height * d);
         for (let i = 0; i < pixelsCount; i += 4) {
-            pixels[i] = pixels[i] + this.#random(-_amount, _amount);
-            pixels[i+1] = pixels[i+1] + this.#random(-_amount, _amount);
-            pixels[i+2] = pixels[i+2] + this.#random(-_amount, _amount);
+            pixels[i] = pixels[i] + this.#randomIntInclusive(-_amount, _amount);
+            pixels[i+1] = pixels[i+1] + this.#randomIntInclusive(-_amount, _amount);
+            pixels[i+2] = pixels[i+2] + this.#randomIntInclusive(-_amount, _amount);
             if (_alpha) {
-                pixels[i+3] = pixels[i+3] + this.#random(-_amount, _amount);
+                pixels[i+3] = pixels[i+3] + this.#randomIntInclusive(-_amount, _amount);
             }
         }
         updatePixels();
@@ -195,11 +195,11 @@ class P5Grain {
                 }
             }
             // granulate
-            pixels[i] = pixels[i] + this.#random(-_amount, _amount);
-            pixels[i+1] = pixels[i+1] + this.#random(-_amount, _amount);
-            pixels[i+2] = pixels[i+2] + this.#random(-_amount, _amount);
+            pixels[i] = pixels[i] + this.#randomIntInclusive(-_amount, _amount);
+            pixels[i+1] = pixels[i+1] + this.#randomIntInclusive(-_amount, _amount);
+            pixels[i+2] = pixels[i+2] + this.#randomIntInclusive(-_amount, _amount);
             if (_alpha) {
-                pixels[i+3] = pixels[i+3] + this.#random(-_amount, _amount);
+                pixels[i+3] = pixels[i+3] + this.#randomIntInclusive(-_amount, _amount);
             }
         }
         updatePixels();
@@ -416,6 +416,22 @@ class P5Grain {
     /********************
      * Internal methods *
      ********************/
+
+    /**
+     * Generate a random integer between given bounds inclusively.
+     * 
+     * @private
+     * @method randomIntInclusive
+     * 
+     * @param {Number} min Min value that may be generated.
+     * @param {Number} max Max value that may be generated.
+     * @returns {Number}
+     */
+    #randomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(this.#random() * (max - min + 1) + min);
+    }
 
     /** @internal */
     /**
