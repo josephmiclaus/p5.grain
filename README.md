@@ -57,6 +57,7 @@ function setup() {
     // make Math.random be same as fxrand
     Math.random = fxrand;
 
+    // set seeds (example)
     randomSeed(fxrand() * 999999);
     noiseSeed(fxrand() * 999999);
 
