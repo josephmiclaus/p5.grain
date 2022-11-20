@@ -445,7 +445,6 @@ class P5Grain {
      * @param {Array} args User given arguments to the respective method
      */
     #validateArguments(method, args) {
-        // console.debug('args:', args);
         if (!this.ignoreErrors) {
             switch (method) {
                 case 'setup':
