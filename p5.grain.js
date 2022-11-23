@@ -155,11 +155,11 @@ class P5Grain {
      *
      * Note: This method modifies pixels in two steps:
      * 1. Selects a pixel (Pn) that lies "width indices" + "2 pixel indices"
-     *    further in the pixels array. The value of the current pixel is
-     *    then calculated as follows: Pcurrent = (Pcurrent + Pn) / 2
+     *     further in the pixels array. The value of the current pixel is
+     *     then calculated as follows: Pcurrent = (Pcurrent + Pn) / 2
      * 2. A random value per pixel channel is generated. The random values 
-     *    range from -amount to +amount. Each random value is added to the
-     *    respective RGB(A) channel of the pixel.
+     *     range from -amount to +amount. Each random value is added to 
+     *     the respective RGB(A) channel of the pixel.
      *
      * @method granulateFuzzify
      * 
