@@ -17,7 +17,7 @@ function setup() {
     // Channels method
     // granulateChannels(42);
 
-    // Custom granulateSimple implementation:
+    // Custom granulateSimple implementation
     // const amount = 42;
     // const alpha = false;
     // granulateCustom((index, total) => {
