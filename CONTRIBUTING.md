@@ -224,10 +224,11 @@ By making a contribution to this project, I certify that:
 
 ## Roadmap
 
+* [x] Add possibility for custom `granulate` functions (added November 23, 2022)
+* [ ] Add possibility to apply grain and textures to offscreen graphics
+* [ ] Improve pixel manipulation technique performance
 * [ ] Implement JavaScript module syntax
 * [ ] Add possibility to build only specified functions to core
-* [ ] Add generalized `granulate` function
-* [ ] Add possibility for custom `granulate` functions
 * [ ] Add possibility to use shaders
 * [ ] Add npm scripts for Windows
 * [ ] Add npm scripts for Linux
