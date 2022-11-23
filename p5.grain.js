@@ -484,7 +484,7 @@ class P5Grain {
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'boolean'
                     ) {
-                        throw new Error(`[p5.grain] The alpha argument passed to ${method}() must be of type boolean.`);
+                        throw new Error(`[p5.grain] The optional alpha argument passed to ${method}() must be of type boolean.`);
                     }
                     break;
                 case 'granulateFuzzify':
@@ -495,13 +495,13 @@ class P5Grain {
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'number'
                     ) {
-                        throw new Error(`[p5.grain] The fuzziness argument passed to ${method}() must be of type number.`);
+                        throw new Error(`[p5.grain] The optional fuzziness argument passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[2] !== 'undefined'
                         && typeof args[2] !== 'boolean'
                     ) {
-                        throw new Error(`[p5.grain] The alpha argument passed to ${method}() must be of type boolean.`);
+                        throw new Error(`[p5.grain] The optional alpha argument passed to ${method}() must be of type boolean.`);
                     }
                     break;
                 case 'textureAnimate':
