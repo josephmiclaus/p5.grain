@@ -113,14 +113,14 @@ function setup() {
 
     p5grain.setup();
 
-    // your artwork could be drawn here
+    // draw your artwork here
     // ...
 
-    // Example: simple method
+    // example: simple method
     granulateSimple(42);
 
-    // Example: channels method
-    granulateChannels(42);
+    // example: channels method
+    // granulateChannels(42);
 }
 ```
 
@@ -133,10 +133,10 @@ function setup() {
 
     p5grain.setup();
 
-    // your artwork could be drawn here
+    // draw your artwork here
     // ...
 
-    // Example: custom granulateSimple implementation
+    // example: custom granulateSimple implementation
     const amount = 42;
     const alpha = false;
     granulateCustom((index, total) => {
