@@ -12,7 +12,7 @@ function setup() {
     // Granulate artwork
 
     // Simple method
-    // granulateSimple(42);
+    granulateSimple(42);
 
     // Channels method
     // granulateChannels(42);
