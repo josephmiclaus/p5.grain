@@ -10,9 +10,25 @@ function setup() {
     circle(width/2, height/2, min(width, height)/2);
 
     // Granulate artwork
-    granulateSimple(42);
+
+    // Simple method
+    // granulateSimple(42);
+
+    // Channels method
     // granulateChannels(42);
-    // granulateFuzzify(42);
+
+    // Custom granulateSimple implementation:
+    // const amount = 42;
+    // const alpha = false;
+    // granulateCustom((index, total) => {
+    //     const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
+    //     pixels[index] = pixels[index] + grainAmount;
+    //     pixels[index+1] = pixels[index+1] + grainAmount;
+    //     pixels[index+2] = pixels[index+2] + grainAmount;
+    //     if (alpha) {
+    //         pixels[index+3] = pixels[index+3] + grainAmount;
+    //     }
+    // });
 }
 
 function windowResized() {
