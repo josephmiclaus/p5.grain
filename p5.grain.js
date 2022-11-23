@@ -475,7 +475,6 @@ class P5Grain {
                         }
                     }
                     break;
-
                 case 'granulateSimple':
                 case 'granulateChannels':
                     if (typeof args[0] !== 'number') {
@@ -488,7 +487,6 @@ class P5Grain {
                         throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
                     }
                     break;
-
                 case 'granulateFuzzify':
                     if (typeof args[0] !== 'number') {
                         throw new Error(`[p5.grain] The amount parameter passed to ${method}() must be of type number.`);
@@ -506,7 +504,6 @@ class P5Grain {
                         throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
                     }
                     break;
-
                 case 'textureAnimate':
                     if (
                         ! ( 
@@ -538,7 +535,6 @@ class P5Grain {
                         }
                     }
                     break;
-
                 case 'textureOverlay':
                     if (!(args[0] instanceof p5.Image)) {
                         throw new Error(`[p5.grain] The texture parameter passed to ${method}() must be an instance of p5.Image.`);
@@ -582,7 +578,6 @@ class P5Grain {
                         }
                     }
                     break;
-
                 default: break;
             }
         }
