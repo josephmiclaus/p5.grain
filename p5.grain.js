@@ -103,8 +103,8 @@ class P5Grain {
         const _alpha = alpha || false;
         loadPixels();
         const d = pixelDensity();
-        const pixelsCount = 4 * (width * d) * (height * d);
-        for (let i = 0; i < pixelsCount; i += 4) {
+        const count = 4 * (width * d) * (height * d);
+        for (let i = 0; i < count; i += 4) {
             const grainAmount = this.#randomIntInclusive(-_amount, _amount);
             pixels[i] = pixels[i] + grainAmount;
             pixels[i+1] = pixels[i+1] + grainAmount;
@@ -138,8 +138,8 @@ class P5Grain {
         const _alpha = alpha || false;
         loadPixels();
         const d = pixelDensity();
-        const pixelsCount = 4 * (width * d) * (height * d);
-        for (let i = 0; i < pixelsCount; i += 4) {
+        const count = 4 * (width * d) * (height * d);
+        for (let i = 0; i < count; i += 4) {
             pixels[i] = pixels[i] + this.#randomIntInclusive(-_amount, _amount);
             pixels[i+1] = pixels[i+1] + this.#randomIntInclusive(-_amount, _amount);
             pixels[i+2] = pixels[i+2] + this.#randomIntInclusive(-_amount, _amount);
@@ -183,8 +183,8 @@ class P5Grain {
         const c = 4 * _fuzziness; // channels * pixels
         const w = 4 * width * d;
         const f = c + w;
-        const pixelsCount = w * (height * d);
-        for (let i = 0; i < pixelsCount; i += 4) {
+        const count = w * (height * d);
+        for (let i = 0; i < count; i += 4) {
             // fuzzify
             if (pixels[i+f]) {
                 pixels[i] = round((pixels[i] + pixels[i+f])/2);
