@@ -452,7 +452,7 @@ class P5Grain {
                         typeof args[0] !== 'undefined'
                         && typeof args[0] !== 'object'
                     ) {
-                        throw new Error(`[p5.grain] The optional config parameter passed to p5grain.${method}() must be of type object.`);
+                        throw new Error(`[p5.grain] The optional config argument passed to p5grain.${method}() must be of type object.`);
                     }
                     if (typeof args[0] === 'object') {
                         if (
@@ -478,30 +478,30 @@ class P5Grain {
                 case 'granulateSimple':
                 case 'granulateChannels':
                     if (typeof args[0] !== 'number') {
-                        throw new Error(`[p5.grain] The amount parameter passed to ${method}() must be of type number.`);
+                        throw new Error(`[p5.grain] The amount argument passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'boolean'
                     ) {
-                        throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
+                        throw new Error(`[p5.grain] The alpha argument passed to ${method}() must be of type boolean.`);
                     }
                     break;
                 case 'granulateFuzzify':
                     if (typeof args[0] !== 'number') {
-                        throw new Error(`[p5.grain] The amount parameter passed to ${method}() must be of type number.`);
+                        throw new Error(`[p5.grain] The amount argument passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'number'
                     ) {
-                        throw new Error(`[p5.grain] The fuzziness parameter passed to ${method}() must be of type number.`);
+                        throw new Error(`[p5.grain] The fuzziness argument passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[2] !== 'undefined'
                         && typeof args[2] !== 'boolean'
                     ) {
-                        throw new Error(`[p5.grain] The alpha parameter passed to ${method}() must be of type boolean.`);
+                        throw new Error(`[p5.grain] The alpha argument passed to ${method}() must be of type boolean.`);
                     }
                     break;
                 case 'textureAnimate':
@@ -512,13 +512,13 @@ class P5Grain {
                             || args[0] instanceof p5.Element
                         )
                     ) {
-                        throw new Error(`[p5.grain] The textureElement parameter passed to ${method}() must be an instance of HTMLElement, SVGElement or p5.Element.`);
+                        throw new Error(`[p5.grain] The textureElement argument passed to ${method}() must be an instance of HTMLElement, SVGElement or p5.Element.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'object'
                     ) {
-                        throw new Error(`[p5.grain] The optional config parameter passed to ${method}() must be of type object.`);
+                        throw new Error(`[p5.grain] The optional config argument passed to ${method}() must be of type object.`);
                     }
                     if (typeof args[1] === 'object') {
                         if (
@@ -531,19 +531,19 @@ class P5Grain {
                             typeof args[1].amount !== 'undefined'
                             && typeof args[1].amount !== 'number'
                         ) {
-                            throw new Error(`[p5.grain] The optional config.amount parameter passed to ${method}() must be of type number.`);
+                            throw new Error(`[p5.grain] The optional config.amount argument passed to ${method}() must be of type number.`);
                         }
                     }
                     break;
                 case 'textureOverlay':
                     if (!(args[0] instanceof p5.Image)) {
-                        throw new Error(`[p5.grain] The texture parameter passed to ${method}() must be an instance of p5.Image.`);
+                        throw new Error(`[p5.grain] The texture argument passed to ${method}() must be an instance of p5.Image.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'object'
                     ) {
-                        throw new Error(`[p5.grain] The optional config parameter passed to ${method}() must be of type object.`);
+                        throw new Error(`[p5.grain] The optional config argument passed to ${method}() must be of type object.`);
                     }
                     if (typeof args[1] === 'object') {
                         if (
@@ -568,7 +568,7 @@ class P5Grain {
                             typeof args[1].context !== 'undefined'
                             && ! ( args[1].context instanceof p5.Graphics )
                         ) {
-                            throw new Error(`[p5.grain] The optional config.context parameter passed to ${method}() must be an instance of p5.Graphics.`);
+                            throw new Error(`[p5.grain] The optional config.context argument passed to ${method}() must be an instance of p5.Graphics.`);
                         }
                         if (
                             typeof args[1].reflect !== 'undefined'
