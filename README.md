@@ -113,10 +113,41 @@ function setup() {
 
     p5grain.setup();
 
-    // draw your artwork here
+    // your artwork could be drawn here
     // ...
 
+    // Example: simple method
+    granulateSimple(42);
+
+    // Example: channels method
     granulateChannels(42);
+}
+```
+
+### Pixel manipulation
+
+This example demonstates granulating the artwork using `granulateCustom(callback)` function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note: example is non-deterministic!*
+
+```js
+function setup() {
+
+    p5grain.setup();
+
+    // your artwork could be drawn here
+    // ...
+
+    // Example: custom granulateSimple implementation
+    const amount = 42;
+    const alpha = false;
+    granulateCustom((index, total) => {
+        const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
+        pixels[index] = pixels[index] + grainAmount;
+        pixels[index+1] = pixels[index+1] + grainAmount;
+        pixels[index+2] = pixels[index+2] + grainAmount;
+        if (alpha) {
+            pixels[index+3] = pixels[index+3] + grainAmount;
+        }
+    });
 }
 ```
 
@@ -187,7 +218,7 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | `setup(config)` | Setup and configure certain p5.grain features. |
 | `granulateSimple(amount, alpha)` | Granulate the main canvas pixels by the given amount. |
 | `granulateChannels(amount, alpha)` | Granulate the main canvas pixels channels by the given amount. |
-| `granulateFuzzify(amount, fuzziness, alpha)` | Fuzzify and granulate the main canvas pixels by the given amount. |
+| `granulateCustom(callback)` | Granulate the main canvas pixels according to the specified callback function. |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
@@ -224,19 +255,17 @@ This method generates one random value per pixel channel. The random values rang
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
 
-### `granulateFuzzify(amount, fuzziness, alpha)`
+### `granulateCustom(callback)`
 
-Fuzzify and granulate the main canvas pixels by the given amount.
+Loop through the main canvas pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given `callback` function.
 
-This method modifies pixels in two steps:
-1. Selects a pixel $Pn$ that lies "width indices" + "2 pixel indices" further in the pixels array. The value of the current pixel $Pc$ is then calculated as follows: $Pc = (Pc + Pn) / 2$
-2. A random value per pixel channel is generated. The random values range from `-amount` to `+amount`. Each random value is added to the respective RGB(A) channel of the pixel.
+The callback function receives two arguments:
+- `index`: the current pixel index
+- `count`: the total pixels count
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `amount` | `Number` | The amount of granularity that should be applied. |
-| `fuzziness` | `Number` | (optional) The amount of fuzziness that should be applied or the amount of pixels the cavans should be fuzzified by. (default: `2`) |
-| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. (default: `false`) |
+| `callback` | `Function` | The callback function that should be called on every main canvas pixel. |
 
 ### `textureOverlay(textureImage, config)`
 
