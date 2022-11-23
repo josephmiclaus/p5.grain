@@ -155,6 +155,10 @@ class P5Grain {
      * on every pixel. Pixels are manipulated depending on the given callback 
      * function.
      * 
+     * The callback function receives two arguments:
+     * - index: the current pixel index
+     * - count: the total pixels count
+     * 
      * @example
      * <p>Custom granulateSimple implementation:</p>
      * <code>
@@ -174,9 +178,7 @@ class P5Grain {
      * @method granulateCustom
      * 
      * @param {Function} callback The callback function that should be called 
-     *     on every main canvas pixel. It receives two arguments:
-     *     - index: the current pixel index
-     *     - count: the total pixels count
+     *     on every main canvas pixel.
      */
      granulateCustom(callback) {
         /** @internal */
