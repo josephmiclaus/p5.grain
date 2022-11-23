@@ -151,6 +151,47 @@ class P5Grain {
     }
 
     /**
+     * Loop through the main canvas pixels and call the given callback function 
+     * on every pixel. Pixels are manipulated depending on the given callback 
+     * function.
+     * 
+     * @example
+     * <p>Custom granulateSimple implementation:</p>
+     * <code>
+     *     const amount = 42;
+     *     const alpha = false;
+     *     granulateCustom((index, count) => {
+     *         const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
+     *         pixels[index] = pixels[index] + grainAmount;
+     *         pixels[index+1] = pixels[index+1] + grainAmount;
+     *         pixels[index+2] = pixels[index+2] + grainAmount;
+     *         if (alpha) {
+     *             pixels[index+3] = pixels[index+3] + grainAmount;
+     *         }
+     *     });
+     * </code>
+     *
+     * @method granulateCustom
+     * 
+     * @param {Function} callback The callback function that should be called 
+     *     on every main canvas pixel. It receives two arguments:
+     *     - index: the current pixel index
+     *     - count: the total pixels count
+     */
+     granulateCustom(callback) {
+        /** @internal */
+        this.#validateArguments('granulateCustom', arguments);
+        /** @end */
+        loadPixels();
+        const d = pixelDensity();
+        const count = 4 * (width * d) * (height * d);
+        for (let i = 0; i < count; i += 4) {
+            callback(i, count);
+        }
+        updatePixels();
+    }
+
+    /**
      * Fuzzify and granulate the main canvas pixels by the given amount.
      *
      * Note: This method modifies pixels in two steps:
@@ -487,6 +528,11 @@ class P5Grain {
                         throw new Error(`[p5.grain] The optional alpha argument passed to ${method}() must be of type boolean.`);
                     }
                     break;
+                case 'granulateCustom':
+                    if (typeof args[0] !== 'function') {
+                        throw new Error(`[p5.grain] The callback argument passed to ${method}() must be of type function.`);
+                    }
+                    break;
                 case 'granulateFuzzify':
                     if (typeof args[0] !== 'number') {
                         throw new Error(`[p5.grain] The amount argument passed to ${method}() must be of type number.`);
@@ -607,6 +653,17 @@ if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateChannels() could not be registered, since it\'s already defined.\nUse p5grain.granulateChannels() instead.');
+} /** @end */
+
+// Register granulateCustom()
+/** @internal */
+if (!p5.prototype.hasOwnProperty('granulateCustom')) { /** @end */
+    p5.prototype.granulateCustom = function(callback) {
+        return p5grain.granulateCustom(callback);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] granulateCustom() could not be registered, since it\'s already defined.\nUse p5grain.granulateCustom() instead.');
 } /** @end */
 
 // Register granulateFuzzify()
