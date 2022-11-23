@@ -105,7 +105,7 @@ class P5Grain {
         const d = pixelDensity();
         const pixelsCount = 4 * (width * d) * (height * d);
         for (let i = 0; i < pixelsCount; i += 4) {
-            const grainAmount = this.#randomIntInclusive(-amount, amount);
+            const grainAmount = this.#randomIntInclusive(-_amount, _amount);
             pixels[i] = pixels[i] + grainAmount;
             pixels[i+1] = pixels[i+1] + grainAmount;
             pixels[i+2] = pixels[i+2] + grainAmount;
