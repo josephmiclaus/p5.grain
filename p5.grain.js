@@ -192,61 +192,6 @@ class P5Grain {
     }
 
     /**
-     * Fuzzify and granulate the main canvas pixels by the given amount.
-     *
-     * Note: This method modifies pixels in two steps:
-     * 1. Selects a pixel (Pn) that lies "width indices" + "2 pixel indices"
-     *     further in the pixels array. The value of the current pixel is
-     *     then calculated as follows: Pcurrent = (Pcurrent + Pn) / 2
-     * 2. A random value per pixel channel is generated. The random values 
-     *     range from -amount to +amount. Each random value is added to 
-     *     the respective RGB(A) channel of the pixel.
-     *
-     * @method granulateFuzzify
-     * 
-     * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Number} [fuzziness] The amount of fuzziness that should be 
-     *     applied or the amount of pixels the cavans should be fuzzified by. 
-     *     When not specified the amount of fuzziness will be 2.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     */
-    granulateFuzzify(amount, fuzziness, alpha) {
-        /** @internal */
-        this.#validateArguments('granulateFuzzify', arguments);
-        /** @end */
-        loadPixels();
-        const _amount = round(amount);
-        const _fuzziness = fuzziness ? round(fuzziness) : 2;
-        const _alpha = alpha || false;
-        const d = pixelDensity();
-        const c = 4 * _fuzziness; // channels * pixels
-        const w = 4 * width * d;
-        const f = c + w;
-        const count = w * (height * d);
-        for (let i = 0; i < count; i += 4) {
-            // fuzzify
-            if (pixels[i+f]) {
-                pixels[i] = round((pixels[i] + pixels[i+f])/2);
-                pixels[i+1] = round((pixels[i+1] + pixels[i+f+1])/2);
-                pixels[i+2] = round((pixels[i+2] + pixels[i+f+2])/2);
-                if (_alpha) {
-                    pixels[i+3] = round((pixels[i+3] + pixels[i+f+3])/2);
-                }
-            }
-            // granulate
-            pixels[i] = pixels[i] + this.#randomIntInclusive(-_amount, _amount);
-            pixels[i+1] = pixels[i+1] + this.#randomIntInclusive(-_amount, _amount);
-            pixels[i+2] = pixels[i+2] + this.#randomIntInclusive(-_amount, _amount);
-            if (_alpha) {
-                pixels[i+3] = pixels[i+3] + this.#randomIntInclusive(-_amount, _amount);
-            }
-        }
-        updatePixels();
-    }
-
-    /**
      * Animate the given texture element by randomly shifting its background 
      * position.
      * 
@@ -533,23 +478,6 @@ class P5Grain {
                         throw new Error(`[p5.grain] The callback argument passed to ${method}() must be of type function.`);
                     }
                     break;
-                case 'granulateFuzzify':
-                    if (typeof args[0] !== 'number') {
-                        throw new Error(`[p5.grain] The amount argument passed to ${method}() must be of type number.`);
-                    }
-                    if (
-                        typeof args[1] !== 'undefined'
-                        && typeof args[1] !== 'number'
-                    ) {
-                        throw new Error(`[p5.grain] The optional fuzziness argument passed to ${method}() must be of type number.`);
-                    }
-                    if (
-                        typeof args[2] !== 'undefined'
-                        && typeof args[2] !== 'boolean'
-                    ) {
-                        throw new Error(`[p5.grain] The optional alpha argument passed to ${method}() must be of type boolean.`);
-                    }
-                    break;
                 case 'textureAnimate':
                     if (
                         ! ( 
@@ -664,17 +592,6 @@ if (!p5.prototype.hasOwnProperty('granulateCustom')) { /** @end */
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] granulateCustom() could not be registered, since it\'s already defined.\nUse p5grain.granulateCustom() instead.');
-} /** @end */
-
-// Register granulateFuzzify()
-/** @internal */
-if (!p5.prototype.hasOwnProperty('granulateFuzzify')) { /** @end */
-    p5.prototype.granulateFuzzify = function(amount, fuzziness, alpha) {
-        return p5grain.granulateFuzzify(amount, fuzziness, alpha);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] granulateFuzzify() could not be registered, since it\'s already defined.\nUse p5grain.granulateFuzzify() instead.');
 } /** @end */
 
 // Register textureAnimate()
