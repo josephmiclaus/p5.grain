@@ -6,7 +6,7 @@ p5.grain was also created with [fxhash](https://www.fxhash.xyz) projects in mind
 You can read more in detail about the different techniques to achieve grain in artworks in the article "[All about that grain](https://www.fxhash.xyz/article/all-about-that-grain)" by [Gorilla Sun](https://twitter.com/gorillasu) and [meezwhite](https://twitter.com/meezwhite).
 
 ## Getting started
-Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.min.js` (~8.3 KB) or `p5.grain.core.js` (~3.5 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
+Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.min.js` (~7.7 KB) or `p5.grain.core.js` (~3.1 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
 
 ```html
 <script src="./lib/p5.min.js"></script>
