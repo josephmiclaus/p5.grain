@@ -173,7 +173,7 @@ class P5Grain {
      */
     granulateFuzzify(amount, fuzziness, alpha) {
         /** @internal */
-        this.#validateArguments('granulateFuzzy', arguments);
+        this.#validateArguments('granulateFuzzify', arguments);
         /** @end */
         loadPixels();
         const _amount = round(amount);
