@@ -261,7 +261,7 @@ Loop through the main canvas pixels and call the given callback function on ever
 
 The callback function receives two arguments:
 - `index`: the current pixel index
-- `count`: the total pixels count
+- `total`: the total indexes count
 
 | Property | Type | Description |
 | --- | --- | --- |

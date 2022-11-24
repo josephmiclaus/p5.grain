@@ -157,14 +157,14 @@ class P5Grain {
      * 
      * The callback function receives two arguments:
      * - index: the current pixel index
-     * - count: the total pixels count
+     * - total: the total indexes count
      * 
      * @example
      * <p>Custom granulateSimple implementation:</p>
      * <code>
      *     const amount = 42;
      *     const alpha = false;
-     *     granulateCustom((index, count) => {
+     *     granulateCustom((index, total) => {
      *         const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
      *         pixels[index] = pixels[index] + grainAmount;
      *         pixels[index+1] = pixels[index+1] + grainAmount;
