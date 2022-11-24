@@ -126,7 +126,7 @@ function setup() {
 
 ### Pixel manipulation
 
-This example demonstates granulating the artwork using `granulateCustom(callback)` function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note: example is non-deterministic!*
+This example demonstates granulating the artwork using `tinkerPixels(callback)` function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note: example is non-deterministic!*
 
 ```js
 function setup() {
@@ -139,7 +139,7 @@ function setup() {
     // example: custom granulateSimple implementation
     const amount = 42;
     const alpha = false;
-    granulateCustom((index, total) => {
+    tinkerPixels((index, total) => {
         const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
         pixels[index] = pixels[index] + grainAmount;
         pixels[index+1] = pixels[index+1] + grainAmount;
@@ -218,7 +218,7 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | `setup(config)` | Setup and configure certain p5.grain features. |
 | `granulateSimple(amount, alpha)` | Granulate the main canvas pixels by the given amount. |
 | `granulateChannels(amount, alpha)` | Granulate the main canvas pixels channels by the given amount. |
-| `granulateCustom(callback)` | Granulate the main canvas pixels according to the specified callback function. |
+| `tinkerPixels(callback)` | Granulate the main canvas pixels according to the specified callback function. |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
@@ -255,7 +255,7 @@ This method generates one random value per pixel channel. The random values rang
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
 
-### `granulateCustom(callback)`
+### `tinkerPixels(callback)`
 
 Loop through the main canvas pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given `callback` function.
 
