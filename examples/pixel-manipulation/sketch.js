@@ -20,7 +20,7 @@ function setup() {
     // Custom granulateSimple implementation
     // const amount = 42;
     // const alpha = false;
-    // granulateCustom((index, total) => {
+    // tinkerPixels((index, total) => {
     //     const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
     //     pixels[index] = pixels[index] + grainAmount;
     //     pixels[index+1] = pixels[index+1] + grainAmount;
