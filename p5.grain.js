@@ -164,7 +164,7 @@ class P5Grain {
      * <code>
      *     const amount = 42;
      *     const alpha = false;
-     *     granulateCustom((index, total) => {
+     *     tinkerPixels((index, total) => {
      *         const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
      *         pixels[index] = pixels[index] + grainAmount;
      *         pixels[index+1] = pixels[index+1] + grainAmount;
@@ -175,14 +175,14 @@ class P5Grain {
      *     });
      * </code>
      *
-     * @method granulateCustom
+     * @method tinkerPixels
      * 
      * @param {Function} callback The callback function that should be called 
      *     on every main canvas pixel.
      */
-     granulateCustom(callback) {
+     tinkerPixels(callback) {
         /** @internal */
-        this.#validateArguments('granulateCustom', arguments);
+        this.#validateArguments('tinkerPixels', arguments);
         /** @end */
         loadPixels();
         const d = pixelDensity();
@@ -475,7 +475,7 @@ class P5Grain {
                         throw new Error(`[p5.grain] The optional alpha argument passed to ${method}() must be of type boolean.`);
                     }
                     break;
-                case 'granulateCustom':
+                case 'tinkerPixels':
                     if (typeof args[0] !== 'function') {
                         throw new Error(`[p5.grain] The callback argument passed to ${method}() must be of type function.`);
                     }
@@ -585,15 +585,15 @@ if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
     console.warn('[p5.grain] granulateChannels() could not be registered, since it\'s already defined.\nUse p5grain.granulateChannels() instead.');
 } /** @end */
 
-// Register granulateCustom()
+// Register tinkerPixels()
 /** @internal */
-if (!p5.prototype.hasOwnProperty('granulateCustom')) { /** @end */
-    p5.prototype.granulateCustom = function(callback) {
-        return p5grain.granulateCustom(callback);
+if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
+    p5.prototype.tinkerPixels = function(callback) {
+        return p5grain.tinkerPixels(callback);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] granulateCustom() could not be registered, since it\'s already defined.\nUse p5grain.granulateCustom() instead.');
+    console.warn('[p5.grain] tinkerPixels() could not be registered, since it\'s already defined.\nUse p5grain.tinkerPixels() instead.');
 } /** @end */
 
 // Register textureAnimate()
