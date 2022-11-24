@@ -160,9 +160,9 @@ Determine the scope using the following guidelines in order:
 
 * If `<type>` is *style*, omit the scope.
 * If `<type>` is *build*, `<scope>` should be either *darwin*, *win32* or *linux*
-* If `<type>` is *docs*, `<scope>` should be either the name of the file that has been changed (e.g. *README*), or the name of the function for which the description has been changed (e.g. *granulateCustom*).
+* If `<type>` is *docs*, `<scope>` should be either the name of the file that has been changed (e.g. *README*), or the name of the function for which the description has been changed (e.g. *tinkerPixels*).
 * If `<type>` is *chore*, `<scope>` should be the name of the file (e.g. *package.json* or *.gitignore*)
-* If changes are exclusive to a library function, use that function's name: *setup*, *granulateSimple*, *granulateChannels*, *granulateCustom*, *textureAnimate*, *textureOverlay*, *validateArguments*.
+* If changes are exclusive to a library function, use that function's name: *setup*, *granulateSimple*, *granulateChannels*, *tinkerPixels*, *textureAnimate*, *textureOverlay*, *validateArguments*.
 * If changes are exclusive to a technique or an example, use that technique's or example's name: *pixel-manipulation*, *shader*, *svg-element*, *svg-url-encoded*, *texture-overlay-inside*, *texture-overlay-outside*.
 * Otherwise you may omit the scope.
 
