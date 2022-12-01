@@ -232,4 +232,3 @@ By making a contribution to this project, I certify that:
 * [ ] Add possibility to use shaders
 * [ ] Add npm scripts for Windows
 * [ ] Add npm scripts for Linux
-* [ ] Change examples to use CSS classes instead of IDs
