@@ -224,8 +224,8 @@ By making a contribution to this project, I certify that:
 
 ## Roadmap
 
-* [x] Add possibility for custom `granulate` functions (added November 23, 2022)
-* [ ] Add possibility to apply grain and textures to offscreen graphics
+* [x] Add possibility for custom `granulate` functions (`v0.4.0`)
+* [x] Add possibility to apply grain and textures to offscreen graphics (`v0.5.0`)
 * [ ] Improve pixel manipulation technique performance
 * [ ] Implement JavaScript module syntax
 * [ ] Add possibility to build only specified functions to core
