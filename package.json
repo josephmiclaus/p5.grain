@@ -1,6 +1,6 @@
 {
   "name": "p5.grain",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "p5.grain is a p5.js addon for conveniently adding grain and texture overlays to artworks.",
   "author": "meezwhite",
   "license": "MIT",
