@@ -124,9 +124,7 @@ function setup() {
 }
 ```
 
-### Pixel manipulation
-
-This example demonstates granulating the artwork using `tinkerPixels(callback)` function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note: example is non-deterministic!*
+The next example demonstates granulating the artwork using `tinkerPixels(callback)` pixel-manipulation function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note that the example is non-deterministic!*
 
 ```js
 function setup() {
