@@ -213,14 +213,14 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 
 | Method | Description |
 | --- | --- |
-| `setup(config)` | Setup and configure certain p5.grain features. |
-| `granulateSimple(amount, alpha)` | Granulate the main canvas pixels by the given amount. |
-| `granulateChannels(amount, alpha)` | Granulate the main canvas pixels channels by the given amount. |
-| `tinkerPixels(callback)` | Granulate the main canvas pixels according to the specified callback function. |
+| `setup([config])` | Setup and configure certain p5.grain features. |
+| `granulateSimple(amount, [alpha], [pg])` | Granulate pixels by the given amount. |
+| `granulateChannels(amount, [alpha], [pg])` | Granulate pixels channels by the given amount. |
+| `tinkerPixels(callback, [pg])` | Granulate pixels according to the specified callback function. |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
-### `p5grain.setup(config)`
+### `p5grain.setup([config])`
 
 Setup and configure certain p5grain features.
 
@@ -231,9 +231,9 @@ Setup and configure certain p5grain features.
 | `config.ignoreWarnings` | `Boolean` | (optional) Defines whether warnings should be ignored.<br>*Note: not available in the p5.grain core version.* |
 | `config.ignoreErrors` | `Boolean` | (optional) Defines whether errors should be ignored.<br>*Note: not available in the p5.grain core version.* |
 
-### `granulateSimple(amount, alpha)`
+### `granulateSimple(amount, [alpha], [pg])`
 
-Granulate the main canvas pixels by the given amount.
+Granulate pixels by the given amount.
 
 This method generates one random value per pixel. The random value ranges from `-amount` to `+amount` and is added to every RGB(A) pixel channel.
 
@@ -241,10 +241,11 @@ This method generates one random value per pixel. The random value ranges from `
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.granulateSimple(amount, alpha)`. Only in case `p5.Graphics.granulateSimple` could not be registered, use the alternative syntax `p5grain.granulateSimple(amount, alpha, pg)`.* |
 
-### `granulateChannels(amount, alpha)`
+### `granulateChannels(amount, [alpha], [pg])`
 
-Granulate the main canvas pixels channels by the given amount.
+Granulate pixels channels by the given amount.
 
 This method generates one random value per pixel channel. The random values range from `-amount` to `+amount`. Each random value is added to the respective RGB(A) channel of the pixel.
 
@@ -252,8 +253,9 @@ This method generates one random value per pixel channel. The random values rang
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.granulateChannels(amount, alpha)`. Only in case `p5.Graphics.granulateChannels` could not be registered, use the alternative syntax `p5grain.granulateChannels(amount, alpha, pg)`.* |
 
-### `tinkerPixels(callback)`
+### `tinkerPixels(callback, [pg])`
 
 Loop through the main canvas pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given `callback` function.
 
@@ -264,8 +266,9 @@ The callback function receives two arguments:
 | Property | Type | Description |
 | --- | --- | --- |
 | `callback` | `Function` | The callback function that should be called on every main canvas pixel. |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.tinkerPixels(amount, alpha)`. Only in case `p5.Graphics.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(amount, alpha, pg)`.* |
 
-### `textureOverlay(textureImage, config)`
+### `textureOverlay(textureImage, [config], [pg])`
 
 Blend the given texture image onto the canvas.
 
@@ -278,13 +281,13 @@ The texture is repeated along the horizontal and vertical axes to cover the enti
 | `config.width` | `Number` | (optional) The width the texture image should have. When no width is specified, the width of the texture image is assumed. |
 | `config.height` | `Number` | (optional) The height the texture image should have. When no height is specified, the height of the texture image is assumed. |
 | `config.mode` | `Constant` | (optional) The blend mode that should be used to blend the texture over the canvas. Either `BLEND`, `DARKEST`, `LIGHTEST`, `DIFFERENCE`, `MULTIPLY`, `EXCLUSION`, `SCREEN`, `REPLACE`, `OVERLAY`, `HARD_LIGHT`, `SOFT_LIGHT`, `DODGE`, `BURN`, `ADD` or `NORMAL`. When no mode is specified, the blend mode `MULTIPLY` will be used. |
-| `config.context` | `p5.Graphics` | (optional) The context on which the texture image should be drawn onto. When no context is specified, the main canvas will be used. **Deprecated: Will be removed in favor of `context.textureOverlay(arguments)`.** |
 | `config.reflect` | `Boolean` | (optional) Specifies whether the given texture image should reflect horizontally and vertically, in order to provide seamless continuity. |
 | `config.animate` | `Boolean\| Object` | (optional) Specifies whether the given texture image should be animated. |
 | `config.animate.atFrame` | `Number` | (optional) When animation is activated, the frame at which the texture should be shifted. When `atFrame` isn't specified, the texture is shifted every 2<sup>nd</sup> frame. |
 | `config.animate.amount` | `Number` | (optional) When animation is activated, the maximum amount of pixels by which the texture should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. When no amount is specified, the minimum of the main canvas `width` or `height` is used. |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer onto which the texture image should be drawn.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.textureOverlay(textureImage, config)`. Only in case `p5.Graphics.textureOverlay` could not be registered, use the alternative syntax `p5grain.textureOverlay(textureImage, config, pg)`.* |
 
-### `textureAnimate(textureElement, config)`
+### `textureAnimate(textureElement, [config])`
 
 Animate the given texture element by randomly shifting its background position.
 
