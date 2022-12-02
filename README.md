@@ -301,8 +301,7 @@ Animate the given texture element by randomly shifting its background position.
 ## Limitations
 
 * p5.grain currently only works in [p5's global mode](https://github.com/processing/p5.js/wiki/Global-and-instance-mode).
-* Pixel manipulation technique currently only works on the main canvas pixels.
-* Safari: SVG element technique apparently only works for browser window resolutions with less than 2<sup>20</sup> pixels (e.g. 1024 x 1024 pixels).
+* Safari: SVG element technique only works for browser window resolutions with less than 2<sup>20</sup> pixels (e.g. 1024 x 1024 pixels).
 * Safari: SVG URL-encoded technique is currently unsupported.
 
 ## Contributing
