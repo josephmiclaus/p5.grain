@@ -157,9 +157,8 @@ class P5Grain {
     }
 
     /**
-     * Loop through the main canvas pixels and call the given callback function 
-     * on every pixel. Pixels are manipulated depending on the given callback 
-     * function.
+     * Loop through pixels and call the given callback function on every pixel. 
+     * Pixels are manipulated depending on the given callback function.
      * 
      * Updating pixels can be by-passed with the `shouldUpdate` argument.
      * 
