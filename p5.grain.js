@@ -161,6 +161,8 @@ class P5Grain {
      * on every pixel. Pixels are manipulated depending on the given callback 
      * function.
      * 
+     * Updating pixels can be by-passed with the `shouldUpdate` argument.
+     * 
      * The callback function receives two arguments:
      * - index: the current pixel index
      * - total: the total indexes count
@@ -180,25 +182,43 @@ class P5Grain {
      *         }
      *     });
      * </code>
+     * 
+     * @example
+     * <p>Read-only mode:</p>
+     * <code>
+     *     let minAvg = 255;
+     *     let maxAvg = 0;
+     *     tinkerPixels((index, total) => {
+     *         // determine min, max average pixel values
+     *         const avg = round((pixels[index] + pixels[index+1] + pixels[index+2])/3);
+     *         minAvg = min(minAvg, avg);
+     *         maxAvg = max(maxAvg, avg);
+     *     }, false); // <-- shouldUpdate = false
+     * </code>
      *
      * @method tinkerPixels
      * 
      * @param {Function} callback The callback function that should be called 
-     *     on every main canvas pixel.
+     *     on every pixel.
+     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be
+     *     updated.
      * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
      *     should be manipulated.
      */
-    tinkerPixels(callback, pg) {
+    tinkerPixels(callback, shouldUpdate, pg) {
         /** @internal */
         this.#validateArguments('tinkerPixels', arguments);
         /** @end */
+        shouldUpdate = shouldUpdate !== false;
         pg ? pg.loadPixels() : loadPixels();
         const density = pg ? pg.pixelDensity() : pixelDensity();
         const total = 4 * (width * density) * (height * density);
         for (let i = 0; i < total; i += 4) {
             callback(i, total);
         }
-        pg ? pg.updatePixels() : updatePixels();
+        if (shouldUpdate) {
+            pg ? pg.updatePixels() : updatePixels();
+        }
     }
 
     /**
@@ -494,7 +514,13 @@ class P5Grain {
                     }
                     if (
                         typeof args[1] !== 'undefined'
-                        && ! (args[1] instanceof p5.Graphics)
+                        && typeof args[1] !== 'boolean'
+                    ) {
+                        throw new Error(`[p5.grain] The optional shouldUpdate argument for ${method}() must be an instance of boolean.`);
+                    }
+                    if (
+                        typeof args[2] !== 'undefined'
+                        && ! (args[2] instanceof p5.Graphics)
                     ) {
                         throw new Error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
                     }
@@ -629,8 +655,8 @@ if (!p5.Graphics.prototype.hasOwnProperty('granulateChannels')) { /** @end */
 // Register tinkerPixels()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
-    p5.prototype.tinkerPixels = function(callback) {
-        return p5grain.tinkerPixels(callback);
+    p5.prototype.tinkerPixels = function(callback, shouldUpdate) {
+        return p5grain.tinkerPixels(callback, shouldUpdate);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
@@ -640,12 +666,12 @@ if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
 // Register p5.Graphics.tinkerPixels()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
-    p5.Graphics.prototype.tinkerPixels = function(callback) {
-        return p5grain.tinkerPixels(callback, this);
+    p5.Graphics.prototype.tinkerPixels = function(callback, shouldUpdate) {
+        return p5grain.tinkerPixels(callback, shouldUpdate, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined.\nUse p5grain.tinkerPixels(callback, pg) instead.');
+    console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined.\nUse p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
 } /** @end */
 
 // Register textureAnimate()
