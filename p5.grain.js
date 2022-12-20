@@ -82,7 +82,7 @@ class P5Grain {
     }
 
     /**
-     * Granulate the main canvas pixels by the given amount.
+     * Granulate pixels by the given amount.
      *
      * This method generates one random value per pixel. The random value 
      * ranges from -amount to +amount and is added to every RGB(A) pixel 
