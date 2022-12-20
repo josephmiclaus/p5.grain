@@ -120,7 +120,7 @@ class P5Grain {
     }
 
     /**
-     * Granulate the main canvas pixels channels by the given amount.
+     * Granulate pixels channels by the given amount.
      *
      * This method generates one random value per pixel channel. The random 
      * values range from -amount to +amount. Each random value is added to 
