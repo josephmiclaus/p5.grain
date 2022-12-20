@@ -29,6 +29,16 @@ function setup() {
     //         pixels[index+3] = pixels[index+3] + grainAmount;
     //     }
     // });
+
+    // Read-only mode
+    // let minAvg = 255;
+    // let maxAvg = 0;
+    // tinkerPixels((index, total) => {
+    //     // determine min, max average pixel values
+    //     const avg = round((pixels[index] + pixels[index+1] + pixels[index+2])/3);
+    //     minAvg = min(minAvg, avg);
+    //     maxAvg = max(maxAvg, avg);
+    // }, false); // <-- shouldUpdate = false
 }
 
 function windowResized() {
