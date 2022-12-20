@@ -124,7 +124,7 @@ function setup() {
 }
 ```
 
-The next example demonstates granulating the artwork using `tinkerPixels(callback)` pixel-manipulation function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note that the example is non-deterministic!*
+The next example demonstates granulating the artwork using `tinkerPixels(callback, shouldUpdate)` pixel-manipulation function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note that the example is non-deterministic!*
 
 ```js
 function setup() {
@@ -147,6 +147,19 @@ function setup() {
         }
     });
 }
+```
+
+#### Read-only mode
+If you would simply like to loop through the pixels and read their values without manipulating them, you can set `shouldUpdate` to `false`. This will internally skip `updatePixels()`:
+```js
+let minAvg = 255;
+let maxAvg = 0;
+tinkerPixels((index, total) => {
+    // determine min, max average pixel values
+    const avg = round((pixels[index] + pixels[index+1] + pixels[index+2])/3);
+    minAvg = min(minAvg, avg);
+    maxAvg = max(maxAvg, avg);
+}, false); // <-- shouldUpdate = false
 ```
 
 ### Texture overlay inside canvas
@@ -216,7 +229,7 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | `setup([config])` | Setup and configure certain p5.grain features. |
 | `granulateSimple(amount, [alpha], [pg])` | Granulate pixels by the given amount. |
 | `granulateChannels(amount, [alpha], [pg])` | Granulate pixels channels by the given amount. |
-| `tinkerPixels(callback, [pg])` | Granulate pixels according to the specified callback function. |
+| `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function on every pixel. |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
@@ -255,18 +268,21 @@ This method generates one random value per pixel channel. The random values rang
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
 | `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.granulateChannels(amount, alpha)`. Only in case `p5.Graphics.granulateChannels` could not be registered, use the alternative syntax `p5grain.granulateChannels(amount, alpha, pg)`.* |
 
-### `tinkerPixels(callback, [pg])`
+### `tinkerPixels(callback, [shouldUpdate], [pg])`
 
-Loop through the main canvas pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given `callback` function.
+Loop through pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given callback function.
 
 The callback function receives two arguments:
 - `index`: the current pixel index
 - `total`: the total indexes count
 
+[Read-only mode](#read-only-mode): updating pixels can be by-passed by setting the `shouldUpdate` argument to `false`.
+
 | Property | Type | Description |
 | --- | --- | --- |
-| `callback` | `Function` | The callback function that should be called on every main canvas pixel. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.tinkerPixels(amount, alpha)`. Only in case `p5.Graphics.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(amount, alpha, pg)`.* |
+| `callback` | `Function` | The callback function that should be called on every pixel. |
+| `shouldUpdate` | `Boolean` | (optional) Specifies whether the pixels should be updated. |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.tinkerPixels(callback, shouldUpdate)`. Only in case `p5.Graphics.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(callback, shouldUpdate, pg)`.* |
 
 ### `textureOverlay(textureImage, [config], [pg])`
 
