@@ -312,22 +312,28 @@ class P5Grain {
         // height of the canvas or context
         const _height = isGraphicsBuffer ? pg.height : height;
         // blend mode used to blend the texture over the canvas or context
-        const _mode = config.mode || MULTIPLY;
+        const _mode = config && config.mode ? config.mode : MULTIPLY;
         // should reflect flag
-        const _reflect = config.reflect || false;
+        const _reflect = config && config.reflect ? config.reflect : false;
         // should animate flag
-        const _animate = config.animate || false;
+        const _animate = config && config.animate ? config.animate : false;
         // animate atFrame
-        const _animateAtFrame = config.animate && config.animate.atFrame
-            ? round(config.animate.atFrame) : 2;
+        const _animateAtFrame = (
+            config && config.animate && config.animate.atFrame
+            ? round(config.animate.atFrame) 
+            : 2
+        );
         // animate amount
-        const _animateAmount = config.animate && config.animate.amount 
-            ? round(config.animate.amount) : min(_width, _height);
+        const _animateAmount = (
+            config && config.animate && config.animate.amount
+            ? round(config.animate.amount)
+            : min(_width, _height)
+        );
         // texture width
-        const tW = typeof config.width === 'number' 
+        const tW = config && typeof config.width === 'number' 
             ? config.width : textureImage.width;
         // texture height
-        const tH = typeof config.height === 'number' 
+        const tH = config && typeof config.height === 'number' 
             ? config.height : textureImage.height;
         // animate the texture coordinates
         if (_animate) {
