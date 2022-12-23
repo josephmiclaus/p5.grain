@@ -1,12 +1,12 @@
 /**!
  * p5.grain
  * 
- * @version 0.6.0
+ * @version 0.6.1
  * @license MIT
  * @copyright meezwhite, Gorilla Sun
  */
 class P5Grain {
-    version = '0.6.0';
+    version = '0.6.1';
 
     /** @internal */
     ignoreWarnings = false;
