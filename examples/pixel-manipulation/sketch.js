@@ -1,3 +1,4 @@
+let p5grain = new P5Grain();
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
@@ -12,7 +13,7 @@ function setup() {
     // Granulate artwork
 
     // Simple method
-    granulateSimple(42);
+    p5grain.granulateSimple(42);
 
     // Channels method
     // granulateChannels(42);

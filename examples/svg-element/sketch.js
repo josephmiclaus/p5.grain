@@ -12,6 +12,7 @@ function preload() {
     textureImage = loadImage('./assets/texture.jpg');
 }
 
+let p5grain = new P5Grain();
 function setup() {
     createCanvas(windowWidth, windowHeight);
     // frameRate(30);
@@ -37,7 +38,7 @@ function draw() {
 
     // Animate SVG texture element, currently unsupported!
     if (shouldAnimate) {
-        textureAnimate(textureElement);
+        p5grain.textureAnimate(textureElement);
     }
 }
 
@@ -62,7 +63,7 @@ function keyPressed() {
          * it is an element outside the canvas, we are temporarily drawing a 
          * similar texture image onto the canvas and then saving the output.
          */
-        textureOverlay(textureImage, {
+        p5grain.textureOverlay(textureImage, {
             width: textureWidth,
             height: textureHeight,
         });
