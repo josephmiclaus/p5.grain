@@ -150,7 +150,7 @@ class P5Grain {
         /** @internal */
         this.#validateArguments('granulateChannels', arguments);
         /** @end */
-        const _amount = round(amount);
+        const _amount = this.instanceMode ? this.instanceRef.round(amount) : round(amount);
         const _alpha = alpha || false;
         pg ? pg.loadPixels() : this.instanceMode ? this.instanceRef.loadPixels() : loadPixels();
         const density = pg ? pg.pixelDensity() : this.instanceMode ? this.instanceRef.pixelDensity() : pixelDensity();
