@@ -319,9 +319,9 @@ class P5Grain {
         // flag whether drawing onto an offset graphics buffer
         const isGraphicsBuffer = pg instanceof p5.Graphics;
         // width of the canvas or context
-        const _width = isGraphicsBuffer ? pg.width : (this.instanceMode ? this.instanceRef.width : width);
+        const _width = isGraphicsBuffer ? pg.width : this.instanceMode ? this.instanceRef.width : width;
         // height of the canvas or context
-        const _height = isGraphicsBuffer ? pg.height : height;
+        const _height = isGraphicsBuffer ? pg.height : this.instanceMode ? this.instanceRef.height : height;
         // blend mode used to blend the texture over the canvas or context
         const _mode = config && config.mode ? config.mode : this.instanceMode ? this.instanceRef.MULTIPLY : MULTIPLY;
         // should reflect flag
