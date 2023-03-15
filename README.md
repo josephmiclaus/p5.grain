@@ -237,6 +237,8 @@ p5.grain exposes the following API.
 
 *Note: p5.grain is still in the initial development phase and the API can still change. Always review the release notes.*
 
+The library initializes the global `p5grain` variable to a new `P5Grain` instance. You can directly access the fields and methods below from the `p5grain` variable. The library also attempts to register all p5.grain methods except `setup` with p5.js by adding them to `p5.prototype`. This way, instead of calling, for example, `p5grain.granulateSimple(42)`, you can conveniently call `granulateSimple(42)`, although the former is also possible.
+
 ### Fields
 
 | Field | Type | Description |
