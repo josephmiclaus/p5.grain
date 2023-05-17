@@ -14,9 +14,9 @@
   ],
   "scripts": {
     "build:darwin": "npm run build-min:darwin; npm run build-core:darwin; npm run dist-core:darwin",
-    "build-core:darwin": "mkdir -p dist; sed '/@internal/,/@end/d' p5.grain.js > p5.grain.core.js; minify p5.grain.core.js > dist/p5.grain.core.js; cp LICENSE dist/p5.grain.core.LICENSE.txt; rm p5.grain.core.js",
-    "build-min:darwin": "mkdir -p dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.LICENSE.txt",
-    "dist-core:darwin": "echo examples/*/lib/ | xargs -n 1 cp dist/p5.grain.core.js dist/p5.grain.core.LICENSE.txt"
+    "build-core:darwin": "mkdir -p dist; sed '/@internal/,/@end/d' p5.grain.js > p5.grain.core.js; minify p5.grain.core.js > dist/p5.grain.core.js; cp LICENSE dist/p5.grain.core.js.LICENSE.txt; rm p5.grain.core.js",
+    "build-min:darwin": "mkdir -p dist; minify p5.grain.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.js.LICENSE.txt",
+    "dist-core:darwin": "echo examples/*/lib/ | xargs -n 1 cp dist/p5.grain.core.js dist/p5.grain.core.js.LICENSE.txt"
   },
   "keywords": [
     "javascript",
