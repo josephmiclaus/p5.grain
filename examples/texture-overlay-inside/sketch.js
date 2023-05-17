@@ -7,7 +7,6 @@ function preload() {
     textureImage = loadImage('./assets/texture.jpg');
 }
 
-let p5grain = new P5Grain();
 function setup() {
     createCanvas(windowWidth, windowHeight);
     // frameRate(30);
@@ -32,7 +31,7 @@ function draw() {
     circle(cW, cH, cD);
 
     // Blend over texture image
-    p5grain.textureOverlay(textureImage, {
+    textureOverlay(textureImage, {
         width: tW,
         height: tH,
         animate: shouldAnimate,

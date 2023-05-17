@@ -26,7 +26,6 @@ The first step is to set up p5.grain according to your project's needs in the `s
 Suited for projects that *don't* have to be deterministic, *don't* use the [pixel manipulation](#pixel-manipulation) technique, or *don't* use methods for animating texture overlays.
 
 ```js
-let p5grain = new P5Grain();
 function setup() {
     p5grain.setup();
 }
@@ -37,7 +36,6 @@ function setup() {
 Suited for projects that should be deterministic.
 
 ```js
-let p5grain = new P5Grain();
 function setup() {
     // make Math.random be same as random
     Math.random = random;
@@ -55,7 +53,6 @@ function setup() {
 Suited for fxhash projects.
 
 ```js
-let p5grain = new P5Grain();
 function setup() {
     // make Math.random be same as fxrand
     Math.random = fxrand;
@@ -73,14 +70,13 @@ function setup() {
 
 *Note: Ignoring errors and warnings is not possible when using `p5.grain.core.js`, since errors and warnings are not handled in the core version of p5.grain.*
 
-Initially, p5.grain will attempt to extend p5 core functionality by registering new methods. If a method cannot be registered because the method name is already in use, p5.grain will log a warning with a suggestion of an alternative usage. You can prevent warnings to be logged by passing `ignoreWarnings: true` to the `config` object when setting up p5.grain.
+Initially, p5.grain will attempt to extend p5.js core functionality by registering new methods. If a method cannot be registered because the method name is already in use, p5.grain will log a warning with a suggestion of an alternative usage. You can prevent warnings to be logged by passing `ignoreWarnings: true` to the `config` object when setting up p5.grain.
 
 When using p5.grain methods, the library validates the parameters passed to the respective methods, and error messages are thrown in case of invalid parameters to attract attention during development. You can prevent errors to be thrown by passing `ignoreErrors: true` to the `config` object when setting up p5.grain. 
 
 *Note: If your sketch is final and you've made sure that p5.grain-related errors or warnings cannot occur, we recommend using `p5.grain.core.js` instead of manually ignoring errors and warnings as shown below, since errors and warnings are not handled in the core version of p5.grain.*
 
 ```js
-let p5grain = new P5Grain();
 function setup() {
     // ignore warnings and errors
     p5grain.setup({
@@ -113,7 +109,6 @@ Here are a few examples of a basic implementation for each respective technique.
 ### Pixel manipulation
 
 ```js
-let p5grain = new P5Grain();
 function setup() {
 
     p5grain.setup();
@@ -122,10 +117,10 @@ function setup() {
     // ...
 
     // example: simple method
-    p5grain.granulateSimple(42);
+    granulateSimple(42);
 
     // example: channels method
-    // p5grain.granulateChannels(42);
+    // granulateChannels(42);
 }
 ```
 
@@ -142,8 +137,8 @@ function setup() {
     // example: custom granulateSimple implementation
     const amount = 42;
     const alpha = false;
-    p5grain.tinkerPixels((index, total) => {
-        const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
+    tinkerPixels((index, total) => {
+        const grainAmount = floor(random() * (amount * 2 + 1)) - amount;
         pixels[index] = pixels[index] + grainAmount;
         pixels[index+1] = pixels[index+1] + grainAmount;
         pixels[index+2] = pixels[index+2] + grainAmount;
@@ -159,7 +154,7 @@ If you would simply like to loop through the pixels and read their values withou
 ```js
 let minAvg = 255;
 let maxAvg = 0;
-p5grain.tinkerPixels((index, total) => {
+tinkerPixels((index, total) => {
     // determine min, max average pixel values
     const avg = round((pixels[index] + pixels[index+1] + pixels[index+2])/3);
     minAvg = min(minAvg, avg);
@@ -183,7 +178,7 @@ function setup() {
     // draw your artwork here
     // ...
 
-    p5grain.textureOverlay(textureImage);
+    textureOverlay(textureImage);
 }
 ```
 
@@ -205,17 +200,44 @@ function draw() {
     // draw your artwork here
     // ...
 
-    p5grain.textureOverlay(textureImage, { animate: true });
+    textureOverlay(textureImage, { animate: true });
 }
 ```
 
 For more concrete use cases, please have a look at the provided [examples](./examples).
+
+## Global and instance mode
+
+p5.grain supports both global and instance mode. You can read more about p5.js global and instance mode [here](https://github.com/processing/p5.js/wiki/Global-and-instance-mode).
+
+All examples from above showcase p5.grain usage in p5's global mode.
+
+In order to use p5.grain on a specific p5.js instance, you can pass the respective instance to the `p5grain.setup` method. Since p5.grain methods are registered to `p5.prototype`, you can call registered p5.grain methods directly on your p5.js instance. Here's how to use p5.grain in p5's instance mode:
+
+```js
+let myp5 = new p5((sketch) => {
+    sketch.setup = () => {
+        
+        // configure p5.grain to be used on a specific p5.js instance
+        p5grain.setup({ instance: sketch });
+
+        // draw your artwork here
+        // ...
+
+        // example: simple method
+        sketch.granulateSimple(42);
+    }
+});
+```
+To better understand how p5.grain works in instance mode, please have a look at the provided [example](./examples/instance-mode/).
 
 ## API
 
 p5.grain exposes the following API.
 
 *Note: p5.grain is still in the initial development phase and the API can still change. Always review the release notes.*
+
+The library initializes the global `p5grain` variable to a new `P5Grain` instance. You can directly access the fields and methods below from the `p5grain` variable. The library also attempts to register all p5.grain methods except `setup` with p5.js by adding them to `p5.prototype`. This way, instead of calling, for example, `p5grain.granulateSimple(42)`, you can conveniently call `granulateSimple(42)`, although the former is also possible.
 
 ### Fields
 
@@ -244,10 +266,9 @@ Setup and configure certain p5grain features.
 | --- | --- | --- |
 | `config` | `Object` | (optional) Config object to configure p5grain features. |
 | `config.random` | `function` | (optional) The random function that should be used internally for pixel manipulation and texture animation. |
+| `config.instance` | `Object` | (optional) Reference to a p5.js instance. Read how to use p5.grain with p5.js instance mode [here](#global-and-instance-mode). |
 | `config.ignoreWarnings` | `Boolean` | (optional) Defines whether warnings should be ignored.<br>*Note: not available in the p5.grain core version.* |
 | `config.ignoreErrors` | `Boolean` | (optional) Defines whether errors should be ignored.<br>*Note: not available in the p5.grain core version.* |
-| `config.instanceMode` | `Boolean` | (optional) Defines whether instance mode should be used instead of global mode. Read more [here](https://github.com/processing/p5.js/wiki/Global-and-instance-mode) |
-| `config.instanceRef` | `Object` | (optional) Reference to the instance. Can only be used if instanceMode is true. |
 
 ### `granulateSimple(amount, [alpha], [pg])`
 
@@ -318,47 +339,6 @@ Animate the given texture element by randomly shifting its background position.
 | `config` | `Object` | (optional) Config object to configure the texture animation. |
 | `config.atFrame` | `Number` | (optional) The frame at which the texture should be shifted. When `atFrame` isn't specified, the texture is shifted every 2<sup>nd</sup> frame. |
 | `config.amount` | `Number` | (optional) The maximum amount of pixels by which the texture should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. When no amount is specified, the minimum of the main canvas `width` or `height` is used. |
-
-## Global mode vs Instance mode
-
-`p5.grain` now supports both global mode and instance mode for p5.js. In either case, you will need to create and manage the instance of P5Grain yourself.
-
-In global mode, you can simply create an instance and refer to it where used:
-
-```js
-let p5grain = new P5Grain();
-function setup() {
-
-    p5grain.setup();
-
-    // draw your artwork here
-    // ...
-
-    // example: simple method
-    p5grain.granulateSimple(42);
-}
-```
-
-In instance mode, you can refer to the instance you create _or_ the instance that is saved to the sketch. For example:
-
-```js
-sketch.setup = () => {
-
-    new P5Grain().setup({
-        random: sketch.random,
-        instanceMode: true,
-        instanceRef: sketch,
-     });
-
-    // draw your artwork here
-    // ...
-
-    // example: simple method
-    sketch.p5grain.granulateSimple(42);
-}
-```
-
-| Please note that you will need to pass in `sketch.random` as the random function as well.
 
 ## Limitations
 

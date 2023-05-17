@@ -1,4 +1,3 @@
-let p5grain = new P5Grain();
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
@@ -13,7 +12,7 @@ function setup() {
     // Granulate artwork
 
     // Simple method
-    p5grain.granulateSimple(42);
+    granulateSimple(42);
 
     // Channels method
     // granulateChannels(42);
@@ -22,7 +21,7 @@ function setup() {
     // const amount = 42;
     // const alpha = false;
     // tinkerPixels((index, total) => {
-    //     const grainAmount = Math.floor(random() * (amount * 2 + 1)) - amount;
+    //     const grainAmount = floor(random() * (amount * 2 + 1)) - amount;
     //     pixels[index] = pixels[index] + grainAmount;
     //     pixels[index+1] = pixels[index+1] + grainAmount;
     //     pixels[index+2] = pixels[index+2] + grainAmount;
