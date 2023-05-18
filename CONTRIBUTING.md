@@ -227,6 +227,7 @@ By making a contribution to this project, I certify that:
 * [x] Add possibility for custom `granulate` functions (`v0.4.0`)
 * [x] Add possibility to apply grain and textures to offscreen graphics (`v0.5.0`)
 * [x] Add possibility to by-pass updating pixels when using `tinkerPixels` (`v0.6.0`)
+* [ ] Add support for instance mode
 * [ ] Improve pixel manipulation technique performance
 * [ ] Implement JavaScript module syntax
 * [ ] Add possibility to build only specified functions to core
