@@ -72,17 +72,17 @@ Guidelines:
     git checkout -b <topic-branch-name>
     ```
 5. **Making changes**<br>
-    * You'll want to make changes to `p5.grain.js` and test them against examples inside the `/examples` directory. However, changes you make to `p5.grain.js` won't be immediately available for the examples, as they are "standalone", meaning that they work independently, each using a local `p5.grain.core.js` version inside the `/lib` directory of the respective example. Therefore, you should either:
+    * You'll want to make changes to `p5.grain.js` and test them against examples inside the `/examples` directory. However, changes you make to `p5.grain.js` won't be immediately available for the examples, as they are "standalone", meaning that they work independently, each using a local `p5.grain.min.js` version inside the `/lib` directory of the respective example. Therefore, you should either:
         * temporarily change the `index.html` of the respective example to use `p5.grain.js` or
-        * run the npm build command for your OS to build and distribute a `p5.grain.core.js` version to every example which will include your changes.
+        * run the npm build command for your OS to build and distribute a `p5.grain.min.js` version to every example which will include your changes.
             * macOS: `npm run build:darwin`
             * Windows: currently unavailable, check out [Roadmap](#roadmap)
-    * Encapsulate any code parts (e.g. errors and warnings for development purposes) that should not be part of the core version within `/** @internal */` and `/** @end */` markers. Everything encapsulated between these markers will be removed upon building p5.grain. Here is an example:
+    * Encapsulate any code parts (e.g. errors and warnings for development purposes) that should not be part of the minified version within `/** @internal */` and `/** @end */` markers. Everything encapsulated between these markers will be removed upon building p5.grain. Here is an example:
         ```js
         /** @internal */
-        this.#validateArguments('setup', arguments); // <-- will NOT be part of p5.grain.core.js
+        this.#validateArguments('setup', arguments); // <-- will NOT be part of p5.grain.min.js
         /** @end */
-        this.#myPrivateFunction(); // <-- will be part of p5.grain.core.js
+        this.#myPrivateFunction(); // <-- will be part of p5.grain.min.js
         ```
 6. **Testing and examples**
     * If it makes sense (e.g. you added a new technique), create a standalone example inside the `/examples` directory.
@@ -96,7 +96,7 @@ Guidelines:
     * Update the `README.md` file to reflect your changes accordingly.
 8. **Commit changes**
     * Before commiting your changes:
-        * Run the npm build command for your OS to build and distribute a `p5.grain.core.js` version to every example.
+        * Run the npm build command for your OS to build and distribute a `p5.grain.min.js` version to every example.
             * macOS: `npm run build:darwin`
             * Windows: currently unavailable, check out [Roadmap](#roadmap)
             <br>*NOTE: If your OS is not supported yet, mention this in your Pull Request.*

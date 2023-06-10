@@ -10,7 +10,7 @@ p5.grain was also created with [fxhash](https://www.fxhash.xyz) projects in mind
 You can read more in detail about the different techniques to achieve grain in artworks in the article "[All about that grain](https://www.fxhash.xyz/article/all-about-that-grain)" by [Gorilla Sun](https://twitter.com/gorillasu) and [meezwhite](https://twitter.com/meezwhite).
 
 ## Getting started
-Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.min.js` (~9.5 KB) or `p5.grain.core.js` (~3.5 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
+Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.js` (~39 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
 
 ```html
 <script src="./lib/p5.min.js"></script>
@@ -19,7 +19,7 @@ Download the latest version from [Releases](https://github.com/meezwhite/p5.grai
 <script src="./sketch.js"></script>
 ```
 
-*Note: The minified version `p5.grain.min.js` is primarily meant for development, since it handles errors and warnings. However, we recommend using the even smaller core version `p5.grain.core.js` when your sketch is final and you've made sure that p5.grain-related errors and warnings cannot occur.*
+*Note: The unminified version `p5.grain.js` is primarily meant for development; it handles errors and warnings. However, we recommend using the minified version `p5.grain.min.js` when your sketch is final and you've made sure that p5.grain-related errors and warnings cannot occur.*
 
 ## Usage
 
@@ -72,13 +72,13 @@ function setup() {
 
 ### Ignoring errors and warnings
 
-*Note: Ignoring errors and warnings is not possible when using `p5.grain.core.js`, since errors and warnings are not handled in the core version of p5.grain.*
+*Note: Ignoring errors and warnings is not possible when using `p5.grain.min.js`, since errors and warnings are not handled in the minified version of p5.grain.*
 
 Initially, p5.grain will attempt to extend p5.js core functionality by registering new methods. If a method cannot be registered because the method name is already in use, p5.grain will log a warning with a suggestion of an alternative usage. You can prevent warnings to be logged by passing `ignoreWarnings: true` to the `config` object when setting up p5.grain.
 
 When using p5.grain methods, the library validates the parameters passed to the respective methods, and error messages are thrown in case of invalid parameters to attract attention during development. You can prevent errors to be thrown by passing `ignoreErrors: true` to the `config` object when setting up p5.grain. 
 
-*Note: If your sketch is final and you've made sure that p5.grain-related errors or warnings cannot occur, we recommend using `p5.grain.core.js` instead of manually ignoring errors and warnings as shown below, since errors and warnings are not handled in the core version of p5.grain.*
+*Note: If your sketch is final and you've made sure that p5.grain-related errors or warnings cannot occur, we recommend using `p5.grain.min.js` instead of manually ignoring errors and warnings as shown below, since errors and warnings are not handled in the minified version of p5.grain.*
 
 ```js
 function setup() {
@@ -248,8 +248,8 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | Field | Type | Description |
 | --- | --- | --- |
 | `version` | `String` | Holds the p5.grain version in [SemVer](https://semver.org) format. |
-| `ignoreWarnings` | `Boolean` | Defines whether warnings should be ignored. (default: `false`)<br>*Note: not available in the p5.grain core version.* |
-| `ignoreErrors` | `Boolean` | Defines whether errors should be ignored. (default: `false`)<br>*Note: not available in the p5.grain core version.* |
+| `ignoreWarnings` | `Boolean` | Defines whether warnings should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
+| `ignoreErrors` | `Boolean` | Defines whether errors should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
 
 ### Methods
 
@@ -271,8 +271,8 @@ Setup and configure certain p5grain features.
 | `config` | `Object` | (optional) Config object to configure p5grain features. |
 | `config.random` | `function` | (optional) The random function that should be used internally for pixel manipulation and texture animation. |
 | `config.instance` | `Object` | (optional) Reference to a p5.js instance. Read how to use p5.grain with p5.js instance mode [here](#global-and-instance-mode). |
-| `config.ignoreWarnings` | `Boolean` | (optional) Defines whether warnings should be ignored.<br>*Note: not available in the p5.grain core version.* |
-| `config.ignoreErrors` | `Boolean` | (optional) Defines whether errors should be ignored.<br>*Note: not available in the p5.grain core version.* |
+| `config.ignoreWarnings` | `Boolean` | (optional) Defines whether warnings should be ignored.<br>*Note: not available in the p5.grain minified version.* |
+| `config.ignoreErrors` | `Boolean` | (optional) Defines whether errors should be ignored.<br>*Note: not available in the p5.grain minified version.* |
 
 ### `applyMonochromaticGrain(amount, [alpha], [pg])`
 
