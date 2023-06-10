@@ -94,6 +94,7 @@ class P5Grain {
      * channel.
      *
      * @method granulateSimple
+     * @deprecated since v0.7.0, use applyMonochromaticGrain instead
      * 
      * @param {Number} amount The amount of granularity that should be applied.
      * @param {Boolean} [alpha] Specifies whether the alpha channel should 
