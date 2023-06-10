@@ -31,7 +31,7 @@ const reusableSketch = (sketch) => {
         //     }
         // });
 
-        // Read-only mode
+        // Using tinkerPixels in read-only mode
         // let minAvg = 255;
         // let maxAvg = 0;
         // sketch.tinkerPixels((index, total) => {
