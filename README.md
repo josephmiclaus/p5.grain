@@ -302,7 +302,7 @@ This method generates one random value per pixel channel. The random values rang
 
 Loop through pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given callback function.
 
-The callback function receives two arguments:
+The callback function exposes two arguments:
 - `index`: the current pixel index
 - `total`: the total indexes count
 

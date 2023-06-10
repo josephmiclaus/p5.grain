@@ -171,7 +171,7 @@ class P5Grain {
      * 
      * Updating pixels can be by-passed with the `shouldUpdate` argument.
      * 
-     * The callback function receives two arguments:
+     * The callback function exposes two arguments:
      * - index: the current pixel index
      * - total: the total indexes count
      * 
