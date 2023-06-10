@@ -11,13 +11,13 @@ function setup() {
 
     // Granulate artwork
 
-    // Simple method
-    granulateSimple(42);
+    // Apply monochromatic grain
+    applyMonochromaticGrain(42);
 
-    // Channels method
-    // granulateChannels(42);
+    // Apply chromatic grain
+    // applyChromaticGrain(42);
 
-    // Custom granulateSimple implementation
+    // Custom applyMonochromaticGrain implementation
     // const amount = 42;
     // const alpha = false;
     // tinkerPixels((index, total) => {
