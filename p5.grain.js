@@ -794,7 +794,7 @@ if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] tinkerPixels() could not be registered, since it\'s already defined.\nUse p5grain.tinkerPixels() instead.');
+    console.warn('[p5.grain] tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels() instead.');
 } /** @end */
 
 // Register p5.Graphics.tinkerPixels()
@@ -805,7 +805,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined.\nUse p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
+    console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
 } /** @end */
 
 // Register textureAnimate()
@@ -816,7 +816,7 @@ if (!p5.prototype.hasOwnProperty('textureAnimate')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined.\nUse p5grain.textureAnimate() instead.');
+    console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined. Use p5grain.textureAnimate() instead.');
 } /** @end */
 
 // Register textureOverlay()
@@ -827,7 +827,7 @@ if (!p5.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] textureOverlay() could not be registered, since it\'s already defined.\nUse p5grain.textureOverlay() instead.');
+    console.warn('[p5.grain] textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay() instead.');
 } /** @end */
 
 // Register p5.Graphics.textureOverlay()
@@ -838,5 +838,5 @@ if (!p5.Graphics.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.textureOverlay() could not be registered, since it\'s already defined.\nUse p5grain.textureOverlay(textureImage, config, pg) instead.');
+    console.warn('[p5.grain] p5.Graphics.textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay(textureImage, config, pg) instead.');
 } /** @end */
