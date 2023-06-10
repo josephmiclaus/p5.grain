@@ -230,7 +230,7 @@ By making a contribution to this project, I certify that:
 * [x] Add support for instance mode (`v0.7.0`)
 * [ ] Improve pixel manipulation technique performance
 * [ ] Implement JavaScript module syntax
-* [ ] Add possibility to build only specified functions to core
+* [ ] Add possibility to build only specified functions to the minified version
 * [ ] Add possibility to use shaders
 * [ ] Add npm scripts for Windows
 * [ ] Add npm scripts for Linux
