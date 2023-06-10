@@ -30,7 +30,7 @@ function setup() {
     //     }
     // });
 
-    // Read-only mode
+    // Using tinkerPixels in read-only mode
     // let minAvg = 255;
     // let maxAvg = 0;
     // tinkerPixels((index, total) => {
