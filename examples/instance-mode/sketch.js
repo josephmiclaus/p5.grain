@@ -12,13 +12,13 @@ const reusableSketch = (sketch) => {
 
         // Granulate artwork
 
-        // Simple method
-        sketch.granulateSimple(42);
+        // Apply monochromatic grain
+        sketch.applyMonochromaticGrain(42);
 
-        // Channels method
-        // sketch.granulateChannels(42);
+        // Apply chromatic grain
+        // sketch.applyChromaticGrain(42);
 
-        // Custom granulateSimple implementation
+        // Custom applyMonochromaticGrain implementation
         // const amount = 42;
         // const alpha = false;
         // sketch.tinkerPixels((index, total) => {
@@ -71,14 +71,14 @@ let myp5_2 = new p5((sketch) => {
         sketch.circle(sketch.width/2, sketch.height/2, sketch.min(sketch.width, sketch.height)/2);
 
         // apply monochromatic grain to sketch's canvas
-        sketch.granulateSimple(42);
+        sketch.applyMonochromaticGrain(42);
 
         // create a separate graphics buffer and draw a small rectangle to it
         const pg = sketch.createGraphics(140, 140);
         pg.background(250, 100, 100);
 
         // apply colored grain to the sketch's canvas
-        pg.granulateChannels(42);
+        pg.applyChromaticGrain(42);
 
         // draw the graphics buffer to the sketch's canvas
         sketch.image(pg, sketch.width/2-70, sketch.height/2-70);
