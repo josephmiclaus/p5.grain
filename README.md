@@ -120,15 +120,15 @@ function setup() {
     // draw your artwork here
     // ...
 
-    // example: simple method
-    granulateSimple(42);
+    // example: apply monochromatic grain
+    applyMonochromaticGrain(42);
 
-    // example: channels method
-    // granulateChannels(42);
+    // example: apply chromatic grain
+    // applyChromaticGrain(42);
 }
 ```
 
-The next example demonstates granulating the artwork using `tinkerPixels(callback, shouldUpdate)` pixel-manipulation function. In this case the `callback` function is an implementation of the `granulateSimple` function. *Note that the example is non-deterministic!*
+The next example demonstates granulating the artwork using `tinkerPixels(callback, shouldUpdate)` pixel-manipulation function. In this case the `callback` function is an implementation of the `applyMonochromaticGrain` function. *Note that the example is non-deterministic!*
 
 ```js
 function setup() {
@@ -138,7 +138,7 @@ function setup() {
     // draw your artwork here
     // ...
 
-    // example: custom granulateSimple implementation
+    // example: custom applyMonochromaticGrain implementation
     const amount = 42;
     const alpha = false;
     tinkerPixels((index, total) => {
@@ -228,8 +228,8 @@ let myp5 = new p5((sketch) => {
         // draw your artwork here
         // ...
 
-        // example: simple method
-        sketch.granulateSimple(42);
+        // example: apply monochromatic grain
+        sketch.applyMonochromaticGrain(42);
     }
 });
 ```
@@ -241,7 +241,7 @@ p5.grain exposes the following API.
 
 *Note: p5.grain is still in the initial development phase and the API can still change. Always review the release notes.*
 
-The library initializes the global `p5grain` variable to a new `P5Grain` instance. You can directly access the fields and methods below from the `p5grain` variable. The library also attempts to register all p5.grain methods except `setup` with p5.js by adding them to `p5.prototype`. This way, instead of calling, for example, `p5grain.granulateSimple(42)`, you can conveniently call `granulateSimple(42)`, although the former is also possible.
+The library initializes the global `p5grain` variable to a new `P5Grain` instance. You can directly access the fields and methods below from the `p5grain` variable. The library also attempts to register all p5.grain methods except `setup` with p5.js by adding them to `p5.prototype`. This way, instead of calling, for example, `p5grain.applyMonochromaticGrain(42)`, you can conveniently call `applyMonochromaticGrain(42)`, although the former is also possible.
 
 ### Fields
 
@@ -256,8 +256,8 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | Method | Description |
 | --- | --- |
 | `setup([config])` | Setup and configure certain p5.grain features. |
-| `granulateSimple(amount, [alpha], [pg])` | Granulate pixels by the given amount. |
-| `granulateChannels(amount, [alpha], [pg])` | Granulate pixels channels by the given amount. |
+| `applyMonochromaticGrain(amount, [alpha], [pg])` | Apply monochromatic grain. |
+| `applyChromaticGrain(amount, [alpha], [pg])` | Apply chromatic grain. |
 | `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function on every pixel. |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
@@ -274,9 +274,9 @@ Setup and configure certain p5grain features.
 | `config.ignoreWarnings` | `Boolean` | (optional) Defines whether warnings should be ignored.<br>*Note: not available in the p5.grain core version.* |
 | `config.ignoreErrors` | `Boolean` | (optional) Defines whether errors should be ignored.<br>*Note: not available in the p5.grain core version.* |
 
-### `granulateSimple(amount, [alpha], [pg])`
+### `applyMonochromaticGrain(amount, [alpha], [pg])`
 
-Granulate pixels by the given amount.
+Apply monochromatic grain.
 
 This method generates one random value per pixel. The random value ranges from `-amount` to `+amount` and is added to every RGB(A) pixel channel.
 
@@ -284,11 +284,11 @@ This method generates one random value per pixel. The random value ranges from `
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.granulateSimple(amount, alpha)`. Only in case `p5.Graphics.granulateSimple` could not be registered, use the alternative syntax `p5grain.granulateSimple(amount, alpha, pg)`.* |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, pg)`.* |
 
-### `granulateChannels(amount, [alpha], [pg])`
+### `applyChromaticGrain(amount, [alpha], [pg])`
 
-Granulate pixels channels by the given amount.
+Apply chromatic grain.
 
 This method generates one random value per pixel channel. The random values range from `-amount` to `+amount`. Each random value is added to the respective RGB(A) channel of the pixel.
 
@@ -296,7 +296,7 @@ This method generates one random value per pixel channel. The random values rang
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.granulateChannels(amount, alpha)`. Only in case `p5.Graphics.granulateChannels` could not be registered, use the alternative syntax `p5grain.granulateChannels(amount, alpha, pg)`.* |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyChromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, pg)`.* |
 
 ### `tinkerPixels(callback, [shouldUpdate], [pg])`
 
