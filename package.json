@@ -37,6 +37,6 @@
   },
   "homepage": "https://github.com/meezwhite/p5.grain",
   "devDependencies": {
-    "minify": "^9.1.0"
+    "minify": "^9.2.0"
   }
 }
