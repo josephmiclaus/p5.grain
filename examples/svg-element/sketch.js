@@ -1,4 +1,4 @@
-const shouldAnimate = true;
+let shouldAnimate = false;
 let textureElement;
 let cW, cH, cD;
 
@@ -30,15 +30,19 @@ function setup() {
 
 function draw() {
     // Simulate drawing artwork
-    background(255);
-    noStroke();
-    fill(100, 100, 240);
-    circle(cW, cH, cD);
+    drawArtwork();
 
     // Animate SVG texture element, currently unsupported!
     if (shouldAnimate) {
         textureAnimate(textureElement);
     }
+}
+
+function drawArtwork() {
+    background(255);
+    noStroke();
+    fill(100, 100, 240);
+    circle(cW, cH, cD);
 }
 
 function windowResized() {
@@ -47,11 +51,8 @@ function windowResized() {
 }
 
 function mousePressed() {
-    noLoop();
-}
-
-function mouseReleased() {
-    if (shouldAnimate) loop();
+    shouldAnimate = ! shouldAnimate;
+    shouldAnimate ? loop() : noLoop();
 }
 
 function keyPressed() {

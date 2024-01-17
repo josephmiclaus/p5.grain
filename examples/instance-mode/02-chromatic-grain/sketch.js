@@ -5,53 +5,22 @@ const reusableSketch = (sketch) => {
         p5grain.setup({ instance: sketch });
 
         // Simulate drawing artwork
+        sketch.drawArtwork();
+
+        // Apply chromatic grain
+        sketch.applyChromaticGrain(42);
+    }
+
+    sketch.drawArtwork = () => {
         sketch.background(255);
         sketch.noStroke();
         sketch.fill(100, 100, 240);
         sketch.circle(sketch.width/2, sketch.height/2, sketch.min(sketch.width, sketch.height)/2);
-
-        // Granulate artwork
-
-        // Apply monochromatic grain
-        sketch.applyMonochromaticGrain(42);
-
-        // Apply chromatic grain
-        // sketch.applyChromaticGrain(42);
-
-        // Custom applyMonochromaticGrain implementation
-        // const amount = 42;
-        // const alpha = false;
-        // sketch.tinkerPixels((index, total) => {
-        //     const grainAmount = sketch.floor(sketch.random() * (amount * 2 + 1)) - amount;
-        //     sketch.pixels[index] = sketch.pixels[index] + grainAmount;
-        //     sketch.pixels[index+1] = sketch.pixels[index+1] + grainAmount;
-        //     sketch.pixels[index+2] = sketch.pixels[index+2] + grainAmount;
-        //     if (alpha) {
-        //         sketch.pixels[index+3] = sketch.pixels[index+3] + grainAmount;
-        //     }
-        // });
-
-        // Using tinkerPixels in read-only mode
-        // let minAvg = 255;
-        // let maxAvg = 0;
-        // sketch.tinkerPixels((index, total) => {
-        //     // determine min, max average pixel values
-        //     const avg = sketch.round((sketch.pixels[index] + sketch.pixels[index+1] + sketch.pixels[index+2])/3);
-        //     minAvg = sketch.min(minAvg, avg);
-        //     maxAvg = sketch.max(maxAvg, avg);
-        // }, false); // <-- shouldUpdate = false
     }
 
     sketch.windowResized = () => {
         sketch.setup();
     }
-
-    // sketch.keyPressed = () => {
-    //     // Press [S] to save frame
-    //     if (sketch.keyCode === 83) {
-    //         sketch.saveCanvas('export.png');
-    //     }
-    // }
 };
 // first instance
 let myp5_1 = new p5(reusableSketch);
@@ -87,13 +56,6 @@ let myp5_2 = new p5((sketch) => {
     sketch.windowResized = () => {
         sketch.setup();
     }
-
-    // sketch.keyPressed = () => {
-    //     // Press [S] to save frame
-    //     if (sketch.keyCode === 83) {
-    //         sketch.saveCanvas('export.png');
-    //     }
-    // }
 });
 
 // third instance

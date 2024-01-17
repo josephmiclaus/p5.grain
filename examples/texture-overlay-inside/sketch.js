@@ -1,4 +1,4 @@
-const shouldAnimate = true;
+let shouldAnimate = false;
 let textureImage;
 let tW, tH;
 let cW, cH, cD;
@@ -44,11 +44,8 @@ function windowResized() {
 }
 
 function mousePressed() {
-    noLoop();
-}
-
-function mouseReleased() {
-    if (shouldAnimate) loop();
+    shouldAnimate = ! shouldAnimate;
+    shouldAnimate ? loop() : noLoop();
 }
 
 function keyPressed() {
