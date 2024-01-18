@@ -7,22 +7,16 @@ const reusableSketch = (sketch) => {
         // Simulate drawing artwork
         sketch.drawArtwork();
 
-        /**
-         * Using `tinkerPixels` in read-only mode
-         * 
-         * Pixel manipulation will not be carried out, when using read-only mode.
-         * 
-         * If you are not changing pixels inside the tinkerPixels callback,
-         * you should pass `false` as the `shouldUpdate` argument, which
-         * will skip calling the `updatePixels` function.
-         */
-        let minAvg = 255;
-        let maxAvg = 0;
+        // Use `loopPixels` to loop over pixels without changing them.
+        sketch.loopPixels((index, total) => {
+            // read-only mode
+            // ...
+        });
+
+        // Alternatively, you can use `tinkerPixels` in read-only mode.
         sketch.tinkerPixels((index, total) => {
-            // determine min, max average pixel values
-            const avg = sketch.round((sketch.pixels[index] + sketch.pixels[index+1] + sketch.pixels[index+2])/3);
-            minAvg = sketch.min(minAvg, avg);
-            maxAvg = sketch.max(maxAvg, avg);
+            // read-only mode
+            // ...
         }, false); // <-- shouldUpdate = false
     }
 
