@@ -152,15 +152,19 @@ function setup() {
 ```
 
 #### Read-only mode
-If you would simply like to loop through the pixels and read their values without manipulating them, you can set `shouldUpdate` to `false`. This will internally skip `updatePixels()`:
+If you only want to loop over pixels without changing them, you can use `loopPixels`:
 ```js
-let minAvg = 255;
-let maxAvg = 0;
+loopPixels((index, total) => {
+    // read-only mode
+    // ...
+});
+```
+
+Alternatively, you can use `tinkerPixels` in read-only mode:
+```js
 tinkerPixels((index, total) => {
-    // determine min, max average pixel values
-    const avg = round((pixels[index] + pixels[index+1] + pixels[index+2])/3);
-    minAvg = min(minAvg, avg);
-    maxAvg = max(maxAvg, avg);
+    // read-only mode
+    // ...
 }, false); // <-- shouldUpdate = false
 ```
 
@@ -256,7 +260,8 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | `setup([config])` | Setup and configure certain p5.grain features. |
 | `applyMonochromaticGrain(amount, [alpha], [pg])` | Apply monochromatic grain. |
 | `applyChromaticGrain(amount, [alpha], [pg])` | Apply chromatic grain. |
-| `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function on every pixel. |
+| `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function for every pixel. Pixels are manipulated depending on the given callback function, unless read-only mode is enabled. |
+| `loopPixels(callback, [pg])` | Loop through pixels and call the given callback function for every pixel without updating them (read-only mode). |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
@@ -298,7 +303,7 @@ This method generates one random value per pixel channel. The random values rang
 
 ### `tinkerPixels(callback, [shouldUpdate], [pg])`
 
-Loop through pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given callback function.
+Loop through pixels and call the given callback function on every pixel. Pixels are manipulated depending on the given callback function, unless read-only mode is enabled.
 
 The callback function exposes two arguments:
 - `index`: the current pixel index
@@ -311,6 +316,21 @@ The callback function exposes two arguments:
 | `callback` | `Function` | The callback function that should be called on every pixel. |
 | `shouldUpdate` | `Boolean` | (optional) Specifies whether the pixels should be updated. |
 | `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.tinkerPixels(callback, shouldUpdate)`. Only in case `p5.Graphics.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(callback, shouldUpdate, pg)`.* |
+
+### `loopPixels(callback, [pg])`
+
+Loop through pixels and call the given callback function for every pixel without updating them ([read-only mode](#read-only-mode)).
+
+In contrast to the `tinkerPixels` function, no pixel manipulations are performed with `loopPixels`. In other words `loopPixels` has the same effect as using `tinkerPixels` in [read-only mode](#read-only-mode).
+
+The callback function exposes two arguments:
+- `index`: the current pixel index
+- `total`: the total indexes count
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `callback` | `Function` | The callback function that should be called on every pixel. |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.loopPixels(callback)`. Only in case `p5.Graphics.loopPixels` could not be registered, use the alternative syntax `p5grain.loopPixels(callback, pg)`.* |
 
 ### `textureOverlay(textureImage, [config], [pg])`
 
