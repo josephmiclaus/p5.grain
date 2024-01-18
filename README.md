@@ -96,7 +96,7 @@ Depending on how your artwork is created and whether you want to animate texture
 
 The best way to get you started with a technique is to check out the provided standalone [examples](./examples). There is an example for each technique currently supported by the library.
 
-Go to standalone example:
+Go to the standalone examples:
 * [Pixel manipulation](./examples/pixel-manipulation)
 * Texture overlay
   * [Inside canvas](./examples/texture-overlay-inside) (texture animation supported)
@@ -104,7 +104,6 @@ Go to standalone example:
 * SVG filter
   * [SVG element](./examples/svg-element) (texture animation supported; [limited compatibility in Safari](#limitations))
   * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported; [doesn't work in Safari](#limitations))
-* Shader (soon)
 
 Here are a few examples of a basic implementation for each respective technique. *Note: the examples below are non-deterministic.*
 
@@ -235,7 +234,7 @@ let myp5 = new p5((sketch) => {
     }
 });
 ```
-To better understand how p5.grain works in instance mode, please have a look at the provided [example](./examples/instance-mode/).
+To better understand how p5.grain works in instance mode, please have a look at the provided [examples](./examples/instance-mode/).
 
 ## API
 
