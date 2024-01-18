@@ -12,6 +12,7 @@ class P5Grain {
     /** @internal */
     ignoreWarnings = false;
     ignoreErrors = false;
+    #overrideMethodArgument;
     /** @end */
 
     #random;
@@ -104,7 +105,10 @@ class P5Grain {
      *     should be manipulated.
      */
     granulateSimple(amount, alpha, pg) {
+        /** @internal */
         console.warn('[p5.grain] granulateSimple() is deprecated and will be removed in the future. Use applyMonochromaticGrain() instead.');
+        this.#overrideMethodArgument = 'granulateSimple';
+        /** @end */
         this.applyMonochromaticGrain(amount, alpha, pg);
     }
 
@@ -166,7 +170,10 @@ class P5Grain {
      *     should be manipulated.
      */
     granulateChannels(amount, alpha, pg) {
+        /** @internal */
         console.warn('[p5.grain] granulateChannels() is deprecated and will be removed in the future. Use applyChromaticGrain() instead.');
+        this.#overrideMethodArgument = 'granulateChannels';
+        /** @end */
         this.applyChromaticGrain(amount, alpha, pg);
     }
 
@@ -560,6 +567,10 @@ class P5Grain {
      */
     #validateArguments(method, args) {
         if (!this.ignoreErrors) {
+            if (typeof this.#overrideMethodArgument === 'string') {
+                method = this.#overrideMethodArgument;
+                this.#overrideMethodArgument = undefined;
+            }
             switch (method) {
                 case 'setup':
                     if (
