@@ -39,14 +39,14 @@ let myp5_2 = new p5((sketch) => {
         sketch.fill(100, 100, 240);
         sketch.circle(sketch.width/2, sketch.height/2, sketch.min(sketch.width, sketch.height)/2);
 
-        // apply monochromatic grain to sketch's canvas
-        sketch.applyMonochromaticGrain(42);
+        // apply colored grain to sketch's canvas
+        sketch.applyChromaticGrain(42);
 
         // create a separate graphics buffer and draw a small rectangle to it
         const pg = sketch.createGraphics(140, 140);
         pg.background(250, 100, 100);
 
-        // apply colored grain to the sketch's canvas
+        // apply colored grain to the graphics buffer
         pg.applyChromaticGrain(42);
 
         // draw the graphics buffer to the sketch's canvas
