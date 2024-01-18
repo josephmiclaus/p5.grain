@@ -24,6 +24,8 @@ function drawArtwork() {
     noStroke();
     fill(100, 100, 240);
     circle(width/2, height/2, min(width, height)/2);
+    textSize(28);
+    text('read-only mode', 14, 36);
 }
 
 function windowResized() {

@@ -30,15 +30,21 @@ function setup() {
 
 function draw() {
     // Simulate drawing artwork
-    background(255);
-    noStroke();
-    fill(100, 100, 240);
-    circle(cW, cH, cD);
+    drawArtwork();
 
     // Animate texture element
     if (shouldAnimate) {
         textureAnimate(textureElement);
     }
+}
+
+function drawArtwork() {
+    background(255);
+    noStroke();
+    fill(100, 100, 240);
+    circle(cW, cH, cD);
+    textSize(28);
+    text('click to toggle animation', 14, 36);
 }
 
 function windowResized() {

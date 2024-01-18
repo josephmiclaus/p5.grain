@@ -25,10 +25,7 @@ function setup() {
 
 function draw() {
     // Simulate drawing artwork
-    background(255);
-    noStroke();
-    fill(100, 100, 240);
-    circle(cW, cH, cD);
+    drawArtwork();
 
     // Blend over texture image
     textureOverlay(textureImage, {
@@ -36,6 +33,15 @@ function draw() {
         height: tH,
         animate: shouldAnimate,
     });
+}
+
+function drawArtwork() {
+    background(255);
+    noStroke();
+    fill(100, 100, 240);
+    circle(cW, cH, cD);
+    textSize(28);
+    text('click to toggle animation', 14, 36);
 }
 
 function windowResized() {
