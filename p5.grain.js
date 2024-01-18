@@ -218,13 +218,15 @@ class P5Grain {
 
     /**
      * Loop through pixels and call the given callback function on every pixel. 
-     * Pixels are manipulated depending on the given callback function.
-     * 
-     * Updating pixels can be by-passed with the `shouldUpdate` argument.
+     * Pixels are manipulated depending on the given callback function, unless 
+     * read-only mode is enabled.
      * 
      * The callback function exposes two arguments:
      * - index: the current pixel index
      * - total: the total indexes count
+     * 
+     * Read-only mode: updating pixels can be by-passed by setting the 
+     * `shouldUpdate` argument to `false`.
      * 
      * @example
      * <p>Custom applyMonochromaticGrain implementation:</p>
@@ -245,13 +247,9 @@ class P5Grain {
      * @example
      * <p>Read-only mode:</p>
      * <code>
-     *     let minAvg = 255;
-     *     let maxAvg = 0;
      *     tinkerPixels((index, total) => {
-     *         // determine min, max average pixel values
-     *         const avg = round((pixels[index] + pixels[index+1] + pixels[index+2])/3);
-     *         minAvg = min(minAvg, avg);
-     *         maxAvg = max(maxAvg, avg);
+     *         // read-only mode
+     *         // ...
      *     }, false); // <-- shouldUpdate = false
      * </code>
      *
@@ -259,10 +257,10 @@ class P5Grain {
      * 
      * @param {Function} callback The callback function that should be called 
      *     on every pixel.
-     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be
+     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be 
      *     updated.
      * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
+     *     should be looped.
      */
     tinkerPixels(callback, shouldUpdate, pg) {
         /** @internal */
