@@ -281,6 +281,40 @@ class P5Grain {
     }
 
     /**
+     * Loop through pixels and call the given callback function for every pixel 
+     * without updating them (read-only mode).
+     * 
+     * In contrast to the `tinkerPixels` function, no pixel manipulations are 
+     * performed with `loopPixels`. In other words `loopPixels` has the same 
+     * effect as using `tinkerPixels` in read-only mode.
+     * 
+     * The callback function exposes two arguments:
+     * - index: the current pixel index
+     * - total: the total indexes count
+     * 
+     * @example
+     * <code>
+     *     loopPixels((index, total) => {
+     *         // read-only mode
+     *         // ...
+     *     });
+     * </code>
+     *
+     * @method loopPixels
+     * 
+     * @param {Function} callback The callback function that should be called 
+     *     on every pixel.
+     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
+     *     should be looped.
+     */
+    loopPixels(callback, pg) {
+        /** @internal */
+        this.#overrideMethodArgument = 'loopPixels';
+        /** @end */
+        this.tinkerPixels(callback, false, pg);
+    }
+
+    /**
      * Animate the given texture element by randomly shifting its background 
      * position.
      * 
@@ -834,6 +868,28 @@ if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
+} /** @end */
+
+// Register loopPixels()
+/** @internal */
+if (!p5.prototype.hasOwnProperty('loopPixels')) { /** @end */
+    p5.prototype.loopPixels = function(callback, shouldUpdate) {
+        return p5grain.loopPixels(callback, shouldUpdate);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels() instead.');
+} /** @end */
+
+// Register p5.Graphics.loopPixels()
+/** @internal */
+if (!p5.Graphics.prototype.hasOwnProperty('loopPixels')) { /** @end */
+    p5.Graphics.prototype.loopPixels = function(callback, shouldUpdate) {
+        return p5grain.loopPixels(callback, shouldUpdate, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] p5.Graphics.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, pg) instead.');
 } /** @end */
 
 // Register textureAnimate()
