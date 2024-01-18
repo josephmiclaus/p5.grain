@@ -1,5 +1,3 @@
-> ⚠️ **Important:** This README.md pertains to the **development version** of the library, which may include **unfinished or untested features**. You might be looking for the [README.md of the latest stable release](https://github.com/meezwhite/p5.grain/tree/v0.6.1).
-
 # 🌾 p5.grain
 p5.grain is a [p5.js](https://github.com/processing/p5.js) addon for conveniently applying grain and texture overlays to artworks.
 
