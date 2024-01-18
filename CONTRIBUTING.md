@@ -80,7 +80,7 @@ Guidelines:
     * Encapsulate any code parts (e.g. errors and warnings for development purposes) that should not be part of the minified version within `/** @internal */` and `/** @end */` markers. Everything encapsulated between these markers will be removed upon building p5.grain. Here is an example:
         ```js
         /** @internal */
-        this.#validateArguments('setup', arguments); // <-- will NOT be part of p5.grain.min.js
+        if (!this.#validateArguments('setup', arguments)) return; // <-- will NOT be part of p5.grain.min.js
         /** @end */
         this.#myPrivateFunction(); // <-- will be part of p5.grain.min.js
         ```
@@ -162,7 +162,7 @@ Determine the scope using the following guidelines in order:
 * If `<type>` is *build*, `<scope>` should be either *darwin*, *win32* or *linux*
 * If `<type>` is *docs*, `<scope>` should be either the name of the file that has been changed (e.g. *README*), or the name of the function for which the description has been changed (e.g. *tinkerPixels*).
 * If `<type>` is *chore*, `<scope>` should be the name of the file (e.g. *package.json* or *.gitignore*)
-* If changes are exclusive to a library function, use that function's name: *setup*, *applyMonochromaticGrain*, *applyChromaticGrain*, *tinkerPixels*, *textureAnimate*, *textureOverlay*, *validateArguments*.
+* If changes are exclusive to a library function, use that function's name: *setup*, *applyMonochromaticGrain*, *applyChromaticGrain*, *tinkerPixels*, *loopPixels*, *textureAnimate*, *textureOverlay*, *validateArguments*.
 * If changes are exclusive to a technique or an example, use that technique's or example's name: *pixel-manipulation*, *shader*, *svg-element*, *svg-url-encoded*, *texture-overlay-inside*, *texture-overlay-outside*.
 * Otherwise you may omit the scope.
 
@@ -227,10 +227,11 @@ By making a contribution to this project, I certify that:
 * [x] Add possibility for custom `granulate` functions (`v0.4.0`)
 * [x] Add possibility to apply grain and textures to offscreen graphics (`v0.5.0`)
 * [x] Add possibility to by-pass updating pixels when using `tinkerPixels` (`v0.6.0`)
+* [x] Add alias `loopPixels` for read-only mode (`v0.7.0`)
 * [x] Add support for instance mode (`v0.7.0`)
 * [ ] Improve pixel manipulation technique performance
 * [ ] Implement JavaScript module syntax
-* [ ] Add possibility to build only specified functions to the minified version
 * [ ] Add possibility to use shaders
+* [ ] Add possibility to build only specified functions to the minified version
 * [ ] Add npm scripts for Windows
 * [ ] Add npm scripts for Linux
