@@ -80,7 +80,7 @@ class P5Grain {
             /** @internal */
             if (typeof config.ignoreWarnings === 'boolean') {
                 this.ignoreWarnings = config.ignoreWarnings;
-            } 
+            }
             if (typeof config.ignoreErrors === 'boolean') {
                 this.ignoreErrors = config.ignoreErrors;
             } /** @end */
@@ -143,10 +143,10 @@ class P5Grain {
         for (let i = 0; i < total; i += 4) {
             const grainAmount = this.#randomIntInclusive(-_amount, _amount);
             _pixels[i] = _pixels[i] + grainAmount;
-            _pixels[i+1] = _pixels[i+1] + grainAmount;
-            _pixels[i+2] = _pixels[i+2] + grainAmount;
+            _pixels[i + 1] = _pixels[i + 1] + grainAmount;
+            _pixels[i + 2] = _pixels[i + 2] + grainAmount;
             if (_alpha) {
-                _pixels[i+3] = _pixels[i+3] + grainAmount;
+                _pixels[i + 3] = _pixels[i + 3] + grainAmount;
             }
         }
         pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
@@ -207,10 +207,10 @@ class P5Grain {
         const _pixels = pg ? pg.pixels : (this.instance ? this.instance.pixels : pixels);
         for (let i = 0; i < total; i += 4) {
             _pixels[i] = _pixels[i] + this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i+1] = _pixels[i+1] + this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i+2] = _pixels[i+2] + this.#randomIntInclusive(-_amount, _amount);
+            _pixels[i + 1] = _pixels[i + 1] + this.#randomIntInclusive(-_amount, _amount);
+            _pixels[i + 2] = _pixels[i + 2] + this.#randomIntInclusive(-_amount, _amount);
             if (_alpha) {
-                _pixels[i+3] = _pixels[i+3] + this.#randomIntInclusive(-_amount, _amount);
+                _pixels[i + 3] = _pixels[i + 3] + this.#randomIntInclusive(-_amount, _amount);
             }
         }
         pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
@@ -337,15 +337,15 @@ class P5Grain {
         /** @internal */
         if (!this.#validateArguments('textureAnimate', arguments)) return;
         /** @end */
-        const _atFrame = config && config.atFrame 
+        const _atFrame = config && config.atFrame
             ? (this.instance ? this.instance.round(config.atFrame) : round(config.atFrame)) : 2;
         this.#textureAnimate.frameCount += 1;
         if (this.#textureAnimate.frameCount >= _atFrame) {
-            const _amount = config && config.amount 
+            const _amount = config && config.amount
                 ? (this.instance ? this.instance.round(config.amount) : round(config.amount))
                 : (this.instance ? this.instance.min(this.instance.width, this.instance.height) : min(width, height));
-            const bgPosX_rand = this.#random()*_amount;
-            const bgPosY_rand = this.#random()*_amount;
+            const bgPosX_rand = this.#random() * _amount;
+            const bgPosY_rand = this.#random() * _amount;
             const bgPosX = this.instance ? this.instance.floor(bgPosX_rand) : floor(bgPosX_rand);
             const bgPosY = this.instance ? this.instance.floor(bgPosY_rand) : floor(bgPosY_rand);
             const bgPos = `${bgPosX}px ${bgPosY}px`;
@@ -418,14 +418,14 @@ class P5Grain {
         // animate atFrame
         const _animateAtFrame = (
             config && config.animate && config.animate.atFrame
-            ? (this.instance ? this.instance.round(config.animate.atFrame) : round(config.animate.atFrame))
-            : 2
+                ? (this.instance ? this.instance.round(config.animate.atFrame) : round(config.animate.atFrame))
+                : 2
         );
         // animate amount
         const _animateAmount = (
             config && config.animate && config.animate.amount
-            ? (this.instance ? this.instance.round(config.animate.amount) : round(config.animate.amount))
-            : (this.instance ? this.instance.min(_width, _height) : min(_width, _height))
+                ? (this.instance ? this.instance.round(config.animate.amount) : round(config.animate.amount))
+                : (this.instance ? this.instance.min(_width, _height) : min(_width, _height))
         );
         // texture width
         const tW = config && typeof config.width === 'number' ? config.width : textureImage.width;
@@ -435,8 +435,8 @@ class P5Grain {
         if (_animate) {
             this.#textureOverlay.frameCount += 1;
             if (this.#textureOverlay.frameCount >= _animateAtFrame) {
-                const tX_rand = this.#random()*_animateAmount;
-                const tY_rand = this.#random()*_animateAmount;
+                const tX_rand = this.#random() * _animateAmount;
+                const tY_rand = this.#random() * _animateAmount;
                 this.#textureOverlay.tX_anchor = (
                     this.instance ? -this.instance.floor(tX_rand) : -floor(tX_rand)
                 );
@@ -467,10 +467,10 @@ class P5Grain {
                         if (tColFirst) {
                             if (!isGraphicsBuffer) {
                                 this.instance
-                                ? this.instance.image(textureImage, tX, tY, tW,  tH) 
-                                : image(textureImage, tX, tY, tW,  tH);
+                                    ? this.instance.image(textureImage, tX, tY, tW, tH)
+                                    : image(textureImage, tX, tY, tW, tH);
                             } else {
-                                pg.image(textureImage, tX, tY, tW,  tH);
+                                pg.image(textureImage, tX, tY, tW, tH);
                             }
                         } else { // tColSecond
                             if (!isGraphicsBuffer) {
@@ -522,9 +522,9 @@ class P5Grain {
                     }
                 } else {
                     if (!isGraphicsBuffer) {
-                        this.instance 
-                        ? this.instance.image(textureImage, tX, tY, tW, tH)
-                        : image(textureImage, tX, tY, tW, tH);
+                        this.instance
+                            ? this.instance.image(textureImage, tX, tY, tW, tH)
+                            : image(textureImage, tX, tY, tW, tH);
                     } else {
                         pg.image(textureImage, tX, tY, tW, tH);
                     }
@@ -542,9 +542,9 @@ class P5Grain {
             tRowFirst = !tRowFirst;
         }
         // reset blend mode
-        pg 
-        ? pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
-        : (this.instance ? this.instance.blendMode(this.instance.BLEND) : blendMode(BLEND));
+        pg
+            ? pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
+            : (this.instance ? this.instance.blendMode(this.instance.BLEND) : blendMode(BLEND));
         // reset context
         if (isGraphicsBuffer) {
             pg.reset();
@@ -653,7 +653,7 @@ class P5Grain {
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && ! (args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics)
                     ) {
                         return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
                     }
@@ -671,14 +671,14 @@ class P5Grain {
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && ! (args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics)
                     ) {
                         return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
                     }
                     break;
                 case 'textureAnimate':
                     if (
-                        ! ( 
+                        !(
                             args[0] instanceof HTMLElement
                             || args[0] instanceof SVGElement
                             || args[0] instanceof p5.Element
@@ -745,7 +745,7 @@ class P5Grain {
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && ! (args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics)
                     ) {
                         return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
                     }
@@ -763,7 +763,7 @@ const p5grain = new P5Grain();
 // Register deprecated granulateSimple()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('granulateSimple')) { /** @end */
-    p5.prototype.granulateSimple = function(amount, alpha) {
+    p5.prototype.granulateSimple = function (amount, alpha) {
         return p5grain.granulateSimple(amount, alpha);
     };
 /** @internal */
@@ -774,7 +774,7 @@ if (!p5.prototype.hasOwnProperty('granulateSimple')) { /** @end */
 // Register deprecated p5.Graphics.granulateSimple()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('granulateSimple')) { /** @end */
-    p5.Graphics.prototype.granulateSimple = function(amount, alpha) {
+    p5.Graphics.prototype.granulateSimple = function (amount, alpha) {
         return p5grain.granulateSimple(amount, alpha, this);
     };
 /** @internal */
@@ -785,7 +785,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('granulateSimple')) { /** @end */
 // Register deprecated granulateChannels()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
-    p5.prototype.granulateChannels = function(amount, alpha) {
+    p5.prototype.granulateChannels = function (amount, alpha) {
         return p5grain.granulateChannels(amount, alpha);
     };
 /** @internal */
@@ -796,7 +796,7 @@ if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
 // Register deprecated p5.Graphics.granulateChannels()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('granulateChannels')) { /** @end */
-    p5.Graphics.prototype.granulateChannels = function(amount, alpha) {
+    p5.Graphics.prototype.granulateChannels = function (amount, alpha) {
         return p5grain.granulateChannels(amount, alpha, this);
     };
 /** @internal */
@@ -807,7 +807,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('granulateChannels')) { /** @end */
 // Register applyMonochromaticGrain()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.prototype.applyMonochromaticGrain = function(amount, alpha) {
+    p5.prototype.applyMonochromaticGrain = function (amount, alpha) {
         return p5grain.applyMonochromaticGrain(amount, alpha);
     };
 /** @internal */
@@ -818,7 +818,7 @@ if (!p5.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
 // Register p5.Graphics.applyMonochromaticGrain()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.Graphics.prototype.applyMonochromaticGrain = function(amount, alpha) {
+    p5.Graphics.prototype.applyMonochromaticGrain = function (amount, alpha) {
         return p5grain.applyMonochromaticGrain(amount, alpha, this);
     };
 /** @internal */
@@ -829,7 +829,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end
 // Register applyChromaticGrain()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.prototype.applyChromaticGrain = function(amount, alpha) {
+    p5.prototype.applyChromaticGrain = function (amount, alpha) {
         return p5grain.applyChromaticGrain(amount, alpha);
     };
 /** @internal */
@@ -840,7 +840,7 @@ if (!p5.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
 // Register p5.Graphics.applyChromaticGrain()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.Graphics.prototype.applyChromaticGrain = function(amount, alpha) {
+    p5.Graphics.prototype.applyChromaticGrain = function (amount, alpha) {
         return p5grain.applyChromaticGrain(amount, alpha, this);
     };
 /** @internal */
@@ -851,7 +851,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
 // Register tinkerPixels()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
-    p5.prototype.tinkerPixels = function(callback, shouldUpdate) {
+    p5.prototype.tinkerPixels = function (callback, shouldUpdate) {
         return p5grain.tinkerPixels(callback, shouldUpdate);
     };
 /** @internal */
@@ -862,7 +862,7 @@ if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
 // Register p5.Graphics.tinkerPixels()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
-    p5.Graphics.prototype.tinkerPixels = function(callback, shouldUpdate) {
+    p5.Graphics.prototype.tinkerPixels = function (callback, shouldUpdate) {
         return p5grain.tinkerPixels(callback, shouldUpdate, this);
     };
 /** @internal */
@@ -873,7 +873,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
 // Register loopPixels()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('loopPixels')) { /** @end */
-    p5.prototype.loopPixels = function(callback, shouldUpdate) {
+    p5.prototype.loopPixels = function (callback, shouldUpdate) {
         return p5grain.loopPixels(callback, shouldUpdate);
     };
 /** @internal */
@@ -884,7 +884,7 @@ if (!p5.prototype.hasOwnProperty('loopPixels')) { /** @end */
 // Register p5.Graphics.loopPixels()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('loopPixels')) { /** @end */
-    p5.Graphics.prototype.loopPixels = function(callback, shouldUpdate) {
+    p5.Graphics.prototype.loopPixels = function (callback, shouldUpdate) {
         return p5grain.loopPixels(callback, shouldUpdate, this);
     };
 /** @internal */
@@ -895,7 +895,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('loopPixels')) { /** @end */
 // Register textureAnimate()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('textureAnimate')) { /** @end */
-    p5.prototype.textureAnimate = function(textureElement, config) {
+    p5.prototype.textureAnimate = function (textureElement, config) {
         return p5grain.textureAnimate(textureElement, config);
     };
 /** @internal */
@@ -906,7 +906,7 @@ if (!p5.prototype.hasOwnProperty('textureAnimate')) { /** @end */
 // Register textureOverlay()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('textureOverlay')) { /** @end */
-    p5.prototype.textureOverlay = function(textureImage, config) {
+    p5.prototype.textureOverlay = function (textureImage, config) {
         return p5grain.textureOverlay(textureImage, config);
     };
 /** @internal */
@@ -917,7 +917,7 @@ if (!p5.prototype.hasOwnProperty('textureOverlay')) { /** @end */
 // Register p5.Graphics.textureOverlay()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('textureOverlay')) { /** @end */
-    p5.Graphics.prototype.textureOverlay = function(textureImage, config) {
+    p5.Graphics.prototype.textureOverlay = function (textureImage, config) {
         return p5grain.textureOverlay(textureImage, config, this);
     };
 /** @internal */
