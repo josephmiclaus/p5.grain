@@ -12,7 +12,7 @@ Although p5.grain can already be used for p5.js sketches in production, it's sti
 * [Coding Guidelines](#coding-guidelines)
 * [Commit Message Guidelines](#commit-message-guidelines)
 * [Licensing](#licensing)
-* [Roadmap](#roadmap)
+* [History & Roadmap](#history_and_roadmap)
 
 ## Code of Conduct
 
@@ -222,13 +222,16 @@ By making a contribution to this project, I certify that:
     this project or the open source license(s) involved.
 ```
 
-## Roadmap
+<a id="history_and_roadmap"></a>
+
+## History & Roadmap
 
 * [x] Add possibility for custom `granulate` functions (`v0.4.0`)
 * [x] Add possibility to apply grain and textures to offscreen graphics (`v0.5.0`)
 * [x] Add possibility to by-pass updating pixels when using `tinkerPixels` (`v0.6.0`)
 * [x] Add alias `loopPixels` for read-only mode (`v0.7.0`)
 * [x] Add support for instance mode (`v0.7.0`)
+* [x] Add support for `p5.Image` (`v0.8.0`)
 * [ ] Improve pixel manipulation technique performance
 * [ ] Implement JavaScript module syntax
 * [ ] Add possibility to use shaders
