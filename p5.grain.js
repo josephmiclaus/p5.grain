@@ -1,12 +1,12 @@
 /**!
  * p5.grain
  * 
- * @version 0.7.0
+ * @version 0.8.0
  * @license MIT
  * @copyright meezwhite, Gorilla Sun
  */
 class P5Grain {
-    version = '0.7.0';
+    version = '0.8.0';
 
     instance;
     /** @internal */
