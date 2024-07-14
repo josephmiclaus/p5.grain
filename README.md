@@ -1,9 +1,35 @@
+<a id="top"></a>
+
 # 🌾 p5.grain
-p5.grain is a [p5.js](https://github.com/processing/p5.js) addon for conveniently applying grain and texture overlays to artworks.
+p5.grain is a [p5.js](https://github.com/processing/p5.js) addon for conveniently applying film grain, seamless texture overlays, and manipulate pixels to achieve nostalgic and artistic effects in p5.js sketches and artworks.
 
-p5.grain was also created with [fxhash](https://www.fxhash.xyz) projects in mind that use the deterministic `fxrand` random function.
+Ideal for deterministic generative art, p5.grain ensures consistent film grain effects with each reload. It's perfect for platforms like [fxhash](https://www.fxhash.xyz) that utilize the `fxrand` / `$fx.rand` random function.
 
-You can read more in detail about the different techniques to achieve grain in artworks in the article "[All about that grain](https://www.fxhash.xyz/article/all-about-that-grain)" by [Gorilla Sun](https://twitter.com/gorillasu) and [meezwhite](https://twitter.com/meezwhite).
+
+The initial release of the library was accompanied by the article "[All about that grain](https://www.fxhash.xyz/article/all-about-that-grain)" co-authored by by [Gorilla Sun](https://x.com/gorillasu) and [meezwhite](https://x.com/meezwhite). Since then, p5.grain has been regularly updated to further enhance its functionality, performance and ease of use.
+
+
+<a id="table_of_contents"></a>
+
+## Table of Contents
+
+* [Getting started](#getting_started)
+* [Which file should I embed?](#which_file)
+* [Usage](#usage)
+* [Ignoring errors and warnings](#ignoring_errors_and_warnings)
+* [Techniques](#techniques)
+    * [Pixel manipulation](#pixel_manipulation)
+        * [Read-only mode](#read_only_mode)
+    * [Texture overlay inside canvas](#texture_overlay_inside_canvas)
+    * [Texture overlay inside canvas with texture animation](#texture_overlay_inside_canvas_with_texture_animation)
+* [Global and instance mode](#global_and_instance_mode)
+* [API](#api)
+* [Limitations](#limitations)
+* [Contributing](#contributing)
+* [License](#license)
+
+
+<a id="getting_started"></a>
 
 ## Getting started
 Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.js` (~42 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
@@ -15,7 +41,24 @@ Download the latest version from [Releases](https://github.com/meezwhite/p5.grai
 <script src="./sketch.js"></script>
 ```
 
-*Note: The unminified version `p5.grain.js` is primarily meant for development; it handles errors and warnings. However, we recommend using the minified version `p5.grain.min.js` when your sketch is final and you've made sure that p5.grain-related errors and warnings cannot occur.*
+[Go to top ⬆](#top)
+
+
+<a id="which_file"></a>
+
+## Which file should I embed?
+
+| file              | size    | purpose     | errors & warnings       |
+| ----------------- | ------- | ----------- | ----------------------- |
+| `p5.grain.js`     | ~ 40 KB | development | Yes (can be turned off) |
+| `p5.grain.min.js` | ~ 6 KB  | production  | No                      |
+
+*Note: The unminified version `p5.grain.js` is primarily meant for development. It handles errors and warnings, and therefore has a larger file size. However, it's recommended to use the minified version `p5.grain.min.js` when your sketch is final and you've made sure that p5.grain-related errors and warnings cannot occur.*
+
+[Go to top ⬆](#top)
+
+
+<a id="usage"></a>
 
 ## Usage
 
@@ -66,7 +109,12 @@ function setup() {
 }
 ```
 
-### Ignoring errors and warnings
+*Note: You can also use `$fx.rand` instead of `fxrand` for consistency across your code.*
+
+
+<a id="ignoring_errors_and_warnings"></a>
+
+## Ignoring errors and warnings
 
 *Note: Ignoring errors and warnings is not possible when using `p5.grain.min.js`, since errors and warnings are not handled in the minified version of p5.grain.*
 
@@ -86,6 +134,11 @@ function setup() {
 }
 ```
 
+[Go to top ⬆](#top)
+
+
+<a id="techniques"></a>
+
 ## Techniques
 
 p5.grain currently supports the techniques: pixel manipulation, texture overlay and SVG filter. WebGL shader technique is coming soon.
@@ -104,6 +157,9 @@ Go to the standalone examples:
   * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported; [doesn't work in Safari](#limitations))
 
 Here are a few examples of a basic implementation for each respective technique. *Note: the examples below are non-deterministic.*
+
+
+<a id="pixel_manipulation"></a>
 
 ### Pixel manipulation
 
@@ -148,7 +204,10 @@ function setup() {
 }
 ```
 
+<a id="read_only_mode"></a>
+
 #### Read-only mode
+
 If you only want to loop over pixels without changing them, you can use `loopPixels`:
 ```js
 loopPixels((index, total) => {
@@ -164,6 +223,11 @@ tinkerPixels((index, total) => {
     // ...
 }, false); // <-- shouldUpdate = false
 ```
+
+[Go to top ⬆](#top)
+
+
+<a id="texture_overlay_inside_canvas"></a>
 
 ### Texture overlay inside canvas
 
@@ -184,6 +248,11 @@ function setup() {
     textureOverlay(textureImage);
 }
 ```
+
+[Go to top ⬆](#top)
+
+
+<a id="texture_overlay_inside_canvas_with_texture_animation"></a>
 
 ### Texture overlay inside canvas with texture animation
 
@@ -209,6 +278,11 @@ function draw() {
 
 For more concrete use cases, please have a look at the provided [examples](./examples).
 
+[Go to top ⬆](#top)
+
+
+<a id="global_and_instance_mode"></a>
+
 ## Global and instance mode
 
 p5.grain supports both global and instance mode. You can read more about p5.js global and instance mode [here](https://github.com/processing/p5.js/wiki/Global-and-instance-mode).
@@ -233,6 +307,11 @@ let myp5 = new p5((sketch) => {
 });
 ```
 To better understand how p5.grain works in instance mode, please have a look at the provided [examples](./examples/instance-mode/).
+
+[Go to top ⬆](#top)
+
+
+<a id="api"></a>
 
 ## API
 
@@ -262,6 +341,9 @@ The library initializes the global `p5grain` variable to a new `P5Grain` instanc
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. |
 | `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
+[Go to top ⬆](#top)
+
+
 ### `p5grain.setup([config])`
 
 Setup and configure certain p5grain features.
@@ -274,6 +356,9 @@ Setup and configure certain p5grain features.
 | `config.ignoreWarnings` | `Boolean` | (optional) Defines whether warnings should be ignored.<br>*Note: not available in the p5.grain minified version.* |
 | `config.ignoreErrors` | `Boolean` | (optional) Defines whether errors should be ignored.<br>*Note: not available in the p5.grain minified version.* |
 
+[Go to top ⬆](#top)
+
+
 ### `applyMonochromaticGrain(amount, [alpha], [pg])`
 
 Apply monochromatic grain.
@@ -284,7 +369,10 @@ This method generates one random value per pixel. The random value ranges from `
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, pg)`.* |
+| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer or image whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Image.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, img)`.* |
+
+[Go to top ⬆](#top)
+
 
 ### `applyChromaticGrain(amount, [alpha], [pg])`
 
@@ -296,7 +384,10 @@ This method generates one random value per pixel channel. The random values rang
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
 | `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. When not specified the alpha channel will not be modified. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyChromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, pg)`.* |
+| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyChromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyChromaticGrain(amount, alpha)`. Only in case `p5.Image.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, img)`.* |
+
+[Go to top ⬆](#top)
+
 
 ### `tinkerPixels(callback, [shouldUpdate], [pg])`
 
@@ -312,7 +403,10 @@ The callback function exposes two arguments:
 | --- | --- | --- |
 | `callback` | `Function` | The callback function that should be called on every pixel. |
 | `shouldUpdate` | `Boolean` | (optional) Specifies whether the pixels should be updated. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.tinkerPixels(callback, shouldUpdate)`. Only in case `p5.Graphics.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(callback, shouldUpdate, pg)`.* |
+| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.tinkerPixels(callback, shouldUpdate)`. Only in case `p5.Graphics.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(callback, shouldUpdate, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.tinkerPixels(callback, shouldUpdate)`. Only in case `p5.Image.tinkerPixels` could not be registered, use the alternative syntax `p5grain.tinkerPixels(callback, shouldUpdate, img)`.* |
+
+[Go to top ⬆](#top)
+
 
 ### `loopPixels(callback, [pg])`
 
@@ -327,7 +421,10 @@ The callback function exposes two arguments:
 | Property | Type | Description |
 | --- | --- | --- |
 | `callback` | `Function` | The callback function that should be called on every pixel. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.loopPixels(callback)`. Only in case `p5.Graphics.loopPixels` could not be registered, use the alternative syntax `p5grain.loopPixels(callback, pg)`.* |
+| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.loopPixels(callback)`. Only in case `p5.Graphics.loopPixels` could not be registered, use the alternative syntax `p5grain.loopPixels(callback, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.loopPixels(callback)`. Only in case `p5.Image.loopPixels` could not be registered, use the alternative syntax `p5grain.loopPixels(callback, img)`.* |
+
+[Go to top ⬆](#top)
+
 
 ### `textureOverlay(textureImage, [config], [pg])`
 
@@ -346,7 +443,10 @@ The texture is repeated along the horizontal and vertical axes to cover the enti
 | `config.animate` | `Boolean\| Object` | (optional) Specifies whether the given texture image should be animated. |
 | `config.animate.atFrame` | `Number` | (optional) When animation is activated, the frame at which the texture should be shifted. When `atFrame` isn't specified, the texture is shifted every 2<sup>nd</sup> frame. |
 | `config.animate.amount` | `Number` | (optional) When animation is activated, the maximum amount of pixels by which the texture should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. When no amount is specified, the minimum of the main canvas `width` or `height` is used. |
-| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer onto which the texture image should be drawn.<br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.textureOverlay(textureImage, config)`. Only in case `p5.Graphics.textureOverlay` could not be registered, use the alternative syntax `p5grain.textureOverlay(textureImage, config, pg)`.* |
+| `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer onto which the texture image should be drawn.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.textureOverlay(textureImage, config)`. Only in case `p5.Graphics.textureOverlay` could not be registered, use the alternative syntax `p5grain.textureOverlay(textureImage, config, pg)`.* |
+
+[Go to top ⬆](#top)
+
 
 ### `textureAnimate(textureElement, [config])`
 
@@ -359,14 +459,25 @@ Animate the given texture element by randomly shifting its background position.
 | `config.atFrame` | `Number` | (optional) The frame at which the texture should be shifted. When `atFrame` isn't specified, the texture is shifted every 2<sup>nd</sup> frame. |
 | `config.amount` | `Number` | (optional) The maximum amount of pixels by which the texture should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. When no amount is specified, the minimum of the main canvas `width` or `height` is used. |
 
+[Go to top ⬆](#top)
+
+
+<a id="limitations"></a>
+
 ## Limitations
 
 * Safari: SVG element technique only works for browser window resolutions with less than 2<sup>20</sup> pixels (e.g. 1024 x 1024 pixels).
 * Safari: SVG URL-encoded technique is currently unsupported.
 
+
+<a id="contributing"></a>
+
 ## Contributing
 
 Are you considering contributing to p5.grain? Check out our [contributing guidelines](./CONTRIBUTING.md).
+
+
+<a id="license"></a>
 
 ## License
 
