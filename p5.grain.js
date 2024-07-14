@@ -88,31 +88,6 @@ class P5Grain {
     }
 
     /**
-     * Granulate pixels by the given amount.
-     *
-     * This method generates one random value per pixel. The random value 
-     * ranges from -amount to +amount and is added to every RGB(A) pixel 
-     * channel.
-     *
-     * @method granulateSimple
-     * @deprecated since v0.7.0, use applyMonochromaticGrain instead
-     * 
-     * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
-     */
-    granulateSimple(amount, alpha, pg) {
-        /** @internal */
-        console.warn('[p5.grain] granulateSimple() is deprecated and will be removed in the future. Use applyMonochromaticGrain() instead.');
-        this.#overrideMethodArgument = 'granulateSimple';
-        /** @end */
-        this.applyMonochromaticGrain(amount, alpha, pg);
-    }
-
-    /**
      * Apply monochromatic grain.
      *
      * This method generates one random value per pixel. The random value 
@@ -150,31 +125,6 @@ class P5Grain {
             }
         }
         pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
-    }
-
-    /**
-     * Granulate pixels channels by the given amount.
-     *
-     * This method generates one random value per pixel channel. The random 
-     * values range from -amount to +amount. Each random value is added to 
-     * the respective RGB(A) channel of the pixel.
-     *
-     * @method granulateChannels
-     * @deprecated since v0.7.0, use applyChromaticGrain instead
-     * 
-     * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
-     */
-    granulateChannels(amount, alpha, pg) {
-        /** @internal */
-        console.warn('[p5.grain] granulateChannels() is deprecated and will be removed in the future. Use applyChromaticGrain() instead.');
-        this.#overrideMethodArgument = 'granulateChannels';
-        /** @end */
-        this.applyChromaticGrain(amount, alpha, pg);
     }
 
     /**
@@ -638,9 +588,7 @@ class P5Grain {
                         }
                     }
                     break;
-                case 'granulateSimple':
                 case 'applyMonochromaticGrain':
-                case 'granulateChannels':
                 case 'applyChromaticGrain':
                     if (typeof args[0] !== 'number') {
                         return this.#error(`[p5.grain] The amount argument passed to ${method}() must be of type number.`);
@@ -759,50 +707,6 @@ class P5Grain {
 }
 
 const p5grain = new P5Grain();
-
-// Register deprecated granulateSimple()
-/** @internal */
-if (!p5.prototype.hasOwnProperty('granulateSimple')) { /** @end */
-    p5.prototype.granulateSimple = function (amount, alpha) {
-        return p5grain.granulateSimple(amount, alpha);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] granulateSimple() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain() instead.');
-} /** @end */
-
-// Register deprecated p5.Graphics.granulateSimple()
-/** @internal */
-if (!p5.Graphics.prototype.hasOwnProperty('granulateSimple')) { /** @end */
-    p5.Graphics.prototype.granulateSimple = function (amount, alpha) {
-        return p5grain.granulateSimple(amount, alpha, this);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.granulateSimple() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
-} /** @end */
-
-// Register deprecated granulateChannels()
-/** @internal */
-if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
-    p5.prototype.granulateChannels = function (amount, alpha) {
-        return p5grain.granulateChannels(amount, alpha);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] granulateChannels() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain() instead.');
-} /** @end */
-
-// Register deprecated p5.Graphics.granulateChannels()
-/** @internal */
-if (!p5.Graphics.prototype.hasOwnProperty('granulateChannels')) { /** @end */
-    p5.Graphics.prototype.granulateChannels = function (amount, alpha) {
-        return p5grain.granulateChannels(amount, alpha, this);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.granulateChannels() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
-} /** @end */
 
 // Register applyMonochromaticGrain()
 /** @internal */
