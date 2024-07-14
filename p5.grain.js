@@ -209,8 +209,8 @@ class P5Grain {
      *     on every pixel.
      * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be 
      *     updated.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be looped.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
+     *     image whose pixels should be looped.
      */
     tinkerPixels(callback, shouldUpdate, pg) {
         /** @internal */
@@ -619,9 +619,9 @@ class P5Grain {
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && !(args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics || args[2] instanceof p5.Image)
                     ) {
-                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
+                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics or p5.Image.`);
                     }
                     break;
                 case 'textureAnimate':
@@ -794,6 +794,17 @@ if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
+} /** @end */
+
+// Register p5.Image.tinkerPixels()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
+    p5.Image.prototype.tinkerPixels = function (callback, shouldUpdate) {
+        return p5grain.tinkerPixels(callback, shouldUpdate, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] p5.Image.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, img) instead.');
 } /** @end */
 
 // Register loopPixels()
