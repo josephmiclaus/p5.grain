@@ -140,8 +140,8 @@ class P5Grain {
      * @param {Boolean} [alpha] Specifies whether the alpha channel should 
      *     also be modified. When not specified the alpha channel will
      *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
+     *     image whose pixels should be manipulated.
      */
     applyChromaticGrain(amount, alpha, pg) {
         /** @internal */
@@ -761,6 +761,17 @@ if (!p5.Graphics.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
+} /** @end */
+
+// Register p5.Image.applyChromaticGrain()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
+    p5.Image.prototype.applyChromaticGrain = function (amount, alpha) {
+        return p5grain.applyChromaticGrain(amount, alpha, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] p5.Image.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, img) instead.');
 } /** @end */
 
 // Register tinkerPixels()
