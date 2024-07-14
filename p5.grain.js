@@ -254,8 +254,8 @@ class P5Grain {
      * 
      * @param {Function} callback The callback function that should be called 
      *     on every pixel.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be looped.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
+     *     image whose pixels should be looped.
      */
     loopPixels(callback, pg) {
         /** @internal */
@@ -827,6 +827,17 @@ if (!p5.Graphics.prototype.hasOwnProperty('loopPixels')) { /** @end */
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] p5.Graphics.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, pg) instead.');
+} /** @end */
+
+// Register p5.Image.loopPixels()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('loopPixels')) { /** @end */
+    p5.Image.prototype.loopPixels = function (callback, shouldUpdate) {
+        return p5grain.loopPixels(callback, shouldUpdate, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] p5.Image.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, img) instead.');
 } /** @end */
 
 // Register textureAnimate()
