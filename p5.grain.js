@@ -100,8 +100,8 @@ class P5Grain {
      * @param {Boolean} [alpha] Specifies whether the alpha channel should 
      *     also be modified. When not specified the alpha channel will
      *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
+     *     image whose pixels should be manipulated.
      */
     applyMonochromaticGrain(amount, alpha, pg) {
         /** @internal */
@@ -601,9 +601,9 @@ class P5Grain {
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && !(args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics || args[2] instanceof p5.Image)
                     ) {
-                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
+                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics or p5.Image.`);
                     }
                     break;
                 case 'tinkerPixels':
@@ -728,6 +728,17 @@ if (!p5.Graphics.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
     console.warn('[p5.grain] p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
+} /** @end */
+
+// Register p5.Image.applyMonochromaticGrain()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
+    p5.Image.prototype.applyMonochromaticGrain = function (amount, alpha) {
+        return p5grain.applyMonochromaticGrain(amount, alpha, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    console.warn('[p5.grain] p5.Image.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, img) instead.');
 } /** @end */
 
 // Register applyChromaticGrain()
