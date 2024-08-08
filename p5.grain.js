@@ -176,12 +176,29 @@ class P5Grain {
         /** @end */
         const _amount = this.instance ? this.instance.round(amount) : round(amount);
         const _alpha = alpha || false;
-        pg ? pg.loadPixels() : (this.instance ? this.instance.loadPixels() : loadPixels());
-        const density = pg ? pg.pixelDensity() : (this.instance ? this.instance.pixelDensity() : pixelDensity());
-        const _width = pg ? pg.width : (this.instance ? this.instance.width : width);
-        const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
+        let density, _width, _height, _pixels;
+        if (pg) {
+            pg.loadPixels();
+            density = pg.pixelDensity();
+            _width = pg.width;
+            _height = pg.height;
+            _pixels = pg.pixels;
+        } else {
+            if (this.instance) {
+                this.instance.loadPixels();
+                density = this.instance.pixelDensity();
+                _width = this.instance.width;
+                _height = this.instance.height;
+                _pixels = this.instance.pixels;
+            } else {
+                loadPixels();
+                density = pixelDensity();
+                _width = width;
+                _height = height;
+                _pixels = pixels;
+            }
+        }
         const total = 4 * (_width * density) * (_height * density);
-        const _pixels = pg ? pg.pixels : (this.instance ? this.instance.pixels : pixels);
         this.#prepareRandomBounds(amount);
         for (let i = 0; i < total; i += 4) {
             _pixels[i] = _pixels[i] + this.#getRandom();
