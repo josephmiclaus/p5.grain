@@ -604,6 +604,18 @@ class P5Grain {
     }
 
     /**
+     * Logs the given message as a warning to the console.
+     * 
+     * @private
+     * @method _warn
+     * 
+     * @param {String} message The warning message to be logged to the console.
+     */
+    _warn(message) {
+        console.warn(`[p5.grain] Warning: ${message}`);
+    }
+
+    /**
      * Checks the validity of the given arguments to the respective method.
      * 
      * Unless `ignoreErrors` is `false`, errors will be thrown when necessary.
@@ -789,7 +801,7 @@ if (!p5.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain() instead.');
+    p5grain._warn('applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain() instead.');
 } /** @end */
 
 // Register p5.Graphics.applyMonochromaticGrain()
@@ -800,7 +812,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
+    p5grain._warn('p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
 } /** @end */
 
 // Register p5.Image.applyMonochromaticGrain()
@@ -811,7 +823,7 @@ if (!p5.Image.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Image.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, img) instead.');
+    p5grain._warn('p5.Image.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, img) instead.');
 } /** @end */
 
 // Register applyChromaticGrain()
@@ -822,7 +834,7 @@ if (!p5.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain() instead.');
+    p5grain._warn('applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain() instead.');
 } /** @end */
 
 // Register p5.Graphics.applyChromaticGrain()
@@ -833,7 +845,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
+    p5grain._warn('p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
 } /** @end */
 
 // Register p5.Image.applyChromaticGrain()
@@ -844,7 +856,7 @@ if (!p5.Image.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Image.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, img) instead.');
+    p5grain._warn('p5.Image.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, img) instead.');
 } /** @end */
 
 // Register tinkerPixels()
@@ -855,7 +867,7 @@ if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels() instead.');
+    p5grain._warn('tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels() instead.');
 } /** @end */
 
 // Register p5.Graphics.tinkerPixels()
@@ -866,7 +878,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
+    p5grain._warn('p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
 } /** @end */
 
 // Register p5.Image.tinkerPixels()
@@ -877,7 +889,7 @@ if (!p5.Image.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Image.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, img) instead.');
+    p5grain._warn('p5.Image.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, img) instead.');
 } /** @end */
 
 // Register loopPixels()
@@ -888,7 +900,7 @@ if (!p5.prototype.hasOwnProperty('loopPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels() instead.');
+    p5grain._warn('loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels() instead.');
 } /** @end */
 
 // Register p5.Graphics.loopPixels()
@@ -899,7 +911,7 @@ if (!p5.Graphics.prototype.hasOwnProperty('loopPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, pg) instead.');
+    p5grain._warn('p5.Graphics.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, pg) instead.');
 } /** @end */
 
 // Register p5.Image.loopPixels()
@@ -910,7 +922,7 @@ if (!p5.Image.prototype.hasOwnProperty('loopPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Image.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, img) instead.');
+    p5grain._warn('p5.Image.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, img) instead.');
 } /** @end */
 
 // Register textureAnimate()
@@ -921,7 +933,7 @@ if (!p5.prototype.hasOwnProperty('textureAnimate')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined. Use p5grain.textureAnimate() instead.');
+    p5grain._warn('textureAnimate() could not be registered, since it\'s already defined. Use p5grain.textureAnimate() instead.');
 } /** @end */
 
 // Register textureOverlay()
@@ -932,7 +944,7 @@ if (!p5.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay() instead.');
+    p5grain._warn('textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay() instead.');
 } /** @end */
 
 // Register p5.Graphics.textureOverlay()
@@ -943,5 +955,5 @@ if (!p5.Graphics.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay(textureImage, config, pg) instead.');
+    p5grain._warn('p5.Graphics.textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay(textureImage, config, pg) instead.');
 } /** @end */
