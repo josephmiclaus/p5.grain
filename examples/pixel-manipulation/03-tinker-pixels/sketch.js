@@ -6,17 +6,11 @@ function setup() {
     // Simulate drawing artwork
     drawArtwork();
 
-    // Custom applyMonochromaticGrain implementation
-    const amount = 42;
-    const alpha = false;
+    // Loop over all pixels and set the red channel of each one to a random value (0-255).
     tinkerPixels((index, total) => {
-        const grainAmount = floor(random() * (amount * 2 + 1)) - amount;
-        pixels[index] = pixels[index] + grainAmount;
-        pixels[index+1] = pixels[index+1] + grainAmount;
-        pixels[index+2] = pixels[index+2] + grainAmount;
-        if (alpha) {
-            pixels[index+3] = pixels[index+3] + grainAmount;
-        }
+        pixels[index] = random(0, 255); // red channel
+        // pixels[index+1] = random(0, 255); // green channel
+        // pixels[index+2] = random(0, 255); // blue channel
     });
 }
 
