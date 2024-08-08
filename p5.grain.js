@@ -16,11 +16,14 @@ class P5Grain {
     /** @end */
 
     #random;
+    #randomMode = 0; // 0: float, 1: int
+    #randomBounds;
     #textureAnimate;
     #textureOverlay;
 
     constructor() {
         // this.#random = p5.prototype.random;
+        this.#randomBounds = { min: 0, max: 1 };
         this.#textureAnimate = { frameCount: 0 };
         this.#textureOverlay = { frameCount: 0, tX_anchor: 0, tX: 0, tY: 0 };
     }
@@ -33,6 +36,19 @@ class P5Grain {
      * <code>
      *     p5grain.setup({ random: fxrand });
      * </code>
+     * 
+     * @example
+     * <p>Configure internal random function to generate integers instead of floating-point numbers.</p>
+     * <code>
+     *     p5grain.setup({ randomMode: 'int' });
+     * </code>
+     * 
+     * @example
+     * <p>Configure internal random function to generate floats.</p>
+     * <code>
+     *     p5grain.setup({ randomMode: 'float' });
+     * </code>
+     * <p><em>Note: `randomMode` is `'float'` by default, so you only need to do the above if you have previously configured `randomMode` to something other than `'float'` and you now need to generate random floating-point numbers again.</em></p>
      * 
      * @example
      * <p>Ignore errors and warnings</p>
@@ -49,6 +65,8 @@ class P5Grain {
      * @param {function} [config.random] The random function that should be used for e.g. pixel manipulation, 
      *     texture animation, etc. Here you could use a custom deterministic random function (e.g. fxrand). 
      *     By default p5's random function is used.
+     * @param {Boolean} [config.randomMode] Specifies the mode of the internal random function.
+     *     Either `'float'` for floating-point numbers or `'int'` for integers. (default: `'float'`)
      * @param {Object} [config.instance] Reference to a p5.js instance.
      * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings should be ignored. (default: `false`)
      * @param {Boolean} [config.ignoreErrors] Specifies whether errors should be ignored. (default: `false`)
@@ -63,6 +81,13 @@ class P5Grain {
         } else if (typeof config === 'object') {
             if (typeof config.random === 'function') {
                 this.#random = config.random;
+            }
+            if (typeof config.randomMode === 'string') {
+                switch (config.randomMode) {
+                    case 'int': this.#randomMode = 1; break;
+                    case 'float': this.#randomMode = 0; break;
+                    default: break;
+                }
             }
             if (typeof config.instance === 'object') {
                 this.instance = config.instance;
@@ -102,8 +127,9 @@ class P5Grain {
         const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
         const total = 4 * (_width * density) * (_height * density);
         const _pixels = pg ? pg.pixels : (this.instance ? this.instance.pixels : pixels);
+        this.#prepareRandomBounds(amount);
         for (let i = 0; i < total; i += 4) {
-            const grainAmount = this.#randomIntInclusive(-_amount, _amount);
+            const grainAmount = this.#getRandom();
             _pixels[i] = _pixels[i] + grainAmount;
             _pixels[i + 1] = _pixels[i + 1] + grainAmount;
             _pixels[i + 2] = _pixels[i + 2] + grainAmount;
@@ -139,12 +165,13 @@ class P5Grain {
         const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
         const total = 4 * (_width * density) * (_height * density);
         const _pixels = pg ? pg.pixels : (this.instance ? this.instance.pixels : pixels);
+        this.#prepareRandomBounds(amount);
         for (let i = 0; i < total; i += 4) {
-            _pixels[i] = _pixels[i] + this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i + 1] = _pixels[i + 1] + this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i + 2] = _pixels[i + 2] + this.#randomIntInclusive(-_amount, _amount);
+            _pixels[i] = _pixels[i] + this.#getRandom();
+            _pixels[i + 1] = _pixels[i + 1] + this.#getRandom();
+            _pixels[i + 2] = _pixels[i + 2] + this.#getRandom();
             if (_alpha) {
-                _pixels[i + 3] = _pixels[i + 3] + this.#randomIntInclusive(-_amount, _amount);
+                _pixels[i + 3] = _pixels[i + 3] + this.#getRandom();
             }
         }
         pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
@@ -451,25 +478,83 @@ class P5Grain {
     }
 
 
+    /*******************
+     * Private methods *
+     *******************/
+
+    /**
+     * Prepares the random bounds based on the `randomMode`.
+     * 
+     * @private
+     * @method prepareRandomBounds
+     * 
+     * @param {Number} value
+     */
+    #prepareRandomBounds(value) {
+        switch (this.#randomMode) {
+            case 1: // int
+                const val = Math.round(value);
+                this.#randomBounds.min = Math.ceil(-val);
+                this.#randomBounds.max = Math.floor(val);
+                break;
+            // case 0: // float
+            default:
+                this.#randomBounds.min = -value;
+                this.#randomBounds.max = value;
+                break;
+        }
+    }
+
+    /**
+     * Generate a random number between the prepared bounds based on the `randomMode`.
+     * 
+     * @private
+     * @method getRandom
+     * 
+     * @returns {Number}
+     */
+    #getRandom() {
+        switch (this.#randomMode) {
+            case 1: // int
+                return this.#randomInt();
+            // case 0: // float
+            default:
+                return this.#randomFloat();
+        }
+    }
+
+    /**
+     * Generate a random integer between the prepared bounds inclusively.
+     * 
+     * @private
+     * @method randomInt
+     * 
+     * @returns {Number}
+     */
+    #randomInt() {
+        return Math.floor(
+            this.#random() * (this.#randomBounds.max - this.#randomBounds.min + 1) + this.#randomBounds.min
+        );
+    }
+
+    /**
+     * Generate a random float between the prepared bounds.
+     * 
+     * @private
+     * @method randomFloat
+     * 
+     * @returns {Number}
+     */
+    #randomFloat() {
+        return (
+            this.#random() * (this.#randomBounds.max - this.#randomBounds.min) + this.#randomBounds.min
+        );
+    }
+
+
     /********************
      * Internal methods *
      ********************/
-
-    /**
-     * Generate a random integer between given bounds inclusively.
-     * 
-     * @private
-     * @method randomIntInclusive
-     * 
-     * @param {Number} min Min value that may be generated.
-     * @param {Number} max Max value that may be generated.
-     * @returns {Number}
-     */
-    #randomIntInclusive(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(this.#random() * (max - min + 1) + min);
-    }
 
     /** @internal */
     /**
