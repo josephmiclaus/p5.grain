@@ -48,7 +48,7 @@ class P5Grain {
      * <code>
      *     p5grain.setup({ randomMode: 'float' });
      * </code>
-     * <p><em>Note: `randomMode` is `'float'` by default, so you only need to do the above if you have previously configured `randomMode` to something other than `'float'` and you now need to generate random floating-point numbers again.</em></p>
+     * <p><em>Note: `randomMode` is `float` by default, so you only need to do the above if you have previously configured `randomMode` to something other than `float` and you now need to generate random floating-point numbers again.</em></p>
      * 
      * @example
      * <p>Ignore errors and warnings</p>
@@ -65,8 +65,8 @@ class P5Grain {
      * @param {function} [config.random] The random function that should be used for e.g. pixel manipulation, 
      *     texture animation, etc. Here you could use a custom deterministic random function (e.g. fxrand). 
      *     By default p5's random function is used.
-     * @param {Boolean} [config.randomMode] Specifies the mode of the internal random function.
-     *     Either `'float'` for floating-point numbers or `'int'` for integers. (default: `'float'`)
+     * @param {String} [config.randomMode] Specifies the mode of the internal random function.
+     *     Either `float` for floating-point numbers or `int` for integers. (default: `float`)
      * @param {Object} [config.instance] Reference to a p5.js instance.
      * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings should be ignored. (default: `false`)
      * @param {Boolean} [config.ignoreErrors] Specifies whether errors should be ignored. (default: `false`)
