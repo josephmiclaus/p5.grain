@@ -112,7 +112,7 @@ class P5Grain {
      * 
      * @param {Number} amount The amount of granularity that should be applied.
      * @param {Boolean} [alpha] Specifies whether the alpha channel should also be modified. (default: `false`)
-     *     Caution: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
+     *     Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
      * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
     applyMonochromaticGrain(amount, alpha, pg) {
@@ -166,7 +166,7 @@ class P5Grain {
      * 
      * @param {Number} amount The amount of granularity that should be applied.
      * @param {Boolean} [alpha] Specifies whether the alpha channel should also be modified. (default: `false`)
-     *     Caution: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
+     *     Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
      * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
     applyChromaticGrain(amount, alpha, pg) {

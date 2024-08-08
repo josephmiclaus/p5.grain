@@ -48,12 +48,12 @@ Download the latest version from [Releases](https://github.com/meezwhite/p5.grai
 
 ## Which file should I use?
 
+The unminified version `p5.grain.js` is primarily meant for when you are working on your sketch. It handles p5.grain related errors and warnings, and therefore has a considerably larger file size. However, we recommend using the minified version `p5.grain.min.js` when your sketch is final and you've made sure that p5.grain related errors and warnings cannot occur.
+
 | File              | Size    | Purpose     | Errors & Warnings       |
 | ----------------- | ------- | ----------- | ----------------------- |
 | `p5.grain.js`     | ~ 42 KB | development | Yes (can be turned off) |
 | `p5.grain.min.js` | ~ 6 KB  | production  | No                      |
-
-The unminified version `p5.grain.js` is primarily meant for when you are working on your sketch. It handles p5.grain related errors and warnings, and therefore has a considerably larger file size. However, we recommend using the minified version `p5.grain.min.js` when your sketch is final and you've made sure that p5.grain related errors and warnings cannot occur.
 
 [Go to top ⬆](#top)
 
@@ -78,7 +78,7 @@ function setup() {
 
 Use this setup for p5 sketches that need to use deterministic randomness.
 
-Simply set the seed value for the `random` function using [`randomSeed()`](https://p5js.org/reference/p5/randomSeed). In the example below, the seed value 1<sup>6</sup> (one million) is used, but you can choose any seed value you like.
+Simply set the seed value for the `random` function using [`randomSeed()`](https://p5js.org/reference/p5/randomSeed). In the example below, the seed value 1<sup>6</sup> (one million) is used, but you can choose any seed value you like:
 
 ```js
 function setup() {
@@ -95,7 +95,7 @@ If you're unsure how to correctly use randomness for fxhash projects, we recomme
 
 #### Method 1: Using `fxrand` for randomness (recommended)
 
-In most cases, you will use `fxrand` as the *single* source of randomness for your generative project. In this case, you simply have to configure p5.grain to also use `fxrand` as the underlying source of randomness.
+In most cases, you will use `fxrand` as the *single* source of randomness for your generative project. In this case, you simply have to configure p5.grain to also use `fxrand` as the underlying source of randomness:
 
 ```js
 function setup() {
@@ -111,7 +111,7 @@ function setup() {
 
 Although this method is not used that often for fxhash projects, you can use p5's `random` function as the *single* source of randomness for your generative project too. To achieve this, you'll need to use `fxrand` *once* to generate an initial deterministic number for computing the seed value for `random`. 
 
-In the example below, a seed value is computed by multiplying `fxrand` with a number of your choice. In this case, 1<sup>6</sup> (one million) is used, but you can choose any number you like.
+In the example below, a seed value is computed by multiplying `fxrand` with a number of your choice. In this case, 1<sup>6</sup> (one million) is used, but you can choose any number you like:
 
 ```js
 function setup() {
@@ -150,7 +150,7 @@ Go to the standalone examples:
     * [SVG element](./examples/svg-element) (texture animation supported; [limited compatibility in Safari](#limitations))
     * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported; [doesn't work in Safari](#limitations))
 
-Here are a few examples of a basic implementation for each respective technique. **Note that all the examples below are non-deterministic.**
+Here are a few examples of a basic implementation for each respective technique. **All the examples below showcase how to use p5.grain in global mode and non-deterministically.**
 
 
 <a id="pixel_manipulation"></a>
@@ -169,7 +169,7 @@ function setup() {
 }
 ```
 
-The next example demonstates modifying the artwork's pixels using the `tinkerPixels(callback)` function. Here the red channel of each pixel is set to a random value between 0 and 255.
+The next example demonstates modifying the artwork's pixels using the `tinkerPixels(callback)` function. Here the red channel of each pixel is set to a random value between 0 and 255:
 
 ```js
 function setup() {
@@ -210,7 +210,7 @@ tinkerPixels((index, total) => {
 
 <a id="texture_overlay_inside_canvas"></a>
 
-### Texture overlay inside canvas
+### Texture overlay
 
 ```js
 let textureImage;
@@ -229,12 +229,14 @@ function setup() {
 }
 ```
 
+*Note: the texture is rendered directly onto the canvas.*
+
 [Go to top ⬆](#top)
 
 
 <a id="texture_overlay_inside_canvas_with_texture_animation"></a>
 
-### Texture overlay inside canvas with texture animation
+### Texture overlay + Texture animation
 
 ```js
 let textureImage;
@@ -253,6 +255,8 @@ function draw() {
     textureOverlay(textureImage, { animate: true });
 }
 ```
+
+*Note: the texture is rendered directly onto the canvas.*
 
 For more concrete use cases, please have a look at the provided [examples](./examples).
 
@@ -337,12 +341,12 @@ p5.grain exposes the following properties and functions:
 | Method | Description |
 | --- | --- |
 | `setup([config])` | Setup and configure p5.grain features. |
-| `applyMonochromaticGrain(amount, [alpha], [pg])` | Apply monochromatic grain. |
-| `applyChromaticGrain(amount, [alpha], [pg])` | Apply chromatic grain. |
-| `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function for every pixel. Pixels are manipulated depending on the given callback function, unless read-only mode is enabled. |
-| `loopPixels(callback, [pg])` | Loop through pixels and call the given callback function for every pixel without updating them (read-only mode). |
-| `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. The texture is repeated along the horizontal and vertical axes to cover the entire canvas or context. |
-| `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
+| `applyMonochromaticGrain(amount, [alpha], [pg])` | Apply monochromatic grain. |
+| `applyChromaticGrain(amount, [alpha], [pg])` | Apply chromatic grain. |
+| `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function for every pixel. Pixels are manipulated depending on the given callback function, unless read-only mode is enabled. |
+| `loopPixels(callback, [pg])` | Loop through pixels and call the given callback function for every pixel without updating them (read-only mode). |
+| `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. The texture is repeated along the horizontal and vertical axes to cover the entire canvas or context. |
+| `textureAnimate(textureElement, config)` | Animate the given texture element by randomly shifting its background position. |
 
 [Go to top ⬆](#top)
 
@@ -355,7 +359,7 @@ Setup and configure p5.grain features.
 | --- | --- | --- |
 | `config` | `Object` | (optional) Config object to configure p5grain features. |
 | `config.random` | `function` | (optional) The random function that should be used for e.g. pixel manipulation, texture animation, etc. Here you could use a custom deterministic random function (e.g. fxrand). (default: p5's `random` function) |
-| `config.randomMode` | `function` | (optional) Specifies the mode of the internal random function. Either `'float'` for floating-point numbers or `'int'` for integers. (default: `'float'`) |
+| `config.randomMode` | `String` | (optional) Specifies the mode of the internal random function. Either `float` for floating-point numbers or `int` for integers. (default: `float`) |
 | `config.instance` | `Object` | (optional) Reference to a p5.js instance. Read how to use p5.grain with p5.js instance mode [here](#global-and-instance-mode). |
 | `config.ignoreWarnings` | `Boolean` | (optional) Specifies whether warnings should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
 | `config.ignoreErrors` | `Boolean` | (optional) Specifies whether errors should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
@@ -391,7 +395,7 @@ function setup() {
 }
 ```
 
-*Note: `randomMode` is `'float'` by default, so you only need to do the above if you have previously configured `randomMode` to something other than `'float'` and you now need to generate random floating-point numbers again.*
+*Note: `randomMode` is `float` by default, so you only need to do the above if you have previously configured `randomMode` to something other than `float` and you now need to generate random floating-point numbers again.*
 
 #### Ignore errors and warnings
 
@@ -420,7 +424,7 @@ This function generates one random value per pixel. The random value ranges from
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
-| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Caution: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
+| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
 | `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer or image whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Image.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, img)`.* |
 
 [Go to top ⬆](#top)
@@ -435,7 +439,7 @@ This function generates one random value per pixel channel. The random values ra
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
-| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Caution: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
+| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
 | `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyChromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyChromaticGrain(amount, alpha)`. Only in case `p5.Image.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, img)`.* |
 
 [Go to top ⬆](#top)
@@ -546,6 +550,8 @@ Are you considering contributing to p5.grain? Check out our [contributing guidel
 p5.grain is [MIT licensed](./LICENSE).
 
 
-## Spread the Word
+### Spread the Word
 
-If you find p5.grain useful, we’d love for you to share it! Mentioning the library in your project description, tutorials, or social media posts helps others discover it and benefit from it. Thanks for spreading the word and showing your appreciation! 🙏
+If you find p5.grain useful, we’d love for you to share it! Mentioning the library in your project description, tutorials, or social media posts helps others discover it and benefit from it.
+
+Thanks for spreading the word and showing your appreciation! 🙏
