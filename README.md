@@ -550,6 +550,6 @@ Are you considering contributing to p5.grain? Check out our [contributing guidel
 p5.grain is [MIT licensed](./LICENSE).
 
 
-### Spread the Word
+#### Spread the Word
 
-If you find p5.grain useful, we’d love for you to share it! Mentioning the library in your project description, tutorials, or social media posts helps others discover it and benefit from it. Thanks for spreading the word and showing your appreciation! 🙏
+If you find p5.grain useful, we’d love for you to share it! Mentioning the library in your project description, tutorials, or social media posts helps others discover it and benefit from it. Thanks for spreading the word and showing your appreciation! 🙏
