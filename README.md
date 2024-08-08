@@ -88,9 +88,8 @@ function setup() {
 ```
 
 <details>
-<summary><h3>Deterministic setup (fxhash)<h3></summary>
-<br>
-Use this setup when using p5.grain for fxhash generative projects.
+<summary><h3>Deterministic setup (fxhash)</h3></summary>
+<br>Use this setup when using p5.grain for fxhash generative projects.
 <br><br>
 If you're unsure how to correctly use randomness for fxhash projects, we recommend reading the "<a href="https://docs.fxhash.xyz/using-randomness-correctly">Use Randomness Correctly</a>" guide in the fxhash documentation first.
 
