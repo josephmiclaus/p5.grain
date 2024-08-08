@@ -78,7 +78,7 @@ function setup() {
 
 Use this setup for p5 sketches that need to use deterministic randomness.
 
-Simply set a seed number for the `random` function using p5's `randomSeed(seed)` function. In the example below, the seed number 1<sup>6</sup> (one million) is used, but you can choose any seed number you like. 
+Simply set the seed value for the `random` function using [`randomSeed()`](https://p5js.org/reference/p5/randomSeed). In the example below, the seed value 1<sup>6</sup> (one million) is used, but you can choose any seed value you like.
 
 ```js
 function setup() {
@@ -88,7 +88,7 @@ function setup() {
 ```
 
 <details>
-<summary style="font-size: 1.2rem; font-weight: bold;">Deterministic setup (fxhash)</summary>
+<summary><h3>Deterministic setup (fxhash)<h3></summary>
 <br>
 Use this setup when using p5.grain for fxhash generative projects.
 <br><br>
@@ -110,9 +110,9 @@ function setup() {
 
 #### Method 2: Using p5's `random` for randomness
 
-Although this method is not used that often for fxhash projects, you can use p5's `random` function as the *single* source of randomness for your generative project too. To achieve this, you'll need to use `fxrand` *once* to generate an initial deterministic number for computing the seed number for `random`. 
+Although this method is not used that often for fxhash projects, you can use p5's `random` function as the *single* source of randomness for your generative project too. To achieve this, you'll need to use `fxrand` *once* to generate an initial deterministic number for computing the seed value for `random`. 
 
-In the example below, a seed number is computed by multiplying `fxrand` with a number of your choice. In this case, 1<sup>6</sup> (one million) is used, but you can choose any number you like.
+In the example below, a seed value is computed by multiplying `fxrand` with a number of your choice. In this case, 1<sup>6</sup> (one million) is used, but you can choose any number you like.
 
 ```js
 function setup() {
