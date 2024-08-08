@@ -173,7 +173,6 @@ class P5Grain {
         /** @internal */
         if (!this.#validateArguments('applyChromaticGrain', arguments)) return;
         /** @end */
-        const _amount = this.instance ? this.instance.round(amount) : round(amount);
         const _alpha = alpha || false;
         let density, _width, _height, _pixels;
         if (pg) {
