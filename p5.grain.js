@@ -374,15 +374,13 @@ class P5Grain {
         const _animate = config && config.animate ? config.animate : false;
         // animate atFrame
         const _animateAtFrame = (
-            config && config.animate && config.animate.atFrame
-                ? (this.instance ? this.instance.round(config.animate.atFrame) : round(config.animate.atFrame))
-                : 2
+            config && config.animate && config.animate.atFrame ? Math.round(config.animate.atFrame) : 2
         );
         // animate amount
         const _animateAmount = (
             config && config.animate && config.animate.amount
-                ? (this.instance ? this.instance.round(config.animate.amount) : round(config.animate.amount))
-                : (this.instance ? this.instance.min(_width, _height) : min(_width, _height))
+                ? Math.round(config.animate.amount)
+                : Math.min(_width, _height)
         );
         // texture width
         const tW = config && typeof config.width === 'number' ? config.width : textureImage.width;
@@ -394,12 +392,8 @@ class P5Grain {
             if (this.#textureOverlay.frameCount >= _animateAtFrame) {
                 const tX_rand = this.#random() * _animateAmount;
                 const tY_rand = this.#random() * _animateAmount;
-                this.#textureOverlay.tX_anchor = (
-                    this.instance ? -this.instance.floor(tX_rand) : -floor(tX_rand)
-                );
-                this.#textureOverlay.tY = (
-                    this.instance ? -this.instance.floor(tY_rand) : -floor(tY_rand)
-                );
+                this.#textureOverlay.tX_anchor = -Math.floor(tX_rand);
+                this.#textureOverlay.tY = -Math.floor(tY_rand);
                 this.#textureOverlay.frameCount = 0;
             }
         }
