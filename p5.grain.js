@@ -634,6 +634,11 @@ class P5Grain {
                             && typeof args[0].random !== 'function'
                         ) {
                             return this.#error(`[p5.grain] The optional config.random property passed to p5grain.${method}() must be of type function.`);
+                        if (
+                            typeof args[0].randomMode !== 'undefined'
+                            && !(args[0].randomMode === 'int' || args[0].randomMode === 'float')
+                        ) {
+                            return this.#error(`The optional config.randomMode property passed to p5grain.${method}() must be either 'int' or 'float'.`);
                         }
                         if (
                             typeof args[0].ignoreErrors !== 'undefined'
