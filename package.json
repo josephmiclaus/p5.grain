@@ -24,8 +24,10 @@
     "noise",
     "texture",
     "creative-coding",
-    "fxhash",
-    "p5js"
+    "p5",
+    "p5.js",
+    "p5js",
+    "fxhash"
   ],
   "repository": {
     "type": "git",
