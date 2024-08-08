@@ -309,17 +309,16 @@ class P5Grain {
         /** @internal */
         if (!this.#validateArguments('textureAnimate', arguments)) return;
         /** @end */
-        const _atFrame = config && config.atFrame
-            ? (this.instance ? this.instance.round(config.atFrame) : round(config.atFrame)) : 2;
+        const _atFrame = config && config.atFrame ? Math.round(config.atFrame) : 2;
         this.#textureAnimate.frameCount += 1;
         if (this.#textureAnimate.frameCount >= _atFrame) {
             const _amount = config && config.amount
-                ? (this.instance ? this.instance.round(config.amount) : round(config.amount))
-                : (this.instance ? this.instance.min(this.instance.width, this.instance.height) : min(width, height));
+                ? Math.round(config.amount)
+                : (this.instance ? Math.min(this.instance.width, this.instance.height) : Math.min(width, height));
             const bgPosX_rand = this.#random() * _amount;
             const bgPosY_rand = this.#random() * _amount;
-            const bgPosX = this.instance ? this.instance.floor(bgPosX_rand) : floor(bgPosX_rand);
-            const bgPosY = this.instance ? this.instance.floor(bgPosY_rand) : floor(bgPosY_rand);
+            const bgPosX = Math.floor(bgPosX_rand);
+            const bgPosY = Math.floor(bgPosY_rand);
             const bgPos = `${bgPosX}px ${bgPosY}px`;
             if (textureElement instanceof HTMLElement) {
                 textureElement.style.backgroundPosition = bgPos;
