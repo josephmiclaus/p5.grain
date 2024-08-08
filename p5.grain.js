@@ -26,7 +26,7 @@ class P5Grain {
     }
 
     /**
-     * Setup and configure certain p5.grain features.
+     * Setup and configure p5.grain features.
      * 
      * @example
      * <p>Pass a custom random function to be used internally.</p>
@@ -37,7 +37,6 @@ class P5Grain {
      * @example
      * <p>Ignore errors and warnings</p>
      * <code>
-     *     // Dangerous, but might be more performant
      *     p5grain.setup({
      *         ignoreErrors: true,
      *         ignoreWarnings: true,
@@ -47,14 +46,12 @@ class P5Grain {
      * @method setup
      * 
      * @param {Object} [config] Config object to configure p5.grain features.
-     * @param {function} [config.random] The random function that should be
-     *     used when for e.g. pixel manipulation, texture animation, etc. 
-     *     Here you could use a deterministic random function.
+     * @param {function} [config.random] The random function that should be used for e.g. pixel manipulation, 
+     *     texture animation, etc. Here you could use a custom deterministic random function (e.g. fxrand). 
+     *     By default p5's random function is used.
      * @param {Object} [config.instance] Reference to a p5.js instance.
-     * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings 
-     *     should be ignored.
-     * @param {Boolean} [config.ignoreErrors] Specifies whether errors should 
-     *     be ignored. This is dangerous, but it might be more performant.
+     * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings should be ignored. (default: `false`)
+     * @param {Boolean} [config.ignoreErrors] Specifies whether errors should be ignored. (default: `false`)
      */
     setup(config) {
         /** @internal */
@@ -83,18 +80,15 @@ class P5Grain {
     /**
      * Apply monochromatic grain.
      *
-     * This method generates one random value per pixel. The random value 
-     * ranges from -amount to +amount and is added to every RGB(A) pixel 
-     * channel.
+     * This method generates one random value per pixel. The random value ranges from -amount to +amount.
+     * Each generated random value is added to every RGB(A) pixel channel.
      *
      * @method applyMonochromaticGrain
      * 
      * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
-     *     image whose pixels should be manipulated.
+     * @param {Boolean} [alpha] Specifies whether the alpha channel should also be modified. (default: `false`)
+     *     Caution: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
     applyMonochromaticGrain(amount, alpha, pg) {
         /** @internal */
@@ -123,18 +117,15 @@ class P5Grain {
     /**
      * Apply chromatic grain.
      *
-     * This method generates one random value per pixel channel. The random 
-     * values range from -amount to +amount. Each random value is added to 
-     * the respective RGB(A) channel of the pixel.
+     * This method generates one random value per pixel channel. The random values range from -amount to +amount. 
+     * Each generated random value is added to the respective RGB(A) channel of the pixel.
      *
      * @method applyChromaticGrain
      * 
      * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
-     *     image whose pixels should be manipulated.
+     * @param {Boolean} [alpha] Specifies whether the alpha channel should also be modified. (default: `false`)
+     *     Caution: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
     applyChromaticGrain(amount, alpha, pg) {
         /** @internal */
@@ -160,30 +151,22 @@ class P5Grain {
     }
 
     /**
-     * Loop through pixels and call the given callback function on every pixel. 
-     * Pixels are manipulated depending on the given callback function, unless 
-     * read-only mode is enabled.
+     * Loop through pixels and call the given callback function for every pixel.
      * 
-     * The callback function exposes two arguments:
-     * - index: the current pixel index
-     * - total: the total indexes count
+     * Pixels are manipulated depending on the given callback function, unless read-only mode is enabled.
      * 
-     * Read-only mode: updating pixels can be by-passed by setting the 
-     * `shouldUpdate` argument to `false`.
+     * The callback function provides two arguments:
+     * 1. index: the current pixel index
+     * 2. total: the total indexes count
+     * 
+     * Read-only mode: updating pixels can be by-passed by setting the `shouldUpdate` argument to `false`.
+     * It is however recommended to use `loopPixels` if you only want to loop through pixels.
      * 
      * @example
-     * <p>Custom applyMonochromaticGrain implementation:</p>
+     * <p>Loop over all pixels and set the red channel of each pixel to a random value between 0 and 255:</p>
      * <code>
-     *     const amount = 42;
-     *     const alpha = false;
      *     tinkerPixels((index, total) => {
-     *         const grainAmount = floor(random() * (amount * 2 + 1)) - amount;
-     *         pixels[index] = pixels[index] + grainAmount;
-     *         pixels[index+1] = pixels[index+1] + grainAmount;
-     *         pixels[index+2] = pixels[index+2] + grainAmount;
-     *         if (alpha) {
-     *             pixels[index+3] = pixels[index+3] + grainAmount;
-     *         }
+     *         pixels[index] = random(0, 255); // red channel
      *     });
      * </code>
      * 
@@ -198,12 +181,9 @@ class P5Grain {
      *
      * @method tinkerPixels
      * 
-     * @param {Function} callback The callback function that should be called 
-     *     on every pixel.
-     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be 
-     *     updated.
-     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
-     *     image whose pixels should be looped.
+     * @param {Function} callback The callback function that should be called on every pixel.
+     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be updated. (default: `true`)
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be looped.
      */
     tinkerPixels(callback, shouldUpdate, pg) {
         /** @internal */
@@ -224,16 +204,14 @@ class P5Grain {
     }
 
     /**
-     * Loop through pixels and call the given callback function for every pixel 
-     * without updating them (read-only mode).
+     * Loop through pixels and call the given callback function for every pixel without updating them (read-only mode).
      * 
-     * In contrast to the `tinkerPixels` function, no pixel manipulations are 
-     * performed with `loopPixels`. In other words `loopPixels` has the same 
-     * effect as using `tinkerPixels` in read-only mode.
+     * In contrast to the `tinkerPixels` function, no pixel manipulations are performed with `loopPixels`. 
+     * In other words `loopPixels` has the same effect as using `tinkerPixels` in read-only mode.
      * 
-     * The callback function exposes two arguments:
-     * - index: the current pixel index
-     * - total: the total indexes count
+     * The callback function provides two arguments:
+     * 1. index: the current pixel index
+     * 2. total: the total indexes count
      * 
      * @example
      * <code>
@@ -245,10 +223,8 @@ class P5Grain {
      *
      * @method loopPixels
      * 
-     * @param {Function} callback The callback function that should be called 
-     *     on every pixel.
-     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or 
-     *     image whose pixels should be looped.
+     * @param {Function} callback The callback function that should be called on every pixel.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be looped.
      */
     loopPixels(callback, pg) {
         /** @internal */
@@ -258,23 +234,17 @@ class P5Grain {
     }
 
     /**
-     * Animate the given texture element by randomly shifting its background 
-     * position.
+     * Animate the given texture element by randomly shifting its background position.
      * 
      * @method textureAnimate
      * 
-     * @param {HTMLElement|SVGElement|p5.Element} textureElement The texture element to be 
-     *     animated.
-     * @param {Object} [config] Config object to configure the texture 
-     *     animation.
-     * @param {Number} [config.atFrame] The frame at which the texture should 
-     *     be shifted. When atFrame isn't specified, the texture is shifted 
-     *     every 2nd frame.
-     * @param {Number} [config.amount] The maximum amount of pixels by which 
-     *     the texture should be shifted. The actual amount of pixels which 
-     *     the texture is shifted by is generated randomly. When no 
-     *     amount is specified, the minimum of the main canvas 
-     *     width or height is used.
+     * @param {HTMLElement|SVGElement|p5.Element} textureElement The texture element to be animated.
+     * @param {Object} [config] Config object to configure the texture animation.
+     * @param {Number} [config.atFrame] The frame at which the texture should be shifted.
+     *     When atFrame isn't specified, the texture is shifted every second frame. (default: `2`)
+     * @param {Number} [config.amount] The maximum amount of pixels by which the texture should be shifted.
+     *     The actual amount of pixels which the texture is shifted by is generated randomly.
+     *     When no amount is specified, the minimum of the main canvas width or height is used. (default: `min(width, height)`)
      */
     textureAnimate(textureElement, config) {
         /** @internal */
@@ -307,40 +277,26 @@ class P5Grain {
     /**
      * Blend the given texture image onto the canvas.
      * 
-     * The texture is repeated along the horizontal and vertical axes to cover 
-     * the entire canvas or context.
+     * The texture is repeated along the horizontal and vertical axes to cover the entire canvas or context.
      * 
      * @method textureOverlay
      * 
      * @param {p5.Image} texture The texture image to blend over.
      * @param {Object} [config] Config object to configure the texture overlay.
-     * @param {Number} [config.width] The width the texture image should have. 
-     *     When no width is specified, the width of the texture image is 
-     *     assumed.
-     * @param {Number} [config.height] The height the texture image should 
-     *     have. When no height is specified, the height of the texture 
-     *     image is assumed.
-     * @param {Constant} [config.mode] The blend mode that should be used to 
-     *     blend the texture over the canvas. 
-     *     Either BLEND, DARKEST, LIGHTEST, DIFFERENCE, MULTIPLY, EXCLUSION, 
-     *     SCREEN, REPLACE, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN, 
-     *     ADD or NORMAL. When no mode is specified, the blend mode 
-     *     MULTIPLY will be used.
-     * @param {Boolean} [config.reflect] Specifies whether the given texture
-     *     image should reflect horizontally and vertically, in order to 
-     *     provide seamless continuity.
-     * @param {Boolean|Object} [config.animate] Specifies whether the given 
-     *     texture image should be animated.
-     * @param {Number} [config.animate.atFrame] When animation is activated, 
-     *     the frame at which the texture should be shifted. When atFrame 
-     *     isn't specified, the texture is shifted every 2nd frame.
-     * @param {Number} [config.animate.amount] When animation is activated,
-     *     the maximum amount of pixels by which the texture should be 
-     *     shifted. The actual amount of pixels which the texture is 
-     *     shifted by is generated randomly. When no amount is specified, 
-     *     the minimum of the main canvas width or height is used.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer onto which the 
-     *     texture image should be drawn.
+     * @param {Number} [config.width] The width the texture image should have. (default: textureImage.width`)
+     * @param {Number} [config.height] The height the texture image should have. (default: `textureImage.height`)
+     * @param {Constant} [config.mode] The blend mode that should be used to blend the texture over the canvas. 
+     *     Either BLEND, DARKEST, LIGHTEST, DIFFERENCE, MULTIPLY, EXCLUSION, SCREEN, REPLACE, OVERLAY, HARD_LIGHT, 
+     *     SOFT_LIGHT, DODGE, BURN, ADD or NORMAL. (default: MULTIPLY)
+     * @param {Boolean} [config.reflect] Specifies whether the given texture image should reflect horizontally and 
+     *     vertically, in order to provide seamless continuity. (default: `false`)
+     * @param {Boolean|Object} [config.animate] Specifies whether the given texture image should be animated. (default: `false`)
+     * @param {Number} [config.animate.atFrame] When animating, the frame at which the texture should be shifted.
+     *     When atFrame isn't specified, the texture is shifted every second frame. (default: `2`)
+     * @param {Number} [config.animate.amount] When animating, the maximum amount of pixels by which the texture 
+     *     should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. 
+     *     When no amount is specified, the minimum of the main canvas width or height is used. (default: `min(width, height)`)
+     * @param {p5.Graphics} [pg] The offscreen graphics buffer onto which the texture image should be drawn.
      */
     textureOverlay(textureImage, config, pg) {
         /** @internal */
@@ -531,8 +487,9 @@ class P5Grain {
     }
 
     /**
-     * Checks the validity of the given arguments to the respective method. 
-     * Unless ignoreErrors is false, errors will be thrown when necessary.
+     * Checks the validity of the given arguments to the respective method.
+     * 
+     * Unless `ignoreErrors` is `false`, errors will be thrown when necessary.
      * 
      * @private
      * @method validateArguments
