@@ -21,7 +21,6 @@ class P5Grain {
 
     constructor() {
         // this.#random = p5.prototype.random;
-        this.#random = Math.random;
         this.#textureAnimate = {
             frameCount: 0,
         };
@@ -69,6 +68,7 @@ class P5Grain {
         if (!this.#validateArguments('setup', arguments)) return;
         /** @end */
         if (typeof config === 'undefined') {
+            // this.#random = p5.prototype.random;
             this.#random = random;
         } else if (typeof config === 'object') {
             if (typeof config.random === 'function') {
