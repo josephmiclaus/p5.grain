@@ -22,7 +22,6 @@ class P5Grain {
     #textureOverlay;
 
     constructor() {
-        // this.#random = p5.prototype.random;
         this.#randomBounds = { min: 0, max: 1 };
         this.#textureAnimate = { frameCount: 0 };
         this.#textureOverlay = { frameCount: 0, tX_anchor: 0, tX: 0, tY: 0 };
@@ -75,10 +74,7 @@ class P5Grain {
         /** @internal */
         if (!this.#validateArguments('setup', arguments)) return;
         /** @end */
-        if (typeof config === 'undefined') {
-            // this.#random = p5.prototype.random;
-            this.#random = random;
-        } else if (typeof config === 'object') {
+        if (typeof config === 'object') {
             if (typeof config.random === 'function') {
                 this.#random = config.random;
             }
@@ -99,6 +95,9 @@ class P5Grain {
             if (typeof config.ignoreErrors === 'boolean') {
                 this.ignoreErrors = config.ignoreErrors;
             } /** @end */
+        }
+        if (typeof this.#random === 'undefined') {
+            this.#random = p5.prototype.random;
         }
     }
 
