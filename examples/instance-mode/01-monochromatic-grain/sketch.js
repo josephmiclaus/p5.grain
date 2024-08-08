@@ -9,6 +9,9 @@ const reusableSketch = (sketch) => {
 
         // Apply monochromatic grain
         sketch.applyMonochromaticGrain(42);
+
+        sketch.textSize(28);
+        sketch.text('instance 1:', 14, 36);
     }
 
     sketch.drawArtwork = () => {
@@ -51,6 +54,9 @@ let myp5_2 = new p5((sketch) => {
 
         // draw the graphics buffer to the sketch's canvas
         sketch.image(pg, sketch.width/2-70, sketch.height/2-70);
+
+        sketch.textSize(28);
+        sketch.text('instance 2:', 14, 36);
     }
 
     sketch.windowResized = () => {
