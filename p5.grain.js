@@ -21,15 +21,8 @@ class P5Grain {
 
     constructor() {
         // this.#random = p5.prototype.random;
-        this.#textureAnimate = {
-            frameCount: 0,
-        };
-        this.#textureOverlay = {
-            frameCount: 0,
-            tX_anchor: 0,
-            tX: 0,
-            tY: 0,
-        };
+        this.#textureAnimate = { frameCount: 0 };
+        this.#textureOverlay = { frameCount: 0, tX_anchor: 0, tX: 0, tY: 0 };
     }
 
     /**
