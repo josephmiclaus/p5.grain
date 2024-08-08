@@ -16,13 +16,13 @@ class P5Grain {
     /** @end */
 
     #random;
-    #randomMode = 0; // 0: float, 1: int
-    #randomBounds;
+    #randomMinMax;
+    #randomMode;
     #textureAnimate;
     #textureOverlay;
 
     constructor() {
-        this.#randomBounds = { min: 0, max: 1 };
+        this.#prepareRandomMode('float');
         this.#textureAnimate = { frameCount: 0 };
         this.#textureOverlay = { frameCount: 0, tX_anchor: 0, tX: 0, tY: 0 };
     }
@@ -79,11 +79,7 @@ class P5Grain {
                 this.#random = config.random;
             }
             if (typeof config.randomMode === 'string') {
-                switch (config.randomMode) {
-                    case 'int': this.#randomMode = 1; break;
-                    case 'float': this.#randomMode = 0; break;
-                    default: break;
-                }
+                this.#prepareRandomMode(config.randomMode);
             }
             if (typeof config.instance === 'object') {
                 this.instance = config.instance;
@@ -142,9 +138,9 @@ class P5Grain {
             }
         }
         const total = 4 * (_width * density) * (_height * density);
-        this.#prepareRandomBounds(amount);
+        const { min, max } = this.#prepareRandomBounds(-amount, amount);
         for (let i = 0; i < total; i += 4) {
-            const grainAmount = this.#getRandom();
+            const grainAmount = this.#randomMinMax(min, max);
             _pixels[i] = _pixels[i] + grainAmount;
             _pixels[i + 1] = _pixels[i + 1] + grainAmount;
             _pixels[i + 2] = _pixels[i + 2] + grainAmount;
@@ -196,13 +192,13 @@ class P5Grain {
             }
         }
         const total = 4 * (_width * density) * (_height * density);
-        this.#prepareRandomBounds(amount);
+        const { min, max } = this.#prepareRandomBounds(-amount, amount);
         for (let i = 0; i < total; i += 4) {
-            _pixels[i] = _pixels[i] + this.#getRandom();
-            _pixels[i + 1] = _pixels[i + 1] + this.#getRandom();
-            _pixels[i + 2] = _pixels[i + 2] + this.#getRandom();
+            _pixels[i] = _pixels[i] + this.#randomMinMax(min, max);
+            _pixels[i + 1] = _pixels[i + 1] + this.#randomMinMax(min, max);
+            _pixels[i + 2] = _pixels[i + 2] + this.#randomMinMax(min, max);
             if (_alpha) {
-                _pixels[i + 3] = _pixels[i + 3] + this.#getRandom();
+                _pixels[i + 3] = _pixels[i + 3] + this.#randomMinMax(min, max);
             }
         }
         pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
@@ -507,44 +503,42 @@ class P5Grain {
      *******************/
 
     /**
-     * Prepares the random bounds based on the `randomMode`.
+     * Prepare the random mode.
      * 
      * @private
-     * @method prepareRandomBounds
+     * @method prepareRandomMode
      * 
-     * @param {Number} value
+     * @param {String} mode The mode in which the internal random function should operate.
      */
-    #prepareRandomBounds(value) {
-        switch (this.#randomMode) {
-            case 1: // int
-                const val = Math.round(value);
-                this.#randomBounds.min = Math.ceil(-val);
-                this.#randomBounds.max = Math.floor(val);
+    #prepareRandomMode(mode) {
+        switch (mode) {
+            case 'int':
+                this.#randomMode = 1;
+                this.#randomMinMax = this.#randomInt;
                 break;
-            // case 0: // float
-            default:
-                this.#randomBounds.min = -value;
-                this.#randomBounds.max = value;
+            case 'float':
+                this.#randomMode = 0;
+                this.#randomMinMax = this.#randomFloat;
                 break;
+            default: break;
         }
     }
 
     /**
-     * Generate a random number between the prepared bounds based on the `randomMode`.
+     * Prepare the random bounds based on the `randomMode`.
      * 
      * @private
-     * @method getRandom
+     * @method prepareRandomBounds
      * 
-     * @returns {Number}
+     * @param {Number} min The lower bounds.
+     * @param {Number} max The upper bounds.
+     * @param {Number} value
      */
-    #getRandom() {
-        switch (this.#randomMode) {
-            case 1: // int
-                return this.#randomInt();
-            // case 0: // float
-            default:
-                return this.#randomFloat();
+    #prepareRandomBounds(min, max) {
+        if (this.#randomMode == 1) { // randomInt
+            return { min: Math.ceil(min), max: Math.floor(max) };
         }
+        return { min, max }; // randomFloat
     }
 
     /**
@@ -553,12 +547,12 @@ class P5Grain {
      * @private
      * @method randomInt
      * 
+     * @param {Number} min The lower bounds.
+     * @param {Number} max The upper bounds.
      * @returns {Number}
      */
-    #randomInt() {
-        return Math.floor(
-            this.#random() * (this.#randomBounds.max - this.#randomBounds.min + 1) + this.#randomBounds.min
-        );
+    #randomInt(min, max) {
+        return Math.floor(this.#random() * (max - min + 1) + min);
     }
 
     /**
@@ -567,12 +561,12 @@ class P5Grain {
      * @private
      * @method randomFloat
      * 
+     * @param {Number} min The lower bounds.
+     * @param {Number} max The upper bounds.
      * @returns {Number}
      */
-    #randomFloat() {
-        return (
-            this.#random() * (this.#randomBounds.max - this.#randomBounds.min) + this.#randomBounds.min
-        );
+    #randomFloat(min, max) {
+        return this.#random() * (max - min) + min;
     }
 
 
