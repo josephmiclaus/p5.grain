@@ -148,7 +148,15 @@ class P5Grain {
                 _pixels[i + 3] = _pixels[i + 3] + grainAmount;
             }
         }
-        pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
+        if (pg) {
+            pg.updatePixels();
+        } else {
+            if (this.instance) {
+                this.instance.updatePixels();
+            } else {
+                updatePixels();
+            }
+        }
     }
 
     /**
@@ -201,7 +209,15 @@ class P5Grain {
                 _pixels[i + 3] = _pixels[i + 3] + this.#randomMinMax(min, max);
             }
         }
-        pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
+        if (pg) {
+            pg.updatePixels();
+        } else {
+            if (this.instance) {
+                this.instance.updatePixels();
+            } else {
+                updatePixels();
+            }
+        }
     }
 
     /**
@@ -244,16 +260,39 @@ class P5Grain {
         if (!this.#validateArguments('tinkerPixels', arguments)) return;
         /** @end */
         shouldUpdate = shouldUpdate !== false;
-        pg ? pg.loadPixels() : (this.instance ? this.instance.loadPixels() : loadPixels());
-        const density = pg ? pg.pixelDensity() : (this.instance ? this.instance.pixelDensity() : pixelDensity());
-        const _width = pg ? pg.width : (this.instance ? this.instance.width : width);
-        const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
+        let density, _width, _height;
+        if (pg) {
+            pg.loadPixels();
+            density = pg.pixelDensity();
+            _width = pg.width;
+            _height = pg.height;
+        } else {
+            if (this.instance) {
+                this.instance.loadPixels();
+                density = this.instance.pixelDensity();
+                _width = this.instance.width;
+                _height = this.instance.height;
+            } else {
+                loadPixels()
+                density = pixelDensity();
+                _width = width;
+                _height = height;
+            }
+        }
         const total = 4 * (_width * density) * (_height * density);
         for (let i = 0; i < total; i += 4) {
             callback(i, total);
         }
         if (shouldUpdate) {
-            pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
+            if (pg) {
+                pg.updatePixels();
+            } else {
+                if (this.instance) {
+                    this.instance.updatePixels();
+                } else {
+                    updatePixels();
+                }
+            }
         }
     }
 
@@ -357,10 +396,20 @@ class P5Grain {
         /** @end */
         // flag whether drawing onto an offset graphics buffer
         const isGraphicsBuffer = pg instanceof p5.Graphics;
-        // width of the canvas or context
-        const _width = isGraphicsBuffer ? pg.width : (this.instance ? this.instance.width : width);
-        // height of the canvas or context
-        const _height = isGraphicsBuffer ? pg.height : (this.instance ? this.instance.height : height);
+        // width and height of the canvas or context
+        let _width, _height;
+        if (isGraphicsBuffer) {
+            _width = pg.width;
+            _height = pg.height;
+        } else {
+            if (this.instance) {
+                _width = this.instance.width;
+                _height = this.instance.height;
+            } else {
+                _width = width;
+                _height = height;
+            }
+        }
         // blend mode used to blend the texture over the canvas or context
         const _mode = config && config.mode ? config.mode : (this.instance ? this.instance.MULTIPLY : MULTIPLY);
         // should reflect flag
@@ -400,7 +449,15 @@ class P5Grain {
         let tRowFirst = true;
         // flag that the first texture column is currently drawn
         let tColFirst = true;
-        pg ? pg.blendMode(_mode) : (this.instance ? this.instance.blendMode(_mode) : blendMode(_mode));
+        if (pg) {
+            pg.blendMode(_mode);
+        } else {
+            if (this.instance) {
+                this.instance.blendMode(_mode);
+            } else {
+                blendMode(_mode);
+            }
+        }
         while (tY < _height) {
             while (tX < _width) {
                 if (_reflect) {
@@ -488,9 +545,11 @@ class P5Grain {
             tRowFirst = !tRowFirst;
         }
         // reset blend mode
-        pg
-            ? pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
-            : (this.instance ? this.instance.blendMode(this.instance.BLEND) : blendMode(BLEND));
+        if (pg) {
+            pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
+        } else {
+            this.instance ? this.instance.blendMode(this.instance.BLEND) : blendMode(BLEND);
+        }
         // reset context
         if (isGraphicsBuffer) {
             pg.reset();
