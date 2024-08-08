@@ -86,8 +86,8 @@ Guidelines:
         ```
 6. **Testing and examples**
     * If it makes sense (e.g. you added a new technique), create a standalone example inside the `/examples` directory.
-       * If your technique supports cross-browser animation, enable it by default.
-       * Use the existing examples as orientation for your example.<br>*NOTE: Examples only showcase the simplest implementation of a technique.*
+       * If your technique supports cross-browser animation, disable it by default. Take an example from [texture-overlay-inside](./examples/texture-overlay-inside) on how animation should be enabled in the example.
+       * Use the existing examples as orientation for your example.*NOTE: Examples only showcase the simplest implementation of a technique.*
     * Test all examples to see if they still work as expected in all major desktop and mobile browsers (especially Safari).
         * If you cannot test your changes in some browsers or platforms, mention this in the respective issue or discussion so that somebody else can check this.
     * If necessary, update existing examples to reflect your changes.
