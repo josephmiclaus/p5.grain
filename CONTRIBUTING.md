@@ -232,9 +232,9 @@ By making a contribution to this project, I certify that:
 * [x] Add alias `loopPixels` for read-only mode (`v0.7.0`)
 * [x] Add support for instance mode (`v0.7.0`)
 * [x] Add support for `p5.Image` (`v0.8.0`)
-* [ ] Improve pixel manipulation technique performance
-* [ ] Implement JavaScript module syntax
+* [x] Improve pixel manipulation technique performance (`v0.8.0`)
 * [ ] Add possibility to use shaders
+* [ ] Implement JavaScript module syntax
 * [ ] Add possibility to build only specified functions to the minified version
 * [ ] Add npm scripts for Windows
 * [ ] Add npm scripts for Linux
