@@ -83,6 +83,9 @@ class P5Grain {
             }
             if (typeof config.instance === 'object') {
                 this.instance = config.instance;
+                if (this.instance !== null) {
+                    this.#random = this.instance.random;
+                }
             }
             /** @internal */
             if (typeof config.ignoreWarnings === 'boolean') {
@@ -92,8 +95,8 @@ class P5Grain {
                 this.ignoreErrors = config.ignoreErrors;
             } /** @end */
         }
-        if (typeof this.#random === 'undefined') {
-            this.#random = p5.prototype.random;
+        if (typeof this.#random === 'undefined' || this.instance === null) {
+            this.#random = random;
         }
     }
 
@@ -714,7 +717,7 @@ class P5Grain {
                             typeof args[0].instance !== 'undefined'
                             && typeof args[0].instance !== 'object'
                         ) {
-                            return this.#error(`The optional config.instance property passed to p5grain.${method}() must be of type object.`);
+                            return this.#error(`The optional config.instance property passed to p5grain.${method}() must be either of type object or null.`);
                         }
                     }
                     break;
