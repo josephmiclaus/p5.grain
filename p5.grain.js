@@ -18,12 +18,11 @@ class P5Grain {
     #random;
     #randomMinMax;
     #randomMode;
-    #textureAnimate;
     #textureOverlay;
+    #textureAnimate_frameCount = 0;
 
     constructor() {
         this.#prepareRandomMode('float');
-        this.#textureAnimate = { frameCount: 0 };
         this.#textureOverlay = { frameCount: 0, tX_anchor: 0, tX: 0, tY: 0 };
     }
 
@@ -347,8 +346,8 @@ class P5Grain {
         if (!this.#validateArguments('textureAnimate', arguments)) return;
         /** @end */
         const _atFrame = config && config.atFrame ? Math.round(config.atFrame) : 2;
-        this.#textureAnimate.frameCount += 1;
-        if (this.#textureAnimate.frameCount >= _atFrame) {
+        this.#textureAnimate_frameCount += 1;
+        if (this.#textureAnimate_frameCount >= _atFrame) {
             const _amount = config && config.amount
                 ? Math.round(config.amount)
                 : (this.instance ? Math.min(this.instance.width, this.instance.height) : Math.min(width, height));
@@ -365,7 +364,7 @@ class P5Grain {
             } else if (textureElement instanceof p5.Element) {
                 textureElement.style('background-position', bgPos);
             }
-            this.#textureAnimate.frameCount = 0;
+            this.#textureAnimate_frameCount = 0;
         }
     }
 
