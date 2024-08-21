@@ -18,12 +18,13 @@ class P5Grain {
     #random;
     #randomMinMax;
     #randomMode;
-    #textureOverlay;
     #textureAnimate_frameCount = 0;
+    #textureOverlay_frameCount = 0;
+    #textureOverlay_tX = 0;
+    #textureOverlay_tY = 0;
 
     constructor() {
         this.#prepareRandomMode('float');
-        this.#textureOverlay = { frameCount: 0, tX_anchor: 0, tX: 0, tY: 0 };
     }
 
     /**
@@ -434,19 +435,19 @@ class P5Grain {
         const tH = config && typeof config.height === 'number' ? config.height : textureImage.height;
         // animate the texture coordinates
         if (_animate) {
-            this.#textureOverlay.frameCount += 1;
-            if (this.#textureOverlay.frameCount >= _animateAtFrame) {
+            this.#textureOverlay_frameCount += 1;
+            if (this.#textureOverlay_frameCount >= _animateAtFrame) {
                 const tX_rand = this.#random() * _animateAmount;
                 const tY_rand = this.#random() * _animateAmount;
-                this.#textureOverlay.tX_anchor = -Math.floor(tX_rand);
-                this.#textureOverlay.tY = -Math.floor(tY_rand);
-                this.#textureOverlay.frameCount = 0;
+                this.#textureOverlay_tX = -Math.floor(tX_rand);
+                this.#textureOverlay_tY = -Math.floor(tY_rand);
+                this.#textureOverlay_frameCount = 0;
             }
         }
         // texture current start x-coordinate
-        let tX = this.#textureOverlay.tX_anchor;
+        let tX = this.#textureOverlay_tX;
         // texture current start y-coordinate
-        let tY = this.#textureOverlay.tY;
+        let tY = this.#textureOverlay_tY;
         // flag that the first texture row is currently drawn
         let tRowFirst = true;
         // flag that the first texture column is currently drawn
@@ -537,7 +538,7 @@ class P5Grain {
                 tX += tW;
                 if (tX >= _width) {
                     tColFirst = true;
-                    tX = this.#textureOverlay.tX_anchor;
+                    tX = this.#textureOverlay_tX;
                     tY += tH;
                     break;
                 } else {
