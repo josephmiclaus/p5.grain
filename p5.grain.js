@@ -351,7 +351,10 @@ class P5Grain {
         if (this.#textureAnimate_frameCount >= _atFrame) {
             const _amount = config && config.amount
                 ? Math.round(config.amount)
-                : (this.instance ? Math.min(this.instance.width, this.instance.height) : Math.min(width, height));
+                : (this.instance
+                    ? Math.min(this.instance.width, this.instance.height)
+                    : Math.min(width, height)
+                );
             const bgPosX_rand = this.#random() * _amount;
             const bgPosY_rand = this.#random() * _amount;
             const bgPosX = Math.floor(bgPosX_rand);
