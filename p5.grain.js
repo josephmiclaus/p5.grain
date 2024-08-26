@@ -457,12 +457,10 @@ class P5Grain {
         let tColFirst = true;
         if (pg) {
             pg.blendMode(_mode);
+        } else if (this.instance) {
+            this.instance.blendMode(_mode);
         } else {
-            if (this.instance) {
-                this.instance.blendMode(_mode);
-            } else {
-                blendMode(_mode);
-            }
+            blendMode(_mode);
         }
         while (tY < _height) {
             while (tX < _width) {
