@@ -8,7 +8,7 @@
 class P5Grain {
     version = '0.8.0';
 
-    instance;
+    #instance;
     /** @internal */
     ignoreWarnings = false;
     ignoreErrors = false;
@@ -66,7 +66,7 @@ class P5Grain {
      *     By default p5's random function is used.
      * @param {String} [config.randomMode] Specifies the mode of the internal random function.
      *     Either `float` for floating-point numbers or `int` for integers. (default: `float`)
-     * @param {Object} [config.instance] Reference to a p5.js instance.
+     * @param {p5} [config.instance] Reference to a p5 instance.
      * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings should be ignored. (default: `false`)
      * @param {Boolean} [config.ignoreErrors] Specifies whether errors should be ignored. (default: `false`)
      */
@@ -82,9 +82,9 @@ class P5Grain {
                 this.#prepareRandomMode(config.randomMode);
             }
             if (typeof config.instance === 'object') {
-                this.instance = config.instance;
-                if (this.instance !== null) {
-                    this.#random = this.instance.random;
+                this.#instance = config.instance;
+                if (this.#instance !== null) {
+                    this.#random = this.#instance.random;
                 }
             }
             /** @internal */
@@ -95,7 +95,7 @@ class P5Grain {
                 this.ignoreErrors = config.ignoreErrors;
             } /** @end */
         }
-        if (typeof this.#random === 'undefined' || this.instance === null) {
+        if (typeof this.#random === 'undefined' || this.#instance === null) {
             this.#random = random;
         }
     }
@@ -343,8 +343,8 @@ class P5Grain {
         if (this.#textureAnimate_frameCount >= _atFrame) {
             const _amount = config && config.amount
                 ? Math.round(config.amount)
-                : (this.instance
-                    ? Math.min(this.instance.width, this.instance.height)
+                : (this.#instance
+                    ? Math.min(this.#instance.width, this.#instance.height)
                     : Math.min(width, height)
                 );
             const bgPosX_rand = this.#random() * _amount;
@@ -400,16 +400,16 @@ class P5Grain {
             _width = pg.width;
             _height = pg.height;
         } else {
-            if (this.instance) {
-                _width = this.instance.width;
-                _height = this.instance.height;
+            if (this.#instance) {
+                _width = this.#instance.width;
+                _height = this.#instance.height;
             } else {
                 _width = width;
                 _height = height;
             }
         }
         // blend mode used to blend the texture over the canvas or context
-        const _mode = config && config.mode ? config.mode : (this.instance ? this.instance.MULTIPLY : MULTIPLY);
+        const _mode = config && config.mode ? config.mode : (this.#instance ? this.#instance.MULTIPLY : MULTIPLY);
         // should reflect flag
         const _reflect = config && config.reflect ? config.reflect : false;
         // should animate flag
@@ -449,8 +449,8 @@ class P5Grain {
         let tColFirst = true;
         if (pg) {
             pg.blendMode(_mode);
-        } else if (this.instance) {
-            this.instance.blendMode(_mode);
+        } else if (this.#instance) {
+            this.#instance.blendMode(_mode);
         } else {
             blendMode(_mode);
         }
@@ -458,24 +458,24 @@ class P5Grain {
             while (tX < _width) {
                 if (_reflect) {
                     if (!isGraphicsBuffer) {
-                        this.instance ? this.instance.push() : push();
+                        this.#instance ? this.#instance.push() : push();
                     } else {
                         pg.push();
                     }
                     if (tRowFirst) {
                         if (tColFirst) {
                             if (!isGraphicsBuffer) {
-                                this.instance
-                                    ? this.instance.image(textureImage, tX, tY, tW, tH)
+                                this.#instance
+                                    ? this.#instance.image(textureImage, tX, tY, tW, tH)
                                     : image(textureImage, tX, tY, tW, tH);
                             } else {
                                 pg.image(textureImage, tX, tY, tW, tH);
                             }
                         } else { // tColSecond
                             if (!isGraphicsBuffer) {
-                                if (this.instance) {
-                                    this.instance.scale(-1, 1);
-                                    this.instance.image(textureImage, -tX, tY, -tW, tH)
+                                if (this.#instance) {
+                                    this.#instance.scale(-1, 1);
+                                    this.#instance.image(textureImage, -tX, tY, -tW, tH)
                                 } else {
                                     scale(-1, 1);
                                     image(textureImage, -tX, tY, -tW, tH);
@@ -488,9 +488,9 @@ class P5Grain {
                     } else { // tRowSecond
                         if (tColFirst) {
                             if (!isGraphicsBuffer) {
-                                if (this.instance) {
-                                    this.instance.scale(1, -1);
-                                    this.instance.image(textureImage, tX, -tY, tW, -tH);
+                                if (this.#instance) {
+                                    this.#instance.scale(1, -1);
+                                    this.#instance.image(textureImage, tX, -tY, tW, -tH);
                                 } else {
                                     scale(1, -1);
                                     image(textureImage, tX, -tY, tW, -tH);
@@ -501,9 +501,9 @@ class P5Grain {
                             }
                         } else { // tColSecond
                             if (!isGraphicsBuffer) {
-                                if (this.instance) {
-                                    this.instance.scale(-1, -1);
-                                    this.instance.image(textureImage, -tX, -tY, -tW, -tH);
+                                if (this.#instance) {
+                                    this.#instance.scale(-1, -1);
+                                    this.#instance.image(textureImage, -tX, -tY, -tW, -tH);
                                 } else {
                                     scale(-1, -1);
                                     image(textureImage, -tX, -tY, -tW, -tH);
@@ -515,14 +515,14 @@ class P5Grain {
                         }
                     }
                     if (!isGraphicsBuffer) {
-                        this.instance ? this.instance.pop() : pop();
+                        this.#instance ? this.#instance.pop() : pop();
                     } else {
                         pg.pop();
                     }
                 } else {
                     if (!isGraphicsBuffer) {
-                        this.instance
-                            ? this.instance.image(textureImage, tX, tY, tW, tH)
+                        this.#instance
+                            ? this.#instance.image(textureImage, tX, tY, tW, tH)
                             : image(textureImage, tX, tY, tW, tH);
                     } else {
                         pg.image(textureImage, tX, tY, tW, tH);
@@ -542,9 +542,9 @@ class P5Grain {
         }
         // reset blend mode
         if (pg) {
-            pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
-        } else if (this.instance) {
-            this.instance.blendMode(this.instance.BLEND);
+            pg.blendMode(this.#instance ? this.#instance.BLEND : BLEND)
+        } else if (this.#instance) {
+            this.#instance.blendMode(this.#instance.BLEND);
         } else {
             blendMode(BLEND);
         }
@@ -637,8 +637,8 @@ class P5Grain {
     #updatePixels(pg) {
         if (pg) {
             pg.updatePixels();
-        } else if (this.instance) {
-            this.instance.updatePixels();
+        } else if (this.#instance) {
+            this.#instance.updatePixels();
         } else {
             updatePixels();
         }
