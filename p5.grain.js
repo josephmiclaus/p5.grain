@@ -634,6 +634,24 @@ class P5Grain {
         return this.#random() * (max - min) + min;
     }
 
+    /**
+     * Updates the pixels at the appropriate source (global cointext, offscreen buffer, instance).
+     * 
+     * @private
+     * @method updatePixels
+     * 
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be updated.
+     */
+    #updatePixels(pg) {
+        if (pg) {
+            pg.updatePixels();
+        } else if (this.instance) {
+            this.instance.updatePixels();
+        } else {
+            updatePixels();
+        }
+    }
+
 
     /********************
      * Internal methods *
