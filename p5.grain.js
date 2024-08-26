@@ -357,8 +357,8 @@ class P5Grain {
                 );
             const bgPosX_rand = this.#random() * _amount;
             const bgPosY_rand = this.#random() * _amount;
-            const bgPosX = Math.floor(bgPosX_rand);
-            const bgPosY = Math.floor(bgPosY_rand);
+            const bgPosX = Math.trunc(bgPosX_rand);
+            const bgPosY = Math.trunc(bgPosY_rand);
             const bgPos = `${bgPosX}px ${bgPosY}px`;
             if (textureElement instanceof HTMLElement) {
                 textureElement.style.backgroundPosition = bgPos;
