@@ -442,8 +442,8 @@ class P5Grain {
             if (this.#textureOverlay_frameCount >= _animateAtFrame) {
                 const tX_rand = this.#random() * _animateAmount;
                 const tY_rand = this.#random() * _animateAmount;
-                this.#textureOverlay_tX = -Math.floor(tX_rand);
-                this.#textureOverlay_tY = -Math.floor(tY_rand);
+                this.#textureOverlay_tX = -Math.trunc(tX_rand);
+                this.#textureOverlay_tY = -Math.trunc(tY_rand);
                 this.#textureOverlay_frameCount = 0;
             }
         }
