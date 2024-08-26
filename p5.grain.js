@@ -287,15 +287,7 @@ class P5Grain {
             callback(i, total);
         }
         if (shouldUpdate) {
-            if (pg) {
-                pg.updatePixels();
-            } else {
-                if (this.instance) {
-                    this.instance.updatePixels();
-                } else {
-                    updatePixels();
-                }
-            }
+            this.#updatePixels(pg);
         }
     }
 
