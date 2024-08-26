@@ -553,8 +553,10 @@ class P5Grain {
         // reset blend mode
         if (pg) {
             pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
+        } else if (this.instance) {
+            this.instance.blendMode(this.instance.BLEND);
         } else {
-            this.instance ? this.instance.blendMode(this.instance.BLEND) : blendMode(BLEND);
+            blendMode(BLEND);
         }
         // reset context
         if (isGraphicsBuffer) {
