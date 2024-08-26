@@ -589,13 +589,13 @@ class P5Grain {
      * 
      * @param {Number} min The lower bounds.
      * @param {Number} max The upper bounds.
-     * @param {Number} value
+     * @returns {Array}
      */
     #prepareRandomBounds(min, max) {
         if (this.#randomMode == 1) { // randomInt
-            return { min: Math.ceil(min), max: Math.floor(max) };
+            return [Math.ceil(min), Math.floor(max)];
         }
-        return { min, max }; // randomFloat
+        return [min, max]; // randomFloat
     }
 
     /**
