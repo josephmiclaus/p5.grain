@@ -5,7 +5,7 @@ p5.grain is a [p5.js](https://github.com/processing/p5.js) library for convenien
 
 Ideal for deterministic generative artworks, p5.grain ensures consistent film grain effects with each reload. It's perfect for platforms like [fxhash](https://www.fxhash.xyz), where generative artworks should use a deterministic approach to randomness.
 
-The initial release of the library was accompanied by the article "[All About That Grain](https://www.fxhash.xyz/article/all-about-that-grain)" co-authored by [Gorilla Sun](https://x.com/gorillasu) and [meezwhite](https://x.com/meezwhite). Since then, p5.grain has been regularly updated to further enhance its functionality, performance and ease of use.
+The initial release of the library was accompanied by the article "[All About That Grain](https://www.fxhash.xyz/article/all-about-that-grain)" co-authored by [Gorilla Sun](https://x.com/gorillasu) and [Joseph Miclaus](https://x.com/josephmiclaus). Since then, p5.grain has been regularly updated to further enhance its functionality, performance and ease of use.
 
 
 <a id="table_of_contents"></a>
@@ -32,7 +32,7 @@ The initial release of the library was accompanied by the article "[All About Th
 <a id="getting_started"></a>
 
 ## Getting started
-Download the latest version from [Releases](https://github.com/meezwhite/p5.grain/releases) and embed `p5.grain.js` (~42 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
+Download the latest version from [Releases](https://github.com/josephmiclaus/p5.grain/releases) and embed `p5.grain.js` (~42 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
 
 ```html
 <script src="./lib/p5.min.js"></script>
@@ -532,8 +532,8 @@ Animate the given texture element by randomly shifting its background position.
 
 If you need help or have questions about using p5.grain, you can find support through the following channels:
 
-1. **GitHub Discussions**: Join the conversation and ask questions in the [Q&A section](https://github.com/meezwhite/p5.grain/discussions/categories/q-a)
-2. **Direct Message on X (Twitter)**: Feel free to DM [@meezwhite](https://x.com/meezwhite)
+1. **GitHub Discussions**: Join the conversation and ask questions in the [Q&A section](https://github.com/josephmiclaus/p5.grain/discussions/categories/q-a)
+2. **Direct Message on X (formerly Twitter)**: Feel free to DM [@josephmiclaus](https://x.com/josephmiclaus)
 
 
 <a id="contributing"></a>

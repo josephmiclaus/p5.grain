@@ -20,11 +20,11 @@ Let's keep p5.grain open and inclusive. Please read and follow our [Code of Cond
 
 ## Support Questions
 
-For general support questions, check out the [Q&A section](https://github.com/meezwhite/p5.grain/discussions/categories/q-a) in Discussions.
+For general support questions, check out the [Q&A section](https://github.com/josephmiclaus/p5.grain/discussions/categories/q-a) in Discussions.
 
 ## Issues and Bugs
 
-If you find a bug in the source code or a mistake in the documentation, you can help by [submitting an issue](https://github.com/meezwhite/p5.grain/issues).
+If you find a bug in the source code or a mistake in the documentation, you can help by [submitting an issue](https://github.com/josephmiclaus/p5.grain/issues).
 
 Guidelines:
 
@@ -34,7 +34,7 @@ Guidelines:
 
 ## Feature Requests
 
-You can request a new feature by starting a discussion in the [Ideas section](https://github.com/meezwhite/p5.grain/discussions/categories/ideas) in Discussions.
+You can request a new feature by starting a discussion in the [Ideas section](https://github.com/josephmiclaus/p5.grain/discussions/categories/ideas) in Discussions.
 
 Guidelines:
 
@@ -58,7 +58,7 @@ Guidelines:
     # Navigate to the newly cloned directory
     cd p5.grain
     # Assign the original repository to a remote called upstream
-    git remote add upstream https://github.com/meezwhite/p5.grain
+    git remote add upstream https://github.com/josephmiclaus/p5.grain
     # Install dependencies
     npm i
     ```

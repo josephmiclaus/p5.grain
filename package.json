@@ -2,7 +2,7 @@
   "name": "p5.grain",
   "version": "0.8.0",
   "description": "p5.grain is a p5.js library for conveniently applying grain and texture overlays to artworks.",
-  "author": "meezwhite",
+  "author": "Joseph Miclaus",
   "license": "MIT",
   "main": "p5.grain.js",
   "directories": {
@@ -31,12 +31,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meezwhite/p5.grain.git"
+    "url": "git+https://github.com/josephmiclaus/p5.grain.git"
   },
   "bugs": {
-    "url": "https://github.com/meezwhite/p5.grain/issues"
+    "url": "https://github.com/josephmiclaus/p5.grain/issues"
   },
-  "homepage": "https://github.com/meezwhite/p5.grain",
+  "homepage": "https://github.com/josephmiclaus/p5.grain",
   "devDependencies": {
     "minify": "^9.2.0"
   }

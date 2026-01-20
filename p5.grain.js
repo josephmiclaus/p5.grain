@@ -3,7 +3,7 @@
  * 
  * @version 0.8.0
  * @license MIT
- * @copyright meezwhite, Gorilla Sun
+ * @copyright Joseph Miclaus, Gorilla Sun
  */
 class P5Grain {
     version = '0.8.0';
