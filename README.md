@@ -32,7 +32,7 @@ The initial release of the library was accompanied by the article "[All About Th
 <a id="getting_started"></a>
 
 ## Getting started
-Download the latest version from [Releases](https://github.com/josephmiclaus/p5.grain/releases) and embed `p5.grain.js` (~42 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
+Download the latest version from [Releases](https://github.com/josephmiclaus/p5.grain/releases) and embed `p5.grain.js` (~46 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
 
 ```html
 <script src="./lib/p5.min.js"></script>
@@ -52,7 +52,7 @@ The unminified version `p5.grain.js` is primarily meant for when you are working
 
 | File              | Size    | Purpose     | Errors & Warnings       |
 | ----------------- | ------- | ----------- | ----------------------- |
-| `p5.grain.js`     | ~ 42 KB | development | Yes (can be turned off) |
+| `p5.grain.js`     | ~ 46 KB | development | Yes (can be turned off) |
 | `p5.grain.min.js` | ~ 6 KB  | production  | No                      |
 
 [Go to top ⬆](#top)
