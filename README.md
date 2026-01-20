@@ -91,38 +91,40 @@ function setup() {
 <summary><strong>Deterministic setup (fxhash)</strong></summary>
 <br>Use this setup when using p5.grain for fxhash generative projects.
 <br><br>
-If you're unsure how to correctly use randomness for fxhash projects, we recommend reading the "<a href="https://docs.fxhash.xyz/using-randomness-correctly">Use Randomness Correctly</a>" guide in the fxhash documentation first.
+If you're unsure how to correctly use randomness for fxhash projects, we recommend reading the "<a href="https://docs.fxhash.xyz/creating-on-fxhash/genart-in-the-browser/deterministic-randomness">Deterministic Randomness</a>" guide in the fxhash documentation first.
 
-#### Method 1: Using `fxrand` for randomness (recommended)
+#### Method 1: Using `$fx.rand()` for randomness (recommended)
 
-In most cases, you will use `fxrand` as the *single* source of randomness for your generative project. In this case, you simply have to configure p5.grain to also use `fxrand` as the underlying source of randomness:
+In most cases, you will use `$fx.rand()` as the *single* source of randomness for your generative project. In this case, you simply have to configure p5.grain to also use `$fx.rand()` as the underlying source of randomness:
 
 ```js
 function setup() {
-    p5grain.setup({ random: fxrand });
+    p5grain.setup({ random: $fx.rand });
 
-    // Use `fxrand()` for all randomness in your project.
+    // Use `$fx.rand()` for all randomness in your fxhash project.
 }
 ```
 
-*Note: You can also use `$fx.rand` instead of `fxrand` for consistency across your code. Please refer to the [fxhash API reference](https://docs.fxhash.xyz/api-reference) for further information.*
+*Note: Please refer to the [fxhash API reference](https://docs.fxhash.xyz/creating-on-fxhash/fxhash-api/api-reference) for further information.*
 
 #### Method 2: Using p5's `random` for randomness
 
-Although this method is not used that often for fxhash projects, you can use p5's `random` function as the *single* source of randomness for your generative project too. To achieve this, you'll need to use `fxrand` *once* to generate an initial deterministic number for computing the seed value for `random`. 
+Although this method is not used that often for fxhash projects, you can use p5's `random` function as the *single* source of randomness for your generative project too. To achieve this, you'll need to use `$fx.rand()` *once* to generate an initial deterministic number for computing the seed value for `random`. 
 
-In the example below, a seed value is computed by multiplying `fxrand` with a number of your choice. In this case, 1<sup>6</sup> (one million) is used, but you can choose any number you like:
+In the example below, a seed value is computed by multiplying `$fx.rand()` with a number of your choice. In this case, 1<sup>6</sup> (one million) is used, but you can choose any number you like:
 
 ```js
 function setup() {
-    randomSeed(fxrand() * 1e6);
+    randomSeed($fx.rand() * 1e6);
+    // noiseSeed($fx.rand() * 1e6); // <-- when using noise()
+
     p5grain.setup();
 
-    // Use `random()` for all randomness in your project.
+    // Now you can use `random()` for all randomness in your project, but it's still recommended that you stick to `$fx.rand()`.
 }
 ```
 
-*Note: You can also use `$fx.rand` instead of `fxrand` for consistency across your code. Please refer to the [fxhash API reference](https://docs.fxhash.xyz/api-reference) for further information.*
+*Note: Please refer to the [fxhash API reference](https://docs.fxhash.xyz/creating-on-fxhash/fxhash-api/api-reference) for further information.*
 
 </details>
 
@@ -358,7 +360,7 @@ Setup and configure p5.grain features.
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `config` | `Object` | (optional) Config object to configure p5grain features. |
-| `config.random` | `function` | (optional) The random function that should be used for e.g. pixel manipulation, texture animation, etc. Here you could use a custom deterministic random function (e.g. fxrand). (default: p5's `random` function) |
+| `config.random` | `function` | (optional) The random function that should be used for e.g. pixel manipulation, texture animation, etc. Here you could use a custom deterministic random function (e.g. `$fx.rand()`). (default: p5's `random` function) |
 | `config.randomMode` | `String` | (optional) Specifies the mode of the internal random function. Either `float` for floating-point numbers or `int` for integers. (default: `float`) |
 | `config.instance` | `Object` | (optional) Reference to a p5.js instance. Read how to use p5.grain with p5.js instance mode [here](#global-and-instance-mode). |
 | `config.ignoreWarnings` | `Boolean` | (optional) Specifies whether warnings should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
@@ -369,11 +371,11 @@ Setup and configure p5.grain features.
 
 #### Custom random function
 
-Configure p5.grain to use `fxrand` as the internal random function:
+Configure p5.grain to use `$fx.rand()` as the internal random function:
 
 ```js
 function setup() {
-    p5grain.setup({ random: fxrand });
+    p5grain.setup({ random: $fx.rand });
 }
 ```
 
