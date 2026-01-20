@@ -128,36 +128,22 @@ class P5Grain {
         const pixels = this.#pixels;
         const pixelsLength = pixels.length;
         let offset, r, g, b, a;
-        if (!shouldUpdateAlpha) {
-            for (let i = 0; i < pixelsLength; i++) {
-                offset = this.#randomMinMax(min, max);
-                // Destructure the current 32-bit pixel value into its RGB components
-                r = pixels[i] & 0xff;
-                g = (pixels[i] >> 8) & 0xff;
-                b = (pixels[i] >> 16) & 0xff;
-                // Clamp the RGB components between 0 and 255
-                r = Math.max(0, Math.min(255, r + offset));
-                g = Math.max(0, Math.min(255, g + offset));
-                b = Math.max(0, Math.min(255, b + offset));
-                // Constructs a 32-bit pixel value from RGB components.
-                pixels[i] = (0xff << 24) | (b << 16) | (g << 8) | r;
-            }
-        } else {
-            for (let i = 0; i < pixelsLength; i++) {
-                offset = this.#randomMinMax(min, max);
-                // Destructure the current 32-bit pixel value into its RGBA components
-                r = pixels[i] & 0xff;
-                g = (pixels[i] >> 8) & 0xff;
-                b = (pixels[i] >> 16) & 0xff;
-                a = (pixels[i] >> 24) & 0xff;
-                // Clamp the RGBA components between 0 and 255
-                r = Math.max(0, Math.min(255, r + offset));
-                g = Math.max(0, Math.min(255, g + offset));
-                b = Math.max(0, Math.min(255, b + offset));
+        for (let i = 0; i < pixelsLength; i++) {
+            offset = this.#randomMinMax(min, max);
+            // Destructure the current 32-bit pixel value into its RGBA components
+            r = pixels[i] & 0xff;
+            g = (pixels[i] >> 8) & 0xff;
+            b = (pixels[i] >> 16) & 0xff;
+            a = (pixels[i] >> 24) & 0xff;
+            // Clamp the RGBA components between 0 and 255
+            r = Math.max(0, Math.min(255, r + offset));
+            g = Math.max(0, Math.min(255, g + offset));
+            b = Math.max(0, Math.min(255, b + offset));
+            if (shouldUpdateAlpha) {
                 a = Math.max(0, Math.min(255, a + offset));
-                // Constructs a 32-bit pixel value from RGBA components.
-                pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
             }
+            // Constructs a 32-bit pixel value from RGBA components.
+            pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
         }
         this.#updatePixels(pg);
     }
@@ -184,36 +170,22 @@ class P5Grain {
         const [min, max] = this.#prepareRandomBounds(-amount, amount);
         const pixels = this.#pixels;
         const pixelsLength = pixels.length;
-        if (!shouldUpdateAlpha) {
-            let r, g, b;
-            for (let i = 0; i < pixelsLength; i++) {
-                // Destructure the current 32-bit pixel value into its RGB components
-                r = pixels[i] & 0xff;
-                g = (pixels[i] >> 8) & 0xff;
-                b = (pixels[i] >> 16) & 0xff;
-                // Clamp the RGB components between 0 and 255
-                r = Math.max(0, Math.min(255, r + this.#randomMinMax(min, max)));
-                g = Math.max(0, Math.min(255, g + this.#randomMinMax(min, max)));
-                b = Math.max(0, Math.min(255, b + this.#randomMinMax(min, max)));
-                // Constructs a 32-bit pixel value from RGB components.
-                pixels[i] = (0xff << 24) | (b << 16) | (g << 8) | r;
-            }
-        } else {
-            let r, g, b, a;
-            for (let i = 0; i < pixelsLength; i++) {
-                // Destructure the current 32-bit pixel value into its RGBA components
-                r = pixels[i] & 0xff;
-                g = (pixels[i] >> 8) & 0xff;
-                b = (pixels[i] >> 16) & 0xff;
-                a = (pixels[i] >> 24) & 0xff;
-                // Clamp the RGBA components between 0 and 255
-                r = Math.max(0, Math.min(255, r + this.#randomMinMax(min, max)));
-                g = Math.max(0, Math.min(255, g + this.#randomMinMax(min, max)));
-                b = Math.max(0, Math.min(255, b + this.#randomMinMax(min, max)));
+        let r, g, b, a;
+        for (let i = 0; i < pixelsLength; i++) {
+            // Destructure the current 32-bit pixel value into its RGBA components
+            r = pixels[i] & 0xff;
+            g = (pixels[i] >> 8) & 0xff;
+            b = (pixels[i] >> 16) & 0xff;
+            a = (pixels[i] >> 24) & 0xff;
+            // Clamp the RGBA components between 0 and 255
+            r = Math.max(0, Math.min(255, r + this.#randomMinMax(min, max)));
+            g = Math.max(0, Math.min(255, g + this.#randomMinMax(min, max)));
+            b = Math.max(0, Math.min(255, b + this.#randomMinMax(min, max)));
+            if (shouldUpdateAlpha) {
                 a = Math.max(0, Math.min(255, a + this.#randomMinMax(min, max)));
-                // Constructs a 32-bit pixel value from RGBA components.
-                pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
             }
+            // Constructs a 32-bit pixel value from RGBA components.
+            pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
         }
         this.#updatePixels(pg);
     }
