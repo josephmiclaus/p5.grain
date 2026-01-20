@@ -492,7 +492,7 @@ The texture is repeated along the horizontal and vertical axes to cover the enti
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `texture` | `p5.Image` | The texture image to blend over. |
+| `texture` | `p5.Image\|p5.Graphics` | The texture image to blend over. |
 | `config` | `Object` | (optional) Config object to configure the texture overlay. |
 | `config.width` | `Number` | (optional) The width the texture image should have. (default: `textureImage.width`) |
 | `config.height` | `Number` | (optional) The height the texture image should have. (default: `textureImage.height`) |
