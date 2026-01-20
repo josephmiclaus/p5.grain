@@ -341,8 +341,8 @@ p5.grain exposes the following properties and functions:
 | Method | Description |
 | --- | --- |
 | `setup([config])` | Setup and configure p5.grain features. |
-| `applyMonochromaticGrain(amount, [alpha], [pg])` | Apply monochromatic grain. |
-| `applyChromaticGrain(amount, [alpha], [pg])` | Apply chromatic grain. |
+| `applyMonochromaticGrain(amount, [shouldUpdateAlpha], [pg])` | Apply monochromatic grain. |
+| `applyChromaticGrain(amount, [shouldUpdateAlpha], [pg])` | Apply chromatic grain. |
 | `tinkerPixels(callback, [shouldUpdate], [pg])` | Loop through pixels and call the given callback function for every pixel. Pixels are manipulated depending on the given callback function, unless read-only mode is enabled. |
 | `loopPixels(callback, [pg])` | Loop through pixels and call the given callback function for every pixel without updating them (read-only mode). |
 | `textureOverlay(textureImage, config)` | Blend the given texture image onto the canvas. The texture is repeated along the horizontal and vertical axes to cover the entire canvas or context. |
@@ -415,7 +415,7 @@ function setup() {
 
 [Go to top ⬆](#top)
 
-### `applyMonochromaticGrain(amount, [alpha], [pg])`
+### `applyMonochromaticGrain(amount, [shouldUpdateAlpha], [pg])`
 
 Apply monochromatic grain.
 
@@ -424,13 +424,13 @@ This function generates one random value per pixel. The random value ranges from
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
-| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
-| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer or image whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyMonochromaticGrain(amount, alpha)`. Only in case `p5.Image.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, alpha, img)`.* |
+| `shouldUpdateAlpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
+| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer or image whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyMonochromaticGrain(amount, shouldUpdateAlpha)`. Only in case `p5.Graphics.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyMonochromaticGrain(amount, shouldUpdateAlpha)`. Only in case `p5.Image.applyMonochromaticGrain` could not be registered, use the alternative syntax `p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, img)`.* |
 
 [Go to top ⬆](#top)
 
 
-### `applyChromaticGrain(amount, [alpha], [pg])`
+### `applyChromaticGrain(amount, [shouldUpdateAlpha], [pg])`
 
 Apply chromatic grain.
 
@@ -439,8 +439,8 @@ This function generates one random value per pixel channel. The random values ra
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `amount` | `Number` | The amount of granularity that should be applied. |
-| `alpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
-| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyChromaticGrain(amount, alpha)`. Only in case `p5.Graphics.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyChromaticGrain(amount, alpha)`. Only in case `p5.Image.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, alpha, img)`.* |
+| `shouldUpdateAlpha` | `Boolean` | (optional) Specifies whether the alpha channel should also be modified. (default: `false`)<br><br>*Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.* |
+| `pg\|img` | `p5.Graphics\|p5.Image` | (optional) The offscreen graphics buffer whose pixels should be manipulated.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.applyChromaticGrain(amount, shouldUpdateAlpha)`. Only in case `p5.Graphics.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, pg)`.*<br><br>*Note: When using an image, use the usual syntax `img.applyChromaticGrain(amount, shouldUpdateAlpha)`. Only in case `p5.Image.applyChromaticGrain` could not be registered, use the alternative syntax `p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, img)`.* |
 
 [Go to top ⬆](#top)
 
