@@ -277,8 +277,9 @@ class P5Grain {
                 _height = height;
             }
         }
-        const total = 4 * (_width * density) * (_height * density);
-        for (let i = 0; i < total; i += 4) {
+        const channels = 4;
+        const total = channels * (_width * density) * (_height * density);
+        for (let i = 0; i < total; i += channels) {
             callback(i, total);
         }
         if (shouldUpdate) {
