@@ -18,6 +18,11 @@ class P5Grain {
     #random;
     #randomMinMax;
     #randomMode;
+    #pixels;
+    #pixelsCount;
+    #contextWidth;
+    #contextHeight;
+    #contextDensity;
     #textureAnimate_frameCount = 0;
     #textureOverlay_frameCount = 0;
     #textureOverlay_tX = 0;
@@ -109,57 +114,52 @@ class P5Grain {
      * @method applyMonochromaticGrain
      * 
      * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should also be modified. (default: `false`)
+     * @param {Boolean} [shouldUpdateAlpha] Specifies whether the alpha channel should also be modified. (default: `false`)
      *     Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
      * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
-    applyMonochromaticGrain(amount, alpha, pg) {
+    applyMonochromaticGrain(amount, shouldUpdateAlpha, pg) {
         /** @internal */
         if (!this.#validateArguments('applyMonochromaticGrain', arguments)) return;
         /** @end */
-        const _alpha = alpha || false;
-        let density, _width, _height, _pixels;
-        if (pg) {
-            pg.loadPixels();
-            density = pg.pixelDensity();
-            _width = pg.width;
-            _height = pg.height;
-            _pixels = pg.pixels;
+        shouldUpdateAlpha = shouldUpdateAlpha || false;
+        this.#loadPixels(pg);
+        const [min, max] = this.#prepareRandomBounds(-amount, amount);
+        const pixels = this.#pixels;
+        const pixelsLength = pixels.length;
+        let offset, r, g, b, a;
+        if (!shouldUpdateAlpha) {
+            for (let i = 0; i < pixelsLength; i++) {
+                offset = this.#randomMinMax(min, max);
+                // Destructure the current 32-bit pixel value into its RGB components
+                r = pixels[i] & 0xff;
+                g = (pixels[i] >> 8) & 0xff;
+                b = (pixels[i] >> 16) & 0xff;
+                // Clamp the RGB components between 0 and 255
+                r = Math.max(0, Math.min(255, r + offset));
+                g = Math.max(0, Math.min(255, g + offset));
+                b = Math.max(0, Math.min(255, b + offset));
+                // Constructs a 32-bit pixel value from RGB components.
+                pixels[i] = (0xff << 24) | (b << 16) | (g << 8) | r;
+            }
         } else {
-            if (this.instance) {
-                this.instance.loadPixels();
-                density = this.instance.pixelDensity();
-                _width = this.instance.width;
-                _height = this.instance.height;
-                _pixels = this.instance.pixels;
-            } else {
-                loadPixels();
-                density = pixelDensity();
-                _width = width;
-                _height = height;
-                _pixels = pixels;
+            for (let i = 0; i < pixelsLength; i++) {
+                offset = this.#randomMinMax(min, max);
+                // Destructure the current 32-bit pixel value into its RGBA components
+                r = pixels[i] & 0xff;
+                g = (pixels[i] >> 8) & 0xff;
+                b = (pixels[i] >> 16) & 0xff;
+                a = (pixels[i] >> 24) & 0xff;
+                // Clamp the RGBA components between 0 and 255
+                r = Math.max(0, Math.min(255, r + offset));
+                g = Math.max(0, Math.min(255, g + offset));
+                b = Math.max(0, Math.min(255, b + offset));
+                a = Math.max(0, Math.min(255, a + offset));
+                // Constructs a 32-bit pixel value from RGBA components.
+                pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
             }
         }
-        const total = 4 * (_width * density) * (_height * density);
-        const { min, max } = this.#prepareRandomBounds(-amount, amount);
-        for (let i = 0; i < total; i += 4) {
-            const grainAmount = this.#randomMinMax(min, max);
-            _pixels[i] = _pixels[i] + grainAmount;
-            _pixels[i + 1] = _pixels[i + 1] + grainAmount;
-            _pixels[i + 2] = _pixels[i + 2] + grainAmount;
-            if (_alpha) {
-                _pixels[i + 3] = _pixels[i + 3] + grainAmount;
-            }
-        }
-        if (pg) {
-            pg.updatePixels();
-        } else {
-            if (this.instance) {
-                this.instance.updatePixels();
-            } else {
-                updatePixels();
-            }
-        }
+        this.#updatePixels(pg);
     }
 
     /**
@@ -171,56 +171,51 @@ class P5Grain {
      * @method applyChromaticGrain
      * 
      * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should also be modified. (default: `false`)
+     * @param {Boolean} [shouldUpdateAlpha] Specifies whether the alpha channel should also be modified. (default: `false`)
      *     Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
      * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
-    applyChromaticGrain(amount, alpha, pg) {
+    applyChromaticGrain(amount, shouldUpdateAlpha, pg) {
         /** @internal */
         if (!this.#validateArguments('applyChromaticGrain', arguments)) return;
         /** @end */
-        const _alpha = alpha || false;
-        let density, _width, _height, _pixels;
-        if (pg) {
-            pg.loadPixels();
-            density = pg.pixelDensity();
-            _width = pg.width;
-            _height = pg.height;
-            _pixels = pg.pixels;
+        shouldUpdateAlpha = shouldUpdateAlpha || false;
+        this.#loadPixels(pg);
+        const [min, max] = this.#prepareRandomBounds(-amount, amount);
+        const pixels = this.#pixels;
+        const pixelsLength = pixels.length;
+        if (!shouldUpdateAlpha) {
+            let r, g, b;
+            for (let i = 0; i < pixelsLength; i++) {
+                // Destructure the current 32-bit pixel value into its RGB components
+                r = pixels[i] & 0xff;
+                g = (pixels[i] >> 8) & 0xff;
+                b = (pixels[i] >> 16) & 0xff;
+                // Clamp the RGB components between 0 and 255
+                r = Math.max(0, Math.min(255, r + this.#randomMinMax(min, max)));
+                g = Math.max(0, Math.min(255, g + this.#randomMinMax(min, max)));
+                b = Math.max(0, Math.min(255, b + this.#randomMinMax(min, max)));
+                // Constructs a 32-bit pixel value from RGB components.
+                pixels[i] = (0xff << 24) | (b << 16) | (g << 8) | r;
+            }
         } else {
-            if (this.instance) {
-                this.instance.loadPixels();
-                density = this.instance.pixelDensity();
-                _width = this.instance.width;
-                _height = this.instance.height;
-                _pixels = this.instance.pixels;
-            } else {
-                loadPixels();
-                density = pixelDensity();
-                _width = width;
-                _height = height;
-                _pixels = pixels;
+            let r, g, b, a;
+            for (let i = 0; i < pixelsLength; i++) {
+                // Destructure the current 32-bit pixel value into its RGBA components
+                r = pixels[i] & 0xff;
+                g = (pixels[i] >> 8) & 0xff;
+                b = (pixels[i] >> 16) & 0xff;
+                a = (pixels[i] >> 24) & 0xff;
+                // Clamp the RGBA components between 0 and 255
+                r = Math.max(0, Math.min(255, r + this.#randomMinMax(min, max)));
+                g = Math.max(0, Math.min(255, g + this.#randomMinMax(min, max)));
+                b = Math.max(0, Math.min(255, b + this.#randomMinMax(min, max)));
+                a = Math.max(0, Math.min(255, a + this.#randomMinMax(min, max)));
+                // Constructs a 32-bit pixel value from RGBA components.
+                pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
             }
         }
-        const total = 4 * (_width * density) * (_height * density);
-        const { min, max } = this.#prepareRandomBounds(-amount, amount);
-        for (let i = 0; i < total; i += 4) {
-            _pixels[i] = _pixels[i] + this.#randomMinMax(min, max);
-            _pixels[i + 1] = _pixels[i + 1] + this.#randomMinMax(min, max);
-            _pixels[i + 2] = _pixels[i + 2] + this.#randomMinMax(min, max);
-            if (_alpha) {
-                _pixels[i + 3] = _pixels[i + 3] + this.#randomMinMax(min, max);
-            }
-        }
-        if (pg) {
-            pg.updatePixels();
-        } else {
-            if (this.instance) {
-                this.instance.updatePixels();
-            } else {
-                updatePixels();
-            }
-        }
+        this.#updatePixels(pg);
     }
 
     /**
@@ -571,10 +566,12 @@ class P5Grain {
         switch (mode) {
             case 'int':
                 this.#randomMode = 1;
+                // this.#randomMinMax = (min, max) => Math.floor(this.#random() * (max - min + 1) + min);
                 this.#randomMinMax = this.#randomInt;
                 break;
             case 'float':
                 this.#randomMode = 0;
+                // this.#randomMinMax = (min, max) => this.#random() * (max - min) + min;
                 this.#randomMinMax = this.#randomFloat;
                 break;
             default: break;
@@ -624,6 +621,45 @@ class P5Grain {
      */
     #randomFloat(min, max) {
         return this.#random() * (max - min) + min;
+    }
+
+    /**
+     * Loads the pixel data from the appropriate source (global context, offscreen buffer, instance).
+     * 
+     * @private
+     * @method loadPixels
+     * 
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be loaded.
+     */
+    #loadPixels(pg) {
+        /**
+         * Initializes pixel data and context properties.
+         * 
+         * @private
+         * @function setPixelsData
+         * 
+         * @param {Uint8ClampedArray} buffer The pixel data buffer.
+         * @param {Number} width The width of the context.
+         * @param {Number} height The height of the context.
+         * @param {Number} density The density of the context.
+         */
+        const setPixelsData = (buffer, width, height, density) => {
+            this.#pixels = new Uint32Array(buffer);
+            this.#contextWidth = width;
+            this.#contextHeight = height;
+            this.#contextDensity = density;
+            this.#pixelsCount = width * height;
+        };
+        if (pg) {
+            pg.loadPixels();
+            setPixelsData(pg.pixels.buffer, pg.width, pg.height, pg.pixelDensity());
+        } else if (this.#instance) {
+            this.#instance.loadPixels();
+            setPixelsData(this.#instance.pixels.buffer, this.#instance.width, this.#instance.height, this.#instance.pixelDensity());
+        } else {
+            loadPixels();
+            setPixelsData(pixels.buffer, width, height, pixelDensity());
+        }
     }
 
     /**
@@ -743,7 +779,7 @@ class P5Grain {
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'boolean'
                     ) {
-                        return this.#error(`The optional alpha argument passed to ${method}() must be of type boolean.`);
+                        return this.#error(`The optional shouldUpdateAlpha argument passed to ${method}() must be of type boolean.`);
                     }
                     if (
                         typeof args[2] !== 'undefined'
@@ -857,8 +893,8 @@ const p5grain = new P5Grain();
 // Register applyMonochromaticGrain()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.prototype.applyMonochromaticGrain = function (amount, alpha) {
-        return p5grain.applyMonochromaticGrain(amount, alpha);
+    p5.prototype.applyMonochromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
@@ -868,30 +904,30 @@ if (!p5.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
 // Register p5.Graphics.applyMonochromaticGrain()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.Graphics.prototype.applyMonochromaticGrain = function (amount, alpha) {
-        return p5grain.applyMonochromaticGrain(amount, alpha, this);
+    p5.Graphics.prototype.applyMonochromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    p5grain._warn('p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
+    p5grain._warn('p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, pg) instead.');
 } /** @end */
 
 // Register p5.Image.applyMonochromaticGrain()
 /** @internal */
 if (!p5.Image.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.Image.prototype.applyMonochromaticGrain = function (amount, alpha) {
-        return p5grain.applyMonochromaticGrain(amount, alpha, this);
+    p5.Image.prototype.applyMonochromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    p5grain._warn('p5.Image.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, img) instead.');
+    p5grain._warn('p5.Image.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, img) instead.');
 } /** @end */
 
 // Register applyChromaticGrain()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.prototype.applyChromaticGrain = function (amount, alpha) {
-        return p5grain.applyChromaticGrain(amount, alpha);
+    p5.prototype.applyChromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyChromaticGrain(amount, shouldUpdateAlpha);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
@@ -901,23 +937,23 @@ if (!p5.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
 // Register p5.Graphics.applyChromaticGrain()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.Graphics.prototype.applyChromaticGrain = function (amount, alpha) {
-        return p5grain.applyChromaticGrain(amount, alpha, this);
+    p5.Graphics.prototype.applyChromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    p5grain._warn('p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
+    p5grain._warn('p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, pg) instead.');
 } /** @end */
 
 // Register p5.Image.applyChromaticGrain()
 /** @internal */
 if (!p5.Image.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.Image.prototype.applyChromaticGrain = function (amount, alpha) {
-        return p5grain.applyChromaticGrain(amount, alpha, this);
+    p5.Image.prototype.applyChromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    p5grain._warn('p5.Image.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, img) instead.');
+    p5grain._warn('p5.Image.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, img) instead.');
 } /** @end */
 
 // Register tinkerPixels()
