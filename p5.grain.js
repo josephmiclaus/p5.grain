@@ -265,11 +265,11 @@ class P5Grain {
             _width = pg.width;
             _height = pg.height;
         } else {
-            if (this.instance) {
-                this.instance.loadPixels();
-                density = this.instance.pixelDensity();
-                _width = this.instance.width;
-                _height = this.instance.height;
+            if (this.#instance) {
+                this.#instance.loadPixels();
+                density = this.#instance.pixelDensity();
+                _width = this.#instance.width;
+                _height = this.#instance.height;
             } else {
                 loadPixels()
                 density = pixelDensity();
