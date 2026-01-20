@@ -367,7 +367,7 @@ class P5Grain {
      * 
      * @method textureOverlay
      * 
-     * @param {p5.Image} texture The texture image to blend over.
+     * @param {p5.Image|p5.Graphics} texture The texture image to blend over.
      * @param {Object} [config] Config object to configure the texture overlay.
      * @param {Number} [config.width] The width the texture image should have. (default: textureImage.width`)
      * @param {Number} [config.height] The height the texture image should have. (default: `textureImage.height`)
@@ -839,8 +839,8 @@ class P5Grain {
                     }
                     break;
                 case 'textureOverlay':
-                    if (!(args[0] instanceof p5.Image)) {
-                        return this.#error(`The texture argument passed to ${method}() must be an instance of p5.Image.`);
+                    if (!(args[0] instanceof p5.Image || args[0] instanceof p5.Graphics)) {
+                        return this.#error(`The texture passed to ${method}() must be an instance of p5.Image or p5.Graphics.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
