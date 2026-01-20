@@ -18,15 +18,17 @@
     "dist-min:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.min.js dist/p5.grain.min.js.LICENSE.txt"
   },
   "keywords": [
-    "javascript",
-    "art",
-    "grain",
-    "noise",
-    "texture",
-    "creative-coding",
     "p5",
     "p5.js",
     "p5js",
+    "p5.grain",
+    "grain",
+    "film-grain",
+    "noise",
+    "film-noise",
+    "texture",
+    "creative-coding",
+    "art",
     "fxhash"
   ],
   "repository": {
