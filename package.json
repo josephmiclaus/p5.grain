@@ -13,9 +13,15 @@
         "p5.grain.js"
     ],
     "scripts": {
+        "build": "npm run build:min && npm run build:lite",
+        "build:keep": "npm run build:min && npm run build:lite:keep",
+        "build:min": "node .scripts/build.js && npm run dist-min:darwin",
+        "build:lite": "node .scripts/build.js --lite && npm run dist-lite:darwin",
+        "build:lite:keep": "node .scripts/build.js --lite --keep && npm run dist-lite:darwin",
         "build:darwin": "npm run build-min:darwin; npm run dist-min:darwin",
         "build-min:darwin": "mkdir -p dist; sed '/@internal/,/@end/d' p5.grain.js > p5.grain.min.js; minify p5.grain.min.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.js.LICENSE.txt; rm p5.grain.min.js",
-        "dist-min:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.min.js dist/p5.grain.min.js.LICENSE.txt"
+        "dist-min:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.min.js dist/p5.grain.min.js.LICENSE.txt",
+        "dist-lite:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.lite.min.js dist/p5.grain.lite.min.js.LICENSE.txt"
     },
     "keywords": [
         "p5",
@@ -40,6 +46,7 @@
     },
     "homepage": "https://github.com/josephmiclaus/p5.grain",
     "devDependencies": {
-        "minify": "^9.2.0"
+        "minify": "^9.2.0",
+        "terser": "^5.46.0"
     }
 }
