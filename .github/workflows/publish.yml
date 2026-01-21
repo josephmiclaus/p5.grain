@@ -23,4 +23,5 @@ jobs:
       - run: npm run build:keep --if-present
       - run: npm test --if-present
       - run: npm publish
-        env: NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
