@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 permissions:
-  id-token: write  # Required for OIDC
+  # id-token: write  # Required for OIDC
   contents: read
 
 jobs:
@@ -20,6 +20,7 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm run build:darwin --if-present
+      - run: npm run build:keep --if-present
       - run: npm test --if-present
       - run: npm publish
+        env: NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
