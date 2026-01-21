@@ -22,6 +22,12 @@ jobs:
       - run: npm ci
       - run: npm run build:keep --if-present
       - run: npm test --if-present
-      - run: npm publish
+      - run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *"-"* ]]; then
+            npm publish --tag next
+          else
+            npm publish --tag latest
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
