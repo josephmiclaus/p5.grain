@@ -21,7 +21,8 @@
         "build:darwin": "npm run build-min:darwin; npm run dist-min:darwin",
         "build-min:darwin": "mkdir -p dist; sed '/@internal/,/@end/d' p5.grain.js > p5.grain.min.js; minify p5.grain.min.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.js.LICENSE.txt; rm p5.grain.min.js",
         "dist-min:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.min.js dist/p5.grain.min.js.LICENSE.txt",
-        "dist-lite:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.lite.min.js dist/p5.grain.lite.min.js.LICENSE.txt"
+        "dist-lite:darwin": "echo examples/*/lib/ examples/instance-mode/*/lib/ examples/pixel-manipulation/*/lib/ | xargs -n 1 cp dist/p5.grain.lite.min.js dist/p5.grain.lite.min.js.LICENSE.txt",
+        "sync:p5": "[ -f p5.min.js ] || (echo \"p5.min.js not found at repo root\" && exit 1); find examples -path \"*/lib/p5.min.js\" -exec cp p5.min.js {} \\;"
     },
     "keywords": [
         "p5",
