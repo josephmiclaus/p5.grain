@@ -15,9 +15,9 @@
     "scripts": {
         "build": "npm run build:min && npm run build:lite",
         "build:keep": "npm run build:min && npm run build:lite:keep",
-        "build:min": "node .scripts/build.js && npm run dist-min",
-        "build:lite": "node .scripts/build.js --lite && npm run dist-lite",
-        "build:lite:keep": "node .scripts/build.js --lite --keep && npm run dist-lite",
+        "build:min": "node scripts/build.js && npm run dist-min",
+        "build:lite": "node scripts/build.js --lite && npm run dist-lite",
+        "build:lite:keep": "node scripts/build.js --lite --keep && npm run dist-lite",
         "build:darwin": "npm run build-min:darwin; npm run dist-min",
         "build-min:darwin": "mkdir -p dist; sed '/@internal/,/@end/d' p5.grain.js > p5.grain.min.js; minify p5.grain.min.js > dist/p5.grain.min.js; cp LICENSE dist/p5.grain.min.js.LICENSE.txt; rm p5.grain.min.js",
         "dist-min": "find examples -path '*/lib' -type d -exec cp dist/p5.grain.min.js dist/p5.grain.min.js.LICENSE.txt {} \\;",
