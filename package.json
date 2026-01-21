@@ -1,6 +1,6 @@
 {
     "name": "p5.grain",
-    "version": "0.8.0",
+    "version": "0.8.0-rc.1",
     "description": "p5.grain is a p5.js library for conveniently applying grain and texture overlays to artworks.",
     "author": "Joseph Miclaus",
     "license": "MIT",
