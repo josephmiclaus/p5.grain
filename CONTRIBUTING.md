@@ -72,17 +72,17 @@ Guidelines:
     git checkout -b <topic-branch-name>
     ```
 5. **Making changes**<br>
-    * You'll want to make changes to `p5.grain.js` and test them against examples inside the `/examples` directory. However, changes you make to `p5.grain.js` won't be immediately available for the examples, as they are "standalone", meaning that they work independently, each using a local `p5.grain.min.js` version inside the `/lib` directory of the respective example. Therefore, you should either:
+    * You'll want to make changes to `p5.grain.js` and test them against examples inside the `/examples` directory. However, changes you make to `p5.grain.js` won't be immediately available for the examples, as they are "standalone", meaning that they work independently, each using a local `p5.grain.min.js` or `p5.grain.lite.min.js` version inside the `/lib` directory of the respective example. Therefore, you should either:
         * temporarily change the `index.html` of the respective example to use `p5.grain.js` or
-        * run the npm build command for your OS to build and distribute a `p5.grain.min.js` version to every example which will include your changes.
-            * macOS: `npm run build:darwin`
+        * run the npm build command for your OS to build and distribute `p5.grain.min.js` and `p5.grain.lite.min.js` to every example which will include your changes.
+            * macOS, Ubuntu, most Linux: `npm run build:keep` (`:keep` keeps the `p5.grain.lite.js` version in the root directory)
             * Windows: currently unavailable, check out [Roadmap](#roadmap)
-    * Encapsulate any code parts (e.g. errors and warnings for development purposes) that should not be part of the minified version within `/** @internal */` and `/** @end */` markers. Everything encapsulated between these markers will be removed upon building p5.grain. Here is an example:
+    * Encapsulate any code parts (e.g. errors and warnings for development purposes) that should not be part of the lite version within `/** @internal */` and `/** @end */` markers. Everything encapsulated between these markers will be removed upon building the lite version of p5.grain. Here is an example:
         ```js
         /** @internal */
-        if (!this.#validateArguments('setup', arguments)) return; // <-- will NOT be part of p5.grain.min.js
+        if (!this.#validateArguments('setup', arguments)) return; // <-- will ONLY be part of p5.grain.min.js but NOT p5.grain.lite.min.js
         /** @end */
-        this.#myPrivateFunction(); // <-- will be part of p5.grain.min.js
+        this.#myPrivateFunction(); // <-- will be part of p5.grain.min.js AND p5.grain.lite.min.js
         ```
 6. **Testing and examples**
     * If it makes sense (e.g. you added a new technique), create a standalone example inside the `/examples` directory.
@@ -96,8 +96,8 @@ Guidelines:
     * Update the `README.md` file to reflect your changes accordingly.
 8. **Commit changes**
     * Before commiting your changes:
-        * Run the npm build command for your OS to build and distribute a `p5.grain.min.js` version to every example.
-            * macOS: `npm run build:darwin`
+        * Run the npm build command for your OS to build and distribute `p5.grain.min.js` and `p5.grain.lite.min.js` to every example.
+            * macOS, Ubuntu, most Linux: `npm run build:keep` (`:keep` keeps the `p5.grain.lite.js` version in the root directory)
             * Windows: currently unavailable, check out [Roadmap](#roadmap)
             <br>*NOTE: If your OS is not supported yet, mention this in your Pull Request.*
         * Optionally, you can use [git rebase](https://help.github.com/articles/about-git-rebase) to clean up your commit history before submitting a Pull Request on GitHub.
@@ -233,8 +233,8 @@ By making a contribution to this project, I certify that:
 * [x] Add support for instance mode (`v0.7.0`)
 * [x] Add support for `p5.Image` (`v0.8.0`)
 * [x] Improve pixel manipulation technique performance (`v0.8.0`)
+* [x] Add npm scripts for Linux (`v0.8.0`)
 * [ ] Add possibility to build only specified functions to the minified version
 * [ ] Add possibility to use shaders
 * [ ] Implement JavaScript module syntax
 * [ ] Add npm scripts for Windows
-* [ ] Add npm scripts for Linux
