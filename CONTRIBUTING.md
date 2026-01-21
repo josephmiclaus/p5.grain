@@ -12,7 +12,7 @@ Although p5.grain can already be used for p5.js sketches in production, it's sti
 * [Coding Guidelines](#coding-guidelines)
 * [Commit Message Guidelines](#commit-message-guidelines)
 * [Licensing](#licensing)
-* [Roadmap](#roadmap)
+* [History & Roadmap](#history_and_roadmap)
 
 ## Code of Conduct
 
@@ -20,11 +20,11 @@ Let's keep p5.grain open and inclusive. Please read and follow our [Code of Cond
 
 ## Support Questions
 
-For general support questions, check out the [Q&A section](https://github.com/meezwhite/p5.grain/discussions/categories/q-a) in Discussions.
+For general support questions, check out the [Q&A section](https://github.com/josephmiclaus/p5.grain/discussions/categories/q-a) in Discussions.
 
 ## Issues and Bugs
 
-If you find a bug in the source code or a mistake in the documentation, you can help by [submitting an issue](https://github.com/meezwhite/p5.grain/issues).
+If you find a bug in the source code or a mistake in the documentation, you can help by [submitting an issue](https://github.com/josephmiclaus/p5.grain/issues).
 
 Guidelines:
 
@@ -34,7 +34,7 @@ Guidelines:
 
 ## Feature Requests
 
-You can request a new feature by starting a discussion in the [Ideas section](https://github.com/meezwhite/p5.grain/discussions/categories/ideas) in Discussions.
+You can request a new feature by starting a discussion in the [Ideas section](https://github.com/josephmiclaus/p5.grain/discussions/categories/ideas) in Discussions.
 
 Guidelines:
 
@@ -58,7 +58,7 @@ Guidelines:
     # Navigate to the newly cloned directory
     cd p5.grain
     # Assign the original repository to a remote called upstream
-    git remote add upstream https://github.com/meezwhite/p5.grain
+    git remote add upstream https://github.com/josephmiclaus/p5.grain
     # Install dependencies
     npm i
     ```
@@ -86,8 +86,8 @@ Guidelines:
         ```
 6. **Testing and examples**
     * If it makes sense (e.g. you added a new technique), create a standalone example inside the `/examples` directory.
-       * If your technique supports cross-browser animation, enable it by default.
-       * Use the existing examples as orientation for your example.<br>*NOTE: Examples only showcase the simplest implementation of a technique.*
+       * If your technique supports cross-browser animation, disable it by default. Take an example from [texture-overlay-inside](./examples/texture-overlay-inside) on how animation should be enabled in the example.
+       * Use the existing examples as orientation for your example.*NOTE: Examples only showcase the simplest implementation of a technique.*
     * Test all examples to see if they still work as expected in all major desktop and mobile browsers (especially Safari).
         * If you cannot test your changes in some browsers or platforms, mention this in the respective issue or discussion so that somebody else can check this.
     * If necessary, update existing examples to reflect your changes.
@@ -222,16 +222,19 @@ By making a contribution to this project, I certify that:
     this project or the open source license(s) involved.
 ```
 
-## Roadmap
+<a id="history_and_roadmap"></a>
+
+## History & Roadmap
 
 * [x] Add possibility for custom `granulate` functions (`v0.4.0`)
 * [x] Add possibility to apply grain and textures to offscreen graphics (`v0.5.0`)
 * [x] Add possibility to by-pass updating pixels when using `tinkerPixels` (`v0.6.0`)
 * [x] Add alias `loopPixels` for read-only mode (`v0.7.0`)
 * [x] Add support for instance mode (`v0.7.0`)
-* [ ] Improve pixel manipulation technique performance
-* [ ] Implement JavaScript module syntax
-* [ ] Add possibility to use shaders
+* [x] Add support for `p5.Image` (`v0.8.0`)
+* [x] Improve pixel manipulation technique performance (`v0.8.0`)
 * [ ] Add possibility to build only specified functions to the minified version
+* [ ] Add possibility to use shaders
+* [ ] Implement JavaScript module syntax
 * [ ] Add npm scripts for Windows
 * [ ] Add npm scripts for Linux

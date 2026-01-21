@@ -1,0 +1,7 @@
+/**
+ * p5.grain
+ *
+ * @version 0.8.0
+ * @license MIT
+ * @copyright Joseph Miclaus, Gorilla Sun
+ */

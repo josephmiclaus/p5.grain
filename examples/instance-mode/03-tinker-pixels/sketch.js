@@ -7,18 +7,15 @@ const reusableSketch = (sketch) => {
         // Simulate drawing artwork
         sketch.drawArtwork();
 
-        // Custom applyMonochromaticGrain implementation
-        const amount = 42;
-        const alpha = false;
+        // Loop over all pixels and set the red channel of each one to a random value (0-255).
         sketch.tinkerPixels((index, total) => {
-            const grainAmount = sketch.floor(sketch.random() * (amount * 2 + 1)) - amount;
-            sketch.pixels[index] = sketch.pixels[index] + grainAmount;
-            sketch.pixels[index+1] = sketch.pixels[index+1] + grainAmount;
-            sketch.pixels[index+2] = sketch.pixels[index+2] + grainAmount;
-            if (alpha) {
-                sketch.pixels[index+3] = sketch.pixels[index+3] + grainAmount;
-            }
+            sketch.pixels[index] = sketch.random(0, 255); // red channel
+            // sketch.pixels[index+1] = sketch.random(0, 255); // green channel
+            // sketch.pixels[index+2] = sketch.random(0, 255); // blue channel
         });
+
+        sketch.textSize(28);
+        sketch.text('instance 1:', 14, 36);
     }
 
     sketch.drawArtwork = () => {
@@ -61,6 +58,9 @@ let myp5_2 = new p5((sketch) => {
 
         // draw the graphics buffer to the sketch's canvas
         sketch.image(pg, sketch.width/2-70, sketch.height/2-70);
+
+        sketch.textSize(28);
+        sketch.text('instance 2:', 14, 36);
     }
 
     sketch.windowResized = () => {

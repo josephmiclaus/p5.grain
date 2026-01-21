@@ -1,14 +1,14 @@
 /**!
  * p5.grain
  * 
- * @version 0.7.0
+ * @version 0.8.0
  * @license MIT
- * @copyright meezwhite, Gorilla Sun
+ * @copyright Joseph Miclaus, Gorilla Sun
  */
 class P5Grain {
-    version = '0.7.0';
+    version = '0.8.0';
 
-    instance;
+    #instance;
     /** @internal */
     ignoreWarnings = false;
     ignoreErrors = false;
@@ -16,25 +16,24 @@ class P5Grain {
     /** @end */
 
     #random;
-    #textureAnimate;
-    #textureOverlay;
+    #randomMinMax;
+    #randomMode;
+    #pixels;
+    #pixelsCount;
+    #contextWidth;
+    #contextHeight;
+    #contextDensity;
+    #textureAnimate_frameCount = 0;
+    #textureOverlay_frameCount = 0;
+    #textureOverlay_tX = 0;
+    #textureOverlay_tY = 0;
 
     constructor() {
-        // this.#random = p5.prototype.random;
-        this.#random = Math.random;
-        this.#textureAnimate = {
-            frameCount: 0,
-        };
-        this.#textureOverlay = {
-            frameCount: 0,
-            tX_anchor: 0,
-            tX: 0,
-            tY: 0,
-        };
+        this.#prepareRandomMode('float');
     }
 
     /**
-     * Setup and configure certain p5.grain features.
+     * Setup and configure p5.grain features.
      * 
      * @example
      * <p>Pass a custom random function to be used internally.</p>
@@ -43,9 +42,21 @@ class P5Grain {
      * </code>
      * 
      * @example
+     * <p>Configure internal random function to generate integers instead of floating-point numbers.</p>
+     * <code>
+     *     p5grain.setup({ randomMode: 'int' });
+     * </code>
+     * 
+     * @example
+     * <p>Configure internal random function to generate floats.</p>
+     * <code>
+     *     p5grain.setup({ randomMode: 'float' });
+     * </code>
+     * <p><em>Note: `randomMode` is `float` by default, so you only need to do the above if you have previously configured `randomMode` to something other than `float` and you now need to generate random floating-point numbers again.</em></p>
+     * 
+     * @example
      * <p>Ignore errors and warnings</p>
      * <code>
-     *     // Dangerous, but might be more performant
      *     p5grain.setup({
      *         ignoreErrors: true,
      *         ignoreWarnings: true,
@@ -55,27 +66,31 @@ class P5Grain {
      * @method setup
      * 
      * @param {Object} [config] Config object to configure p5.grain features.
-     * @param {function} [config.random] The random function that should be
-     *     used when for e.g. pixel manipulation, texture animation, etc. 
-     *     Here you could use a deterministic random function.
-     * @param {Object} [config.instance] Reference to a p5.js instance.
-     * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings 
-     *     should be ignored.
-     * @param {Boolean} [config.ignoreErrors] Specifies whether errors should 
-     *     be ignored. This is dangerous, but it might be more performant.
+     * @param {function} [config.random] The random function that should be used for e.g. pixel manipulation, 
+     *     texture animation, etc. Here you could use a custom deterministic random function (e.g. fxrand). 
+     *     By default p5's random function is used.
+     * @param {String} [config.randomMode] Specifies the mode of the internal random function.
+     *     Either `float` for floating-point numbers or `int` for integers. (default: `float`)
+     * @param {p5} [config.instance] Reference to a p5 instance.
+     * @param {Boolean} [config.ignoreWarnings] Specifies whether warnings should be ignored. (default: `false`)
+     * @param {Boolean} [config.ignoreErrors] Specifies whether errors should be ignored. (default: `false`)
      */
     setup(config) {
         /** @internal */
         if (!this.#validateArguments('setup', arguments)) return;
         /** @end */
-        if (typeof config === 'undefined') {
-            this.#random = random;
-        } else if (typeof config === 'object') {
+        if (typeof config === 'object') {
             if (typeof config.random === 'function') {
                 this.#random = config.random;
             }
+            if (typeof config.randomMode === 'string') {
+                this.#prepareRandomMode(config.randomMode);
+            }
             if (typeof config.instance === 'object') {
-                this.instance = config.instance;
+                this.#instance = config.instance;
+                if (this.#instance !== null) {
+                    this.#random = this.#instance.random;
+                }
             }
             /** @internal */
             if (typeof config.ignoreWarnings === 'boolean') {
@@ -85,162 +100,113 @@ class P5Grain {
                 this.ignoreErrors = config.ignoreErrors;
             } /** @end */
         }
-    }
-
-    /**
-     * Granulate pixels by the given amount.
-     *
-     * This method generates one random value per pixel. The random value 
-     * ranges from -amount to +amount and is added to every RGB(A) pixel 
-     * channel.
-     *
-     * @method granulateSimple
-     * @deprecated since v0.7.0, use applyMonochromaticGrain instead
-     * 
-     * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
-     */
-    granulateSimple(amount, alpha, pg) {
-        /** @internal */
-        console.warn('[p5.grain] granulateSimple() is deprecated and will be removed in the future. Use applyMonochromaticGrain() instead.');
-        this.#overrideMethodArgument = 'granulateSimple';
-        /** @end */
-        this.applyMonochromaticGrain(amount, alpha, pg);
+        if (typeof this.#random === 'undefined' || this.#instance === null) {
+            this.#random = random;
+        }
     }
 
     /**
      * Apply monochromatic grain.
      *
-     * This method generates one random value per pixel. The random value 
-     * ranges from -amount to +amount and is added to every RGB(A) pixel 
-     * channel.
+     * This method generates one random value per pixel. The random value ranges from -amount to +amount.
+     * Each generated random value is added to every RGB(A) pixel channel.
      *
      * @method applyMonochromaticGrain
      * 
      * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
+     * @param {Boolean} [shouldUpdateAlpha] Specifies whether the alpha channel should also be modified. (default: `false`)
+     *     Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
-    applyMonochromaticGrain(amount, alpha, pg) {
+    applyMonochromaticGrain(amount, shouldUpdateAlpha, pg) {
         /** @internal */
         if (!this.#validateArguments('applyMonochromaticGrain', arguments)) return;
         /** @end */
-        const _amount = this.instance ? this.instance.round(amount) : round(amount);
-        const _alpha = alpha || false;
-        pg ? pg.loadPixels() : (this.instance ? this.instance.loadPixels() : loadPixels());
-        const density = pg ? pg.pixelDensity() : (this.instance ? this.instance.pixelDensity() : pixelDensity());
-        const _width = pg ? pg.width : (this.instance ? this.instance.width : width);
-        const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
-        const total = 4 * (_width * density) * (_height * density);
-        const _pixels = pg ? pg.pixels : (this.instance ? this.instance.pixels : pixels);
-        for (let i = 0; i < total; i += 4) {
-            const grainAmount = this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i] = _pixels[i] + grainAmount;
-            _pixels[i + 1] = _pixels[i + 1] + grainAmount;
-            _pixels[i + 2] = _pixels[i + 2] + grainAmount;
-            if (_alpha) {
-                _pixels[i + 3] = _pixels[i + 3] + grainAmount;
+        shouldUpdateAlpha = shouldUpdateAlpha || false;
+        this.#loadPixels(pg);
+        const [min, max] = this.#prepareRandomBounds(-amount, amount);
+        const pixels = this.#pixels;
+        const pixelsLength = pixels.length;
+        let offset, r, g, b, a;
+        for (let i = 0; i < pixelsLength; i++) {
+            offset = this.#randomMinMax(min, max);
+            // Destructure the current 32-bit pixel value into its RGBA components
+            r = pixels[i] & 0xff;
+            g = (pixels[i] >> 8) & 0xff;
+            b = (pixels[i] >> 16) & 0xff;
+            a = (pixels[i] >> 24) & 0xff;
+            // Clamp the RGBA components between 0 and 255
+            r = Math.max(0, Math.min(255, r + offset));
+            g = Math.max(0, Math.min(255, g + offset));
+            b = Math.max(0, Math.min(255, b + offset));
+            if (shouldUpdateAlpha) {
+                a = Math.max(0, Math.min(255, a + offset));
             }
+            // Constructs a 32-bit pixel value from RGBA components.
+            pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
         }
-        pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
-    }
-
-    /**
-     * Granulate pixels channels by the given amount.
-     *
-     * This method generates one random value per pixel channel. The random 
-     * values range from -amount to +amount. Each random value is added to 
-     * the respective RGB(A) channel of the pixel.
-     *
-     * @method granulateChannels
-     * @deprecated since v0.7.0, use applyChromaticGrain instead
-     * 
-     * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
-     */
-    granulateChannels(amount, alpha, pg) {
-        /** @internal */
-        console.warn('[p5.grain] granulateChannels() is deprecated and will be removed in the future. Use applyChromaticGrain() instead.');
-        this.#overrideMethodArgument = 'granulateChannels';
-        /** @end */
-        this.applyChromaticGrain(amount, alpha, pg);
+        this.#updatePixels(pg);
     }
 
     /**
      * Apply chromatic grain.
      *
-     * This method generates one random value per pixel channel. The random 
-     * values range from -amount to +amount. Each random value is added to 
-     * the respective RGB(A) channel of the pixel.
+     * This method generates one random value per pixel channel. The random values range from -amount to +amount. 
+     * Each generated random value is added to the respective RGB(A) channel of the pixel.
      *
      * @method applyChromaticGrain
      * 
      * @param {Number} amount The amount of granularity that should be applied.
-     * @param {Boolean} [alpha] Specifies whether the alpha channel should 
-     *     also be modified. When not specified the alpha channel will
-     *     not be modified.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be manipulated.
+     * @param {Boolean} [shouldUpdateAlpha] Specifies whether the alpha channel should also be modified. (default: `false`)
+     *     Note: modifying the alpha channel could have unintended consequences. Only use if you are confident in what you are doing.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be manipulated.
      */
-    applyChromaticGrain(amount, alpha, pg) {
+    applyChromaticGrain(amount, shouldUpdateAlpha, pg) {
         /** @internal */
         if (!this.#validateArguments('applyChromaticGrain', arguments)) return;
         /** @end */
-        const _amount = this.instance ? this.instance.round(amount) : round(amount);
-        const _alpha = alpha || false;
-        pg ? pg.loadPixels() : (this.instance ? this.instance.loadPixels() : loadPixels());
-        const density = pg ? pg.pixelDensity() : (this.instance ? this.instance.pixelDensity() : pixelDensity());
-        const _width = pg ? pg.width : (this.instance ? this.instance.width : width);
-        const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
-        const total = 4 * (_width * density) * (_height * density);
-        const _pixels = pg ? pg.pixels : (this.instance ? this.instance.pixels : pixels);
-        for (let i = 0; i < total; i += 4) {
-            _pixels[i] = _pixels[i] + this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i + 1] = _pixels[i + 1] + this.#randomIntInclusive(-_amount, _amount);
-            _pixels[i + 2] = _pixels[i + 2] + this.#randomIntInclusive(-_amount, _amount);
-            if (_alpha) {
-                _pixels[i + 3] = _pixels[i + 3] + this.#randomIntInclusive(-_amount, _amount);
+        shouldUpdateAlpha = shouldUpdateAlpha || false;
+        this.#loadPixels(pg);
+        const [min, max] = this.#prepareRandomBounds(-amount, amount);
+        const pixels = this.#pixels;
+        const pixelsLength = pixels.length;
+        let r, g, b, a;
+        for (let i = 0; i < pixelsLength; i++) {
+            // Destructure the current 32-bit pixel value into its RGBA components
+            r = pixels[i] & 0xff;
+            g = (pixels[i] >> 8) & 0xff;
+            b = (pixels[i] >> 16) & 0xff;
+            a = (pixels[i] >> 24) & 0xff;
+            // Clamp the RGBA components between 0 and 255
+            r = Math.max(0, Math.min(255, r + this.#randomMinMax(min, max)));
+            g = Math.max(0, Math.min(255, g + this.#randomMinMax(min, max)));
+            b = Math.max(0, Math.min(255, b + this.#randomMinMax(min, max)));
+            if (shouldUpdateAlpha) {
+                a = Math.max(0, Math.min(255, a + this.#randomMinMax(min, max)));
             }
+            // Constructs a 32-bit pixel value from RGBA components.
+            pixels[i] = (a << 24) | (b << 16) | (g << 8) | r;
         }
-        pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
+        this.#updatePixels(pg);
     }
 
     /**
-     * Loop through pixels and call the given callback function on every pixel. 
-     * Pixels are manipulated depending on the given callback function, unless 
-     * read-only mode is enabled.
+     * Loop through pixels and call the given callback function for every pixel.
      * 
-     * The callback function exposes two arguments:
-     * - index: the current pixel index
-     * - total: the total indexes count
+     * Pixels are manipulated depending on the given callback function, unless read-only mode is enabled.
      * 
-     * Read-only mode: updating pixels can be by-passed by setting the 
-     * `shouldUpdate` argument to `false`.
+     * The callback function provides two arguments:
+     * 1. index: the current pixel index
+     * 2. total: the total indexes count
+     * 
+     * Read-only mode: updating pixels can be by-passed by setting the `shouldUpdate` argument to `false`.
+     * It is however recommended to use `loopPixels` if you only want to loop through pixels.
      * 
      * @example
-     * <p>Custom applyMonochromaticGrain implementation:</p>
+     * <p>Loop over all pixels and set the red channel of each pixel to a random value between 0 and 255:</p>
      * <code>
-     *     const amount = 42;
-     *     const alpha = false;
      *     tinkerPixels((index, total) => {
-     *         const grainAmount = floor(random() * (amount * 2 + 1)) - amount;
-     *         pixels[index] = pixels[index] + grainAmount;
-     *         pixels[index+1] = pixels[index+1] + grainAmount;
-     *         pixels[index+2] = pixels[index+2] + grainAmount;
-     *         if (alpha) {
-     *             pixels[index+3] = pixels[index+3] + grainAmount;
-     *         }
+     *         pixels[index] = random(0, 255); // red channel
      *     });
      * </code>
      * 
@@ -255,42 +221,53 @@ class P5Grain {
      *
      * @method tinkerPixels
      * 
-     * @param {Function} callback The callback function that should be called 
-     *     on every pixel.
-     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be 
-     *     updated.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be looped.
+     * @param {Function} callback The callback function that should be called on every pixel.
+     * @param {Boolean} [shouldUpdate] Specifies whether the pixels should be updated. (default: `true`)
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be looped.
      */
     tinkerPixels(callback, shouldUpdate, pg) {
         /** @internal */
         if (!this.#validateArguments('tinkerPixels', arguments)) return;
         /** @end */
         shouldUpdate = shouldUpdate !== false;
-        pg ? pg.loadPixels() : (this.instance ? this.instance.loadPixels() : loadPixels());
-        const density = pg ? pg.pixelDensity() : (this.instance ? this.instance.pixelDensity() : pixelDensity());
-        const _width = pg ? pg.width : (this.instance ? this.instance.width : width);
-        const _height = pg ? pg.height : (this.instance ? this.instance.height : height);
-        const total = 4 * (_width * density) * (_height * density);
-        for (let i = 0; i < total; i += 4) {
+        let density, _width, _height;
+        if (pg) {
+            pg.loadPixels();
+            density = pg.pixelDensity();
+            _width = pg.width;
+            _height = pg.height;
+        } else {
+            if (this.#instance) {
+                this.#instance.loadPixels();
+                density = this.#instance.pixelDensity();
+                _width = this.#instance.width;
+                _height = this.#instance.height;
+            } else {
+                loadPixels()
+                density = pixelDensity();
+                _width = width;
+                _height = height;
+            }
+        }
+        const channels = 4;
+        const total = channels * (_width * density) * (_height * density);
+        for (let i = 0; i < total; i += channels) {
             callback(i, total);
         }
         if (shouldUpdate) {
-            pg ? pg.updatePixels() : (this.instance ? this.instance.updatePixels() : updatePixels());
+            this.#updatePixels(pg);
         }
     }
 
     /**
-     * Loop through pixels and call the given callback function for every pixel 
-     * without updating them (read-only mode).
+     * Loop through pixels and call the given callback function for every pixel without updating them (read-only mode).
      * 
-     * In contrast to the `tinkerPixels` function, no pixel manipulations are 
-     * performed with `loopPixels`. In other words `loopPixels` has the same 
-     * effect as using `tinkerPixels` in read-only mode.
+     * In contrast to the `tinkerPixels` function, no pixel manipulations are performed with `loopPixels`. 
+     * In other words `loopPixels` has the same effect as using `tinkerPixels` in read-only mode.
      * 
-     * The callback function exposes two arguments:
-     * - index: the current pixel index
-     * - total: the total indexes count
+     * The callback function provides two arguments:
+     * 1. index: the current pixel index
+     * 2. total: the total indexes count
      * 
      * @example
      * <code>
@@ -302,10 +279,8 @@ class P5Grain {
      *
      * @method loopPixels
      * 
-     * @param {Function} callback The callback function that should be called 
-     *     on every pixel.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer whose pixels 
-     *     should be looped.
+     * @param {Function} callback The callback function that should be called on every pixel.
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be looped.
      */
     loopPixels(callback, pg) {
         /** @internal */
@@ -315,39 +290,35 @@ class P5Grain {
     }
 
     /**
-     * Animate the given texture element by randomly shifting its background 
-     * position.
+     * Animate the given texture element by randomly shifting its background position.
      * 
      * @method textureAnimate
      * 
-     * @param {HTMLElement|SVGElement|p5.Element} textureElement The texture element to be 
-     *     animated.
-     * @param {Object} [config] Config object to configure the texture 
-     *     animation.
-     * @param {Number} [config.atFrame] The frame at which the texture should 
-     *     be shifted. When atFrame isn't specified, the texture is shifted 
-     *     every 2nd frame.
-     * @param {Number} [config.amount] The maximum amount of pixels by which 
-     *     the texture should be shifted. The actual amount of pixels which 
-     *     the texture is shifted by is generated randomly. When no 
-     *     amount is specified, the minimum of the main canvas 
-     *     width or height is used.
+     * @param {HTMLElement|SVGElement|p5.Element} textureElement The texture element to be animated.
+     * @param {Object} [config] Config object to configure the texture animation.
+     * @param {Number} [config.atFrame] The frame at which the texture should be shifted.
+     *     When atFrame isn't specified, the texture is shifted every second frame. (default: `2`)
+     * @param {Number} [config.amount] The maximum amount of pixels by which the texture should be shifted.
+     *     The actual amount of pixels which the texture is shifted by is generated randomly.
+     *     When no amount is specified, the minimum of the main canvas width or height is used. (default: `min(width, height)`)
      */
     textureAnimate(textureElement, config) {
         /** @internal */
         if (!this.#validateArguments('textureAnimate', arguments)) return;
         /** @end */
-        const _atFrame = config && config.atFrame
-            ? (this.instance ? this.instance.round(config.atFrame) : round(config.atFrame)) : 2;
-        this.#textureAnimate.frameCount += 1;
-        if (this.#textureAnimate.frameCount >= _atFrame) {
+        const _atFrame = config && config.atFrame ? Math.round(config.atFrame) : 2;
+        this.#textureAnimate_frameCount += 1;
+        if (this.#textureAnimate_frameCount >= _atFrame) {
             const _amount = config && config.amount
-                ? (this.instance ? this.instance.round(config.amount) : round(config.amount))
-                : (this.instance ? this.instance.min(this.instance.width, this.instance.height) : min(width, height));
+                ? Math.round(config.amount)
+                : (this.#instance
+                    ? Math.min(this.#instance.width, this.#instance.height)
+                    : Math.min(width, height)
+                );
             const bgPosX_rand = this.#random() * _amount;
             const bgPosY_rand = this.#random() * _amount;
-            const bgPosX = this.instance ? this.instance.floor(bgPosX_rand) : floor(bgPosX_rand);
-            const bgPosY = this.instance ? this.instance.floor(bgPosY_rand) : floor(bgPosY_rand);
+            const bgPosX = Math.trunc(bgPosX_rand);
+            const bgPosY = Math.trunc(bgPosY_rand);
             const bgPos = `${bgPosX}px ${bgPosY}px`;
             if (textureElement instanceof HTMLElement) {
                 textureElement.style.backgroundPosition = bgPos;
@@ -357,47 +328,33 @@ class P5Grain {
             } else if (textureElement instanceof p5.Element) {
                 textureElement.style('background-position', bgPos);
             }
-            this.#textureAnimate.frameCount = 0;
+            this.#textureAnimate_frameCount = 0;
         }
     }
 
     /**
      * Blend the given texture image onto the canvas.
      * 
-     * The texture is repeated along the horizontal and vertical axes to cover 
-     * the entire canvas or context.
+     * The texture is repeated along the horizontal and vertical axes to cover the entire canvas or context.
      * 
      * @method textureOverlay
      * 
-     * @param {p5.Image} texture The texture image to blend over.
+     * @param {p5.Image|p5.Graphics} texture The texture image to blend over.
      * @param {Object} [config] Config object to configure the texture overlay.
-     * @param {Number} [config.width] The width the texture image should have. 
-     *     When no width is specified, the width of the texture image is 
-     *     assumed.
-     * @param {Number} [config.height] The height the texture image should 
-     *     have. When no height is specified, the height of the texture 
-     *     image is assumed.
-     * @param {Constant} [config.mode] The blend mode that should be used to 
-     *     blend the texture over the canvas. 
-     *     Either BLEND, DARKEST, LIGHTEST, DIFFERENCE, MULTIPLY, EXCLUSION, 
-     *     SCREEN, REPLACE, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN, 
-     *     ADD or NORMAL. When no mode is specified, the blend mode 
-     *     MULTIPLY will be used.
-     * @param {Boolean} [config.reflect] Specifies whether the given texture
-     *     image should reflect horizontally and vertically, in order to 
-     *     provide seamless continuity.
-     * @param {Boolean|Object} [config.animate] Specifies whether the given 
-     *     texture image should be animated.
-     * @param {Number} [config.animate.atFrame] When animation is activated, 
-     *     the frame at which the texture should be shifted. When atFrame 
-     *     isn't specified, the texture is shifted every 2nd frame.
-     * @param {Number} [config.animate.amount] When animation is activated,
-     *     the maximum amount of pixels by which the texture should be 
-     *     shifted. The actual amount of pixels which the texture is 
-     *     shifted by is generated randomly. When no amount is specified, 
-     *     the minimum of the main canvas width or height is used.
-     * @param {p5.Graphics} [pg] The offscreen graphics buffer onto which the 
-     *     texture image should be drawn.
+     * @param {Number} [config.width] The width the texture image should have. (default: textureImage.width`)
+     * @param {Number} [config.height] The height the texture image should have. (default: `textureImage.height`)
+     * @param {Constant} [config.mode] The blend mode that should be used to blend the texture over the canvas. 
+     *     Either BLEND, DARKEST, LIGHTEST, DIFFERENCE, MULTIPLY, EXCLUSION, SCREEN, REPLACE, OVERLAY, HARD_LIGHT, 
+     *     SOFT_LIGHT, DODGE, BURN, ADD or NORMAL. (default: MULTIPLY)
+     * @param {Boolean} [config.reflect] Specifies whether the given texture image should reflect horizontally and 
+     *     vertically, in order to provide seamless continuity. (default: `false`)
+     * @param {Boolean|Object} [config.animate] Specifies whether the given texture image should be animated. (default: `false`)
+     * @param {Number} [config.animate.atFrame] When animating, the frame at which the texture should be shifted.
+     *     When atFrame isn't specified, the texture is shifted every second frame. (default: `2`)
+     * @param {Number} [config.animate.amount] When animating, the maximum amount of pixels by which the texture 
+     *     should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. 
+     *     When no amount is specified, the minimum of the main canvas width or height is used. (default: `min(width, height)`)
+     * @param {p5.Graphics} [pg] The offscreen graphics buffer onto which the texture image should be drawn.
      */
     textureOverlay(textureImage, config, pg) {
         /** @internal */
@@ -405,27 +362,35 @@ class P5Grain {
         /** @end */
         // flag whether drawing onto an offset graphics buffer
         const isGraphicsBuffer = pg instanceof p5.Graphics;
-        // width of the canvas or context
-        const _width = isGraphicsBuffer ? pg.width : (this.instance ? this.instance.width : width);
-        // height of the canvas or context
-        const _height = isGraphicsBuffer ? pg.height : (this.instance ? this.instance.height : height);
+        // width and height of the canvas or context
+        let _width, _height;
+        if (isGraphicsBuffer) {
+            _width = pg.width;
+            _height = pg.height;
+        } else {
+            if (this.#instance) {
+                _width = this.#instance.width;
+                _height = this.#instance.height;
+            } else {
+                _width = width;
+                _height = height;
+            }
+        }
         // blend mode used to blend the texture over the canvas or context
-        const _mode = config && config.mode ? config.mode : (this.instance ? this.instance.MULTIPLY : MULTIPLY);
+        const _mode = config && config.mode ? config.mode : (this.#instance ? this.#instance.MULTIPLY : MULTIPLY);
         // should reflect flag
         const _reflect = config && config.reflect ? config.reflect : false;
         // should animate flag
         const _animate = config && config.animate ? config.animate : false;
         // animate atFrame
         const _animateAtFrame = (
-            config && config.animate && config.animate.atFrame
-                ? (this.instance ? this.instance.round(config.animate.atFrame) : round(config.animate.atFrame))
-                : 2
+            config && config.animate && config.animate.atFrame ? Math.round(config.animate.atFrame) : 2
         );
         // animate amount
         const _animateAmount = (
             config && config.animate && config.animate.amount
-                ? (this.instance ? this.instance.round(config.animate.amount) : round(config.animate.amount))
-                : (this.instance ? this.instance.min(_width, _height) : min(_width, _height))
+                ? Math.round(config.animate.amount)
+                : Math.min(_width, _height)
         );
         // texture width
         const tW = config && typeof config.width === 'number' ? config.width : textureImage.width;
@@ -433,50 +398,52 @@ class P5Grain {
         const tH = config && typeof config.height === 'number' ? config.height : textureImage.height;
         // animate the texture coordinates
         if (_animate) {
-            this.#textureOverlay.frameCount += 1;
-            if (this.#textureOverlay.frameCount >= _animateAtFrame) {
+            this.#textureOverlay_frameCount += 1;
+            if (this.#textureOverlay_frameCount >= _animateAtFrame) {
                 const tX_rand = this.#random() * _animateAmount;
                 const tY_rand = this.#random() * _animateAmount;
-                this.#textureOverlay.tX_anchor = (
-                    this.instance ? -this.instance.floor(tX_rand) : -floor(tX_rand)
-                );
-                this.#textureOverlay.tY = (
-                    this.instance ? -this.instance.floor(tY_rand) : -floor(tY_rand)
-                );
-                this.#textureOverlay.frameCount = 0;
+                this.#textureOverlay_tX = -Math.trunc(tX_rand);
+                this.#textureOverlay_tY = -Math.trunc(tY_rand);
+                this.#textureOverlay_frameCount = 0;
             }
         }
         // texture current start x-coordinate
-        let tX = this.#textureOverlay.tX_anchor;
+        let tX = this.#textureOverlay_tX;
         // texture current start y-coordinate
-        let tY = this.#textureOverlay.tY;
+        let tY = this.#textureOverlay_tY;
         // flag that the first texture row is currently drawn
         let tRowFirst = true;
         // flag that the first texture column is currently drawn
         let tColFirst = true;
-        pg ? pg.blendMode(_mode) : (this.instance ? this.instance.blendMode(_mode) : blendMode(_mode));
+        if (pg) {
+            pg.blendMode(_mode);
+        } else if (this.#instance) {
+            this.#instance.blendMode(_mode);
+        } else {
+            blendMode(_mode);
+        }
         while (tY < _height) {
             while (tX < _width) {
                 if (_reflect) {
                     if (!isGraphicsBuffer) {
-                        this.instance ? this.instance.push() : push();
+                        this.#instance ? this.#instance.push() : push();
                     } else {
                         pg.push();
                     }
                     if (tRowFirst) {
                         if (tColFirst) {
                             if (!isGraphicsBuffer) {
-                                this.instance
-                                    ? this.instance.image(textureImage, tX, tY, tW, tH)
+                                this.#instance
+                                    ? this.#instance.image(textureImage, tX, tY, tW, tH)
                                     : image(textureImage, tX, tY, tW, tH);
                             } else {
                                 pg.image(textureImage, tX, tY, tW, tH);
                             }
                         } else { // tColSecond
                             if (!isGraphicsBuffer) {
-                                if (this.instance) {
-                                    this.instance.scale(-1, 1);
-                                    this.instance.image(textureImage, -tX, tY, -tW, tH)
+                                if (this.#instance) {
+                                    this.#instance.scale(-1, 1);
+                                    this.#instance.image(textureImage, -tX, tY, -tW, tH)
                                 } else {
                                     scale(-1, 1);
                                     image(textureImage, -tX, tY, -tW, tH);
@@ -489,9 +456,9 @@ class P5Grain {
                     } else { // tRowSecond
                         if (tColFirst) {
                             if (!isGraphicsBuffer) {
-                                if (this.instance) {
-                                    this.instance.scale(1, -1);
-                                    this.instance.image(textureImage, tX, -tY, tW, -tH);
+                                if (this.#instance) {
+                                    this.#instance.scale(1, -1);
+                                    this.#instance.image(textureImage, tX, -tY, tW, -tH);
                                 } else {
                                     scale(1, -1);
                                     image(textureImage, tX, -tY, tW, -tH);
@@ -502,9 +469,9 @@ class P5Grain {
                             }
                         } else { // tColSecond
                             if (!isGraphicsBuffer) {
-                                if (this.instance) {
-                                    this.instance.scale(-1, -1);
-                                    this.instance.image(textureImage, -tX, -tY, -tW, -tH);
+                                if (this.#instance) {
+                                    this.#instance.scale(-1, -1);
+                                    this.#instance.image(textureImage, -tX, -tY, -tW, -tH);
                                 } else {
                                     scale(-1, -1);
                                     image(textureImage, -tX, -tY, -tW, -tH);
@@ -516,14 +483,14 @@ class P5Grain {
                         }
                     }
                     if (!isGraphicsBuffer) {
-                        this.instance ? this.instance.pop() : pop();
+                        this.#instance ? this.#instance.pop() : pop();
                     } else {
                         pg.pop();
                     }
                 } else {
                     if (!isGraphicsBuffer) {
-                        this.instance
-                            ? this.instance.image(textureImage, tX, tY, tW, tH)
+                        this.#instance
+                            ? this.#instance.image(textureImage, tX, tY, tW, tH)
                             : image(textureImage, tX, tY, tW, tH);
                     } else {
                         pg.image(textureImage, tX, tY, tW, tH);
@@ -532,7 +499,7 @@ class P5Grain {
                 tX += tW;
                 if (tX >= _width) {
                     tColFirst = true;
-                    tX = this.#textureOverlay.tX_anchor;
+                    tX = this.#textureOverlay_tX;
                     tY += tH;
                     break;
                 } else {
@@ -542,9 +509,13 @@ class P5Grain {
             tRowFirst = !tRowFirst;
         }
         // reset blend mode
-        pg
-            ? pg.blendMode(this.instance ? this.instance.BLEND : BLEND)
-            : (this.instance ? this.instance.blendMode(this.instance.BLEND) : blendMode(BLEND));
+        if (pg) {
+            pg.blendMode(this.#instance ? this.#instance.BLEND : BLEND)
+        } else if (this.#instance) {
+            this.#instance.blendMode(this.#instance.BLEND);
+        } else {
+            blendMode(BLEND);
+        }
         // reset context
         if (isGraphicsBuffer) {
             pg.reset();
@@ -552,25 +523,140 @@ class P5Grain {
     }
 
 
+    /*******************
+     * Private methods *
+     *******************/
+
+    /**
+     * Prepare the random mode.
+     * 
+     * @private
+     * @method prepareRandomMode
+     * 
+     * @param {String} mode The mode in which the internal random function should operate.
+     */
+    #prepareRandomMode(mode) {
+        switch (mode) {
+            case 'int':
+                this.#randomMode = 1;
+                // this.#randomMinMax = (min, max) => Math.floor(this.#random() * (max - min + 1) + min);
+                this.#randomMinMax = this.#randomInt;
+                break;
+            case 'float':
+                this.#randomMode = 0;
+                // this.#randomMinMax = (min, max) => this.#random() * (max - min) + min;
+                this.#randomMinMax = this.#randomFloat;
+                break;
+            default: break;
+        }
+    }
+
+    /**
+     * Prepare the random bounds based on the `randomMode`.
+     * 
+     * @private
+     * @method prepareRandomBounds
+     * 
+     * @param {Number} min The lower bounds.
+     * @param {Number} max The upper bounds.
+     * @returns {Array}
+     */
+    #prepareRandomBounds(min, max) {
+        if (this.#randomMode == 1) { // randomInt
+            return [Math.ceil(min), Math.floor(max)];
+        }
+        return [min, max]; // randomFloat
+    }
+
+    /**
+     * Generate a random integer between the prepared bounds inclusively.
+     * 
+     * @private
+     * @method randomInt
+     * 
+     * @param {Number} min The lower bounds.
+     * @param {Number} max The upper bounds.
+     * @returns {Number}
+     */
+    #randomInt(min, max) {
+        return Math.floor(this.#random() * (max - min + 1) + min);
+    }
+
+    /**
+     * Generate a random float between the prepared bounds.
+     * 
+     * @private
+     * @method randomFloat
+     * 
+     * @param {Number} min The lower bounds.
+     * @param {Number} max The upper bounds.
+     * @returns {Number}
+     */
+    #randomFloat(min, max) {
+        return this.#random() * (max - min) + min;
+    }
+
+    /**
+     * Loads the pixel data from the appropriate source (global context, offscreen buffer, instance).
+     * 
+     * @private
+     * @method loadPixels
+     * 
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be loaded.
+     */
+    #loadPixels(pg) {
+        /**
+         * Initializes pixel data and context properties.
+         * 
+         * @private
+         * @function setPixelsData
+         * 
+         * @param {Uint8ClampedArray} buffer The pixel data buffer.
+         * @param {Number} width The width of the context.
+         * @param {Number} height The height of the context.
+         * @param {Number} density The density of the context.
+         */
+        const setPixelsData = (buffer, width, height, density) => {
+            this.#pixels = new Uint32Array(buffer);
+            this.#contextWidth = width;
+            this.#contextHeight = height;
+            this.#contextDensity = density;
+            this.#pixelsCount = width * height;
+        };
+        if (pg) {
+            pg.loadPixels();
+            setPixelsData(pg.pixels.buffer, pg.width, pg.height, pg.pixelDensity());
+        } else if (this.#instance) {
+            this.#instance.loadPixels();
+            setPixelsData(this.#instance.pixels.buffer, this.#instance.width, this.#instance.height, this.#instance.pixelDensity());
+        } else {
+            loadPixels();
+            setPixelsData(pixels.buffer, width, height, pixelDensity());
+        }
+    }
+
+    /**
+     * Updates the pixels at the appropriate source (global cointext, offscreen buffer, instance).
+     * 
+     * @private
+     * @method updatePixels
+     * 
+     * @param {p5.Graphics|p5.Image} [pg] The offscreen graphics buffer or image whose pixels should be updated.
+     */
+    #updatePixels(pg) {
+        if (pg) {
+            pg.updatePixels();
+        } else if (this.#instance) {
+            this.#instance.updatePixels();
+        } else {
+            updatePixels();
+        }
+    }
+
+
     /********************
      * Internal methods *
      ********************/
-
-    /**
-     * Generate a random integer between given bounds inclusively.
-     * 
-     * @private
-     * @method randomIntInclusive
-     * 
-     * @param {Number} min Min value that may be generated.
-     * @param {Number} max Max value that may be generated.
-     * @returns {Number}
-     */
-    #randomIntInclusive(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(this.#random() * (max - min + 1) + min);
-    }
 
     /** @internal */
     /**
@@ -583,13 +669,26 @@ class P5Grain {
      * @returns {Boolean} `false`
      */
     #error(message) {
-        console.error(message);
+        console.error(`[p5.grain] Error: ${message}`);
         return false;
     }
 
     /**
-     * Checks the validity of the given arguments to the respective method. 
-     * Unless ignoreErrors is false, errors will be thrown when necessary.
+     * Logs the given message as a warning to the console.
+     * 
+     * @private
+     * @method _warn
+     * 
+     * @param {String} message The warning message to be logged to the console.
+     */
+    _warn(message) {
+        console.warn(`[p5.grain] Warning: ${message}`);
+    }
+
+    /**
+     * Checks the validity of the given arguments to the respective method.
+     * 
+     * Unless `ignoreErrors` is `false`, errors will be thrown when necessary.
      * 
      * @private
      * @method validateArguments
@@ -609,71 +708,75 @@ class P5Grain {
                         typeof args[0] !== 'undefined'
                         && typeof args[0] !== 'object'
                     ) {
-                        return this.#error(`[p5.grain] The optional config argument passed to p5grain.${method}() must be of type object.`);
+                        return this.#error(`The optional config argument passed to p5grain.${method}() must be of type object.`);
                     }
                     if (typeof args[0] === 'object') {
                         if (
                             typeof args[0].random !== 'undefined'
                             && typeof args[0].random !== 'function'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.random property passed to p5grain.${method}() must be of type function.`);
+                            return this.#error(`The optional config.random property passed to p5grain.${method}() must be of type function.`);
+                        }
+                        if (
+                            typeof args[0].randomMode !== 'undefined'
+                            && !(args[0].randomMode === 'int' || args[0].randomMode === 'float')
+                        ) {
+                            return this.#error(`The optional config.randomMode property passed to p5grain.${method}() must be either 'int' or 'float'.`);
                         }
                         if (
                             typeof args[0].ignoreErrors !== 'undefined'
                             && typeof args[0].ignoreErrors !== 'boolean'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.ignoreErrors property passed to p5grain.${method}() must be of type boolean.`);
+                            return this.#error(`The optional config.ignoreErrors property passed to p5grain.${method}() must be of type boolean.`);
                         }
                         if (
                             typeof args[0].ignoreWarnings !== 'undefined'
                             && typeof args[0].ignoreWarnings !== 'boolean'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.ignoreWarnings property passed to p5grain.${method}() must be of type boolean.`);
+                            return this.#error(`The optional config.ignoreWarnings property passed to p5grain.${method}() must be of type boolean.`);
                         }
                         if (
                             typeof args[0].instance !== 'undefined'
                             && typeof args[0].instance !== 'object'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.instance property passed to p5grain.${method}() must be of type object.`);
+                            return this.#error(`The optional config.instance property passed to p5grain.${method}() must be either of type object or null.`);
                         }
                     }
                     break;
-                case 'granulateSimple':
                 case 'applyMonochromaticGrain':
-                case 'granulateChannels':
                 case 'applyChromaticGrain':
                     if (typeof args[0] !== 'number') {
-                        return this.#error(`[p5.grain] The amount argument passed to ${method}() must be of type number.`);
+                        return this.#error(`The amount argument passed to ${method}() must be of type number.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'boolean'
                     ) {
-                        return this.#error(`[p5.grain] The optional alpha argument passed to ${method}() must be of type boolean.`);
+                        return this.#error(`The optional shouldUpdateAlpha argument passed to ${method}() must be of type boolean.`);
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && !(args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics || args[2] instanceof p5.Image)
                     ) {
-                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
+                        return this.#error(`The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics or p5.Image.`);
                     }
                     break;
                 case 'tinkerPixels':
                 case 'loopPixels':
                     if (typeof args[0] !== 'function') {
-                        return this.#error(`[p5.grain] The callback argument passed to ${method}() must be of type function.`);
+                        return this.#error(`The callback argument passed to ${method}() must be of type function.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'boolean'
                     ) {
-                        return this.#error(`[p5.grain] The optional shouldUpdate argument for ${method}() must be an instance of boolean.`);
+                        return this.#error(`The optional shouldUpdate argument for ${method}() must be an instance of boolean.`);
                     }
                     if (
                         typeof args[2] !== 'undefined'
-                        && !(args[2] instanceof p5.Graphics)
+                        && !(args[2] instanceof p5.Graphics || args[2] instanceof p5.Image)
                     ) {
-                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
+                        return this.#error(`The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics or p5.Image.`);
                     }
                     break;
                 case 'textureAnimate':
@@ -684,70 +787,70 @@ class P5Grain {
                             || args[0] instanceof p5.Element
                         )
                     ) {
-                        return this.#error(`[p5.grain] The textureElement argument passed to ${method}() must be an instance of HTMLElement, SVGElement or p5.Element.`);
+                        return this.#error(`The textureElement argument passed to ${method}() must be an instance of HTMLElement, SVGElement or p5.Element.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'object'
                     ) {
-                        return this.#error(`[p5.grain] The optional config argument passed to ${method}() must be of type object.`);
+                        return this.#error(`The optional config argument passed to ${method}() must be of type object.`);
                     }
                     if (typeof args[1] === 'object') {
                         if (
                             typeof args[1].atFrame !== 'undefined'
                             && typeof args[1].atFrame !== 'number'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.atFrame property passed to ${method}() must be of type number.`);
+                            return this.#error(`The optional config.atFrame property passed to ${method}() must be of type number.`);
                         }
                         if (
                             typeof args[1].amount !== 'undefined'
                             && typeof args[1].amount !== 'number'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.amount argument passed to ${method}() must be of type number.`);
+                            return this.#error(`The optional config.amount argument passed to ${method}() must be of type number.`);
                         }
                     }
                     break;
                 case 'textureOverlay':
-                    if (!(args[0] instanceof p5.Image)) {
-                        return this.#error(`[p5.grain] The texture argument passed to ${method}() must be an instance of p5.Image.`);
+                    if (!(args[0] instanceof p5.Image || args[0] instanceof p5.Graphics)) {
+                        return this.#error(`The texture passed to ${method}() must be an instance of p5.Image or p5.Graphics.`);
                     }
                     if (
                         typeof args[1] !== 'undefined'
                         && typeof args[1] !== 'object'
                     ) {
-                        return this.#error(`[p5.grain] The optional config argument passed to ${method}() must be of type object.`);
+                        return this.#error(`The optional config argument passed to ${method}() must be of type object.`);
                     }
                     if (typeof args[1] === 'object') {
                         if (
                             typeof args[1].width !== 'undefined'
                             && typeof args[1].width !== 'number'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.width property passed to ${method}() must be of type number.`);
+                            return this.#error(`The optional config.width property passed to ${method}() must be of type number.`);
                         }
                         if (
                             typeof args[1].height !== 'undefined'
                             && typeof args[1].height !== 'number'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.height property passed to ${method}() must be of type number.`);
+                            return this.#error(`The optional config.height property passed to ${method}() must be of type number.`);
                         }
                         if (
                             typeof args[1].mode !== 'undefined'
                             && typeof args[1].mode !== 'string'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.mode property passed to ${method}() must be of type string.`);
+                            return this.#error(`The optional config.mode property passed to ${method}() must be of type string.`);
                         }
                         if (
                             typeof args[1].reflect !== 'undefined'
                             && typeof args[1].reflect !== 'boolean'
                         ) {
-                            return this.#error(`[p5.grain] The optional config.reflect property passed to ${method}() must be of type boolean.`);
+                            return this.#error(`The optional config.reflect property passed to ${method}() must be of type boolean.`);
                         }
                     }
                     if (
                         typeof args[2] !== 'undefined'
                         && !(args[2] instanceof p5.Graphics)
                     ) {
-                        return this.#error(`[p5.grain] The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
+                        return this.#error(`The offscreen graphics buffer for ${method}() must be an instance of p5.Graphics.`);
                     }
                     break;
                 default: break;
@@ -760,92 +863,70 @@ class P5Grain {
 
 const p5grain = new P5Grain();
 
-// Register deprecated granulateSimple()
-/** @internal */
-if (!p5.prototype.hasOwnProperty('granulateSimple')) { /** @end */
-    p5.prototype.granulateSimple = function (amount, alpha) {
-        return p5grain.granulateSimple(amount, alpha);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] granulateSimple() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain() instead.');
-} /** @end */
-
-// Register deprecated p5.Graphics.granulateSimple()
-/** @internal */
-if (!p5.Graphics.prototype.hasOwnProperty('granulateSimple')) { /** @end */
-    p5.Graphics.prototype.granulateSimple = function (amount, alpha) {
-        return p5grain.granulateSimple(amount, alpha, this);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.granulateSimple() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
-} /** @end */
-
-// Register deprecated granulateChannels()
-/** @internal */
-if (!p5.prototype.hasOwnProperty('granulateChannels')) { /** @end */
-    p5.prototype.granulateChannels = function (amount, alpha) {
-        return p5grain.granulateChannels(amount, alpha);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] granulateChannels() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain() instead.');
-} /** @end */
-
-// Register deprecated p5.Graphics.granulateChannels()
-/** @internal */
-if (!p5.Graphics.prototype.hasOwnProperty('granulateChannels')) { /** @end */
-    p5.Graphics.prototype.granulateChannels = function (amount, alpha) {
-        return p5grain.granulateChannels(amount, alpha, this);
-    };
-/** @internal */
-} else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.granulateChannels() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
-} /** @end */
-
 // Register applyMonochromaticGrain()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.prototype.applyMonochromaticGrain = function (amount, alpha) {
-        return p5grain.applyMonochromaticGrain(amount, alpha);
+    p5.prototype.applyMonochromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain() instead.');
+    p5grain._warn('applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain() instead.');
 } /** @end */
 
 // Register p5.Graphics.applyMonochromaticGrain()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
-    p5.Graphics.prototype.applyMonochromaticGrain = function (amount, alpha) {
-        return p5grain.applyMonochromaticGrain(amount, alpha, this);
+    p5.Graphics.prototype.applyMonochromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, alpha, pg) instead.');
+    p5grain._warn('p5.Graphics.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, pg) instead.');
+} /** @end */
+
+// Register p5.Image.applyMonochromaticGrain()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('applyMonochromaticGrain')) { /** @end */
+    p5.Image.prototype.applyMonochromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    p5grain._warn('p5.Image.applyMonochromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyMonochromaticGrain(amount, shouldUpdateAlpha, img) instead.');
 } /** @end */
 
 // Register applyChromaticGrain()
 /** @internal */
 if (!p5.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.prototype.applyChromaticGrain = function (amount, alpha) {
-        return p5grain.applyChromaticGrain(amount, alpha);
+    p5.prototype.applyChromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyChromaticGrain(amount, shouldUpdateAlpha);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain() instead.');
+    p5grain._warn('applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain() instead.');
 } /** @end */
 
 // Register p5.Graphics.applyChromaticGrain()
 /** @internal */
 if (!p5.Graphics.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
-    p5.Graphics.prototype.applyChromaticGrain = function (amount, alpha) {
-        return p5grain.applyChromaticGrain(amount, alpha, this);
+    p5.Graphics.prototype.applyChromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, this);
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, alpha, pg) instead.');
+    p5grain._warn('p5.Graphics.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, pg) instead.');
+} /** @end */
+
+// Register p5.Image.applyChromaticGrain()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('applyChromaticGrain')) { /** @end */
+    p5.Image.prototype.applyChromaticGrain = function (amount, shouldUpdateAlpha) {
+        return p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    p5grain._warn('p5.Image.applyChromaticGrain() could not be registered, since it\'s already defined. Use p5grain.applyChromaticGrain(amount, shouldUpdateAlpha, img) instead.');
 } /** @end */
 
 // Register tinkerPixels()
@@ -856,7 +937,7 @@ if (!p5.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels() instead.');
+    p5grain._warn('tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels() instead.');
 } /** @end */
 
 // Register p5.Graphics.tinkerPixels()
@@ -867,7 +948,18 @@ if (!p5.Graphics.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
+    p5grain._warn('p5.Graphics.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, pg) instead.');
+} /** @end */
+
+// Register p5.Image.tinkerPixels()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('tinkerPixels')) { /** @end */
+    p5.Image.prototype.tinkerPixels = function (callback, shouldUpdate) {
+        return p5grain.tinkerPixels(callback, shouldUpdate, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    p5grain._warn('p5.Image.tinkerPixels() could not be registered, since it\'s already defined. Use p5grain.tinkerPixels(callback, shouldUpdate, img) instead.');
 } /** @end */
 
 // Register loopPixels()
@@ -878,7 +970,7 @@ if (!p5.prototype.hasOwnProperty('loopPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels() instead.');
+    p5grain._warn('loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels() instead.');
 } /** @end */
 
 // Register p5.Graphics.loopPixels()
@@ -889,7 +981,18 @@ if (!p5.Graphics.prototype.hasOwnProperty('loopPixels')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, pg) instead.');
+    p5grain._warn('p5.Graphics.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, pg) instead.');
+} /** @end */
+
+// Register p5.Image.loopPixels()
+/** @internal */
+if (!p5.Image.prototype.hasOwnProperty('loopPixels')) { /** @end */
+    p5.Image.prototype.loopPixels = function (callback, shouldUpdate) {
+        return p5grain.loopPixels(callback, shouldUpdate, this);
+    };
+/** @internal */
+} else if (!p5grain.ignoreWarnings) {
+    p5grain._warn('p5.Image.loopPixels() could not be registered, since it\'s already defined. Use p5grain.loopPixels(callback, img) instead.');
 } /** @end */
 
 // Register textureAnimate()
@@ -900,7 +1003,7 @@ if (!p5.prototype.hasOwnProperty('textureAnimate')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] textureAnimate() could not be registered, since it\'s already defined. Use p5grain.textureAnimate() instead.');
+    p5grain._warn('textureAnimate() could not be registered, since it\'s already defined. Use p5grain.textureAnimate() instead.');
 } /** @end */
 
 // Register textureOverlay()
@@ -911,7 +1014,7 @@ if (!p5.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay() instead.');
+    p5grain._warn('textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay() instead.');
 } /** @end */
 
 // Register p5.Graphics.textureOverlay()
@@ -922,5 +1025,5 @@ if (!p5.Graphics.prototype.hasOwnProperty('textureOverlay')) { /** @end */
     };
 /** @internal */
 } else if (!p5grain.ignoreWarnings) {
-    console.warn('[p5.grain] p5.Graphics.textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay(textureImage, config, pg) instead.');
+    p5grain._warn('p5.Graphics.textureOverlay() could not be registered, since it\'s already defined. Use p5grain.textureOverlay(textureImage, config, pg) instead.');
 } /** @end */

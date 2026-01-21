@@ -18,6 +18,9 @@ const reusableSketch = (sketch) => {
             // read-only mode
             // ...
         }, false); // <-- shouldUpdate = false
+
+        sketch.textSize(28);
+        sketch.text('instance 1: read-only mode', 14, 36);
     }
 
     sketch.drawArtwork = () => {
@@ -25,8 +28,6 @@ const reusableSketch = (sketch) => {
         sketch.noStroke();
         sketch.fill(100, 100, 240);
         sketch.circle(sketch.width/2, sketch.height/2, sketch.min(sketch.width, sketch.height)/2);
-        sketch.textSize(28);
-        sketch.text('read-only mode', 14, 36);
     }
 
     sketch.windowResized = () => {
@@ -62,6 +63,9 @@ let myp5_2 = new p5((sketch) => {
 
         // draw the graphics buffer to the sketch's canvas
         sketch.image(pg, sketch.width/2-70, sketch.height/2-70);
+
+        sketch.textSize(28);
+        sketch.text('instance 2:', 14, 36);
     }
 
     sketch.windowResized = () => {
