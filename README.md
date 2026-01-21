@@ -48,12 +48,14 @@ Download the latest version from [Releases](https://github.com/josephmiclaus/p5.
 
 ## Which file should I use?
 
-The unminified version `p5.grain.js` is primarily meant for when you are working on your sketch. It handles p5.grain related errors and warnings, and therefore has a considerably larger file size. However, we recommend using the minified version `p5.grain.min.js` when your sketch is final and you've made sure that p5.grain related errors and warnings cannot occur.
+Use the full version of p5.grain (`p5.grain.js` or `p5.grain.min.js`) while working on your sketch. This version includes error and warning reporting to help with debugging, and therefore has a larger file size. Once your sketch is final and you’re confident that no p5.grain–related errors or warnings can occur, you may want to switch to the lite version (`p5.grain.lite.js` or `p5.grain.lite.min.js`).
 
-| File              | Size    | Purpose     | Errors & Warnings       |
-| ----------------- | ------- | ----------- | ----------------------- |
-| `p5.grain.js`     | ~ 46 KB | development | Yes (can be turned off) |
-| `p5.grain.min.js` | ~ 6 KB  | production  | No                      |
+| File                   | Size    | Purpose     | Errors & Warnings       |
+| ---------------------- | ------- | ----------- | ----------------------- |
+| `p5.grain.js`          | ~ 44 KB | development | Yes (can be turned off) |
+| `p5.grain.lite.js`     | ~ 29 KB | development | No                      |
+| `p5.grain.min.js`      | ~ 13 KB | production  | Yes (can be turned off) |
+| `p5.grain.lite.min.js` | ~ 6 KB  | production  | No                      |
 
 [Go to top ⬆](#top)
 
@@ -66,7 +68,7 @@ The first step is to set up p5.grain according to your project's needs in the `s
 
 ### Non-deterministic setup
 
-Use this setup for p5 sketches that *don't* need to use deterministic randomness.
+Use this setup for p5 sketches that *do not* need to use deterministic randomness.
 
 ```js
 function setup() {
@@ -150,7 +152,7 @@ Go to the standalone examples:
     * [Outside canvas](./examples/texture-overlay-outside) (texture animation supported)
 * SVG filter
     * [SVG element](./examples/svg-element) (texture animation supported; [limited compatibility in Safari](#limitations))
-    * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported; [doesn't work in Safari](#limitations))
+    * [SVG URL-encoded](./examples/svg-url-encoded) (texture animation supported; [does not work in Safari](#limitations))
 
 Here are a few examples of a basic implementation for each respective technique. **All the examples below showcase how to use p5.grain in global mode and non-deterministically.**
 
@@ -269,13 +271,13 @@ For more concrete use cases, please have a look at the provided [examples](./exa
 
 ## Ignoring errors and warnings
 
-Turning off errors and warnings is possible when using the unminified version of p5.grain (`p5.grain.js`). The minified version of p5.grain (`p5.grain.min.js`) doesn't handle errors and warnings. (see [Which file should I use?](#which_file))
+Errors and warnings can be disabled only when using the full version of p5.grain (`p5.grain.js` or `p5.grain.min.js`). The lite version (`p5.grain.lite.js` or `p5.grain.lite.min.js`) does not handle errors or warnings. (see [Which file should I use?](#which_file))
 
 Initially, p5.grain will attempt to extend p5.js core functionality by registering new functions. If a function cannot be registered because the function name is already in use, p5.grain will log a warning with a suggestion of an alternative usage. You can prevent warnings to be logged by passing `ignoreWarnings: true` to the `config` object when setting up p5.grain.
 
 When using p5.grain functions, the library validates the parameters passed to the respective functions, and error messages are thrown in case of invalid parameters to attract attention during development. You can prevent errors to be thrown by passing `ignoreErrors: true` to the `config` object when setting up p5.grain. 
 
-When your sketch is final and you've made sure that p5.grain-related errors or warnings cannot occur, we recommend using `p5.grain.min.js` instead of manually ignoring errors and warnings as shown below, since errors and warnings are not handled in the minified version of p5.grain.
+When your sketch is final and you've made sure that p5.grain-related errors or warnings cannot occur, you may use the lite version (`p5.grain.lite.js` or `p5.grain.lite.min.js`) instead of manually ignoring errors and warnings as shown below, since errors and warnings are not handled in the lite version of p5.grain.
 
 ```js
 function setup() {
@@ -335,8 +337,8 @@ p5.grain exposes the following properties and functions:
 | Property | Type | Description |
 | --- | --- | --- |
 | `version` | `String` | Holds the p5.grain version in [SemVer](https://semver.org) format. |
-| `ignoreWarnings` | `Boolean` | Specifies whether warnings should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
-| `ignoreErrors` | `Boolean` | Specifies whether errors should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
+| `ignoreWarnings` | `Boolean` | Specifies whether warnings should be ignored. (default: `false`)<br>*Note: not available in the lite version.* |
+| `ignoreErrors` | `Boolean` | Specifies whether errors should be ignored. (default: `false`)<br>*Note: not available in the lite version.* |
 
 ### Functions
 
@@ -363,8 +365,8 @@ Setup and configure p5.grain features.
 | `config.random` | `function` | (optional) The random function that should be used for e.g. pixel manipulation, texture animation, etc. Here you could use a custom deterministic random function (e.g. `$fx.rand()`). (default: p5's `random` function) |
 | `config.randomMode` | `String` | (optional) Specifies the mode of the internal random function. Either `float` for floating-point numbers or `int` for integers. (default: `float`) |
 | `config.instance` | `Object` | (optional) Reference to a p5.js instance. Read how to use p5.grain with p5.js instance mode [here](#global-and-instance-mode). |
-| `config.ignoreWarnings` | `Boolean` | (optional) Specifies whether warnings should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
-| `config.ignoreErrors` | `Boolean` | (optional) Specifies whether errors should be ignored. (default: `false`)<br>*Note: not available in the p5.grain minified version.* |
+| `config.ignoreWarnings` | `Boolean` | (optional) Specifies whether warnings should be ignored. (default: `false`)<br>*Note: not available in the lite version.* |
+| `config.ignoreErrors` | `Boolean` | (optional) Specifies whether errors should be ignored. (default: `false`)<br>*Note: not available in the lite version.* |
 
 <details>
 <summary><strong>Examples</strong></summary>
@@ -401,7 +403,7 @@ function setup() {
 
 #### Ignore errors and warnings
 
-Make sure you've read the section on [Ignoring errors and warnings](#ignoring_errors_and_warnings). This is how you can suppress errors and warnings in the unminified version of p5.grain:
+Make sure you’ve read the section on [Ignoring errors and warnings](#ignoring_errors_and_warnings). It explains how to suppress errors and warnings in the full version of p5.grain:
 
 ```js
 function setup() {
@@ -499,7 +501,7 @@ The texture is repeated along the horizontal and vertical axes to cover the enti
 | `config.mode` | `Constant` | (optional) The blend mode that should be used to blend the texture over the canvas. Either `BLEND`, `DARKEST`, `LIGHTEST`, `DIFFERENCE`, `MULTIPLY`, `EXCLUSION`, `SCREEN`, `REPLACE`, `OVERLAY`, `HARD_LIGHT`, `SOFT_LIGHT`, `DODGE`, `BURN`, `ADD` or `NORMAL`. (default: `MULTIPLY`) |
 | `config.reflect` | `Boolean` | (optional) Specifies whether the given texture image should reflect horizontally and vertically, in order to provide seamless continuity. (default: `false`) |
 | `config.animate` | `Boolean\| Object` | (optional) Specifies whether the given texture image should be animated. (default: `false`) |
-| `config.animate.atFrame` | `Number` | (optional) When animation is activated, the frame at which the texture should be shifted. When `atFrame` isn't specified, the texture is shifted every 2<sup>nd</sup> frame. (default: `2`) |
+| `config.animate.atFrame` | `Number` | (optional) When animation is activated, the frame at which the texture should be shifted. When `atFrame` is not specified, the texture is shifted every 2<sup>nd</sup> frame. (default: `2`) |
 | `config.animate.amount` | `Number` | (optional) When animation is activated, the maximum amount of pixels by which the texture should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. When no amount is specified, the minimum of the main canvas `width` or `height` is used. (default: `min(width, height)`) |
 | `pg` | `p5.Graphics` | (optional) The offscreen graphics buffer onto which the texture image should be drawn.<br><br>*Note: When using an offscreen graphics buffer, use the usual syntax `pg.textureOverlay(textureImage, config)`. Only in case `p5.Graphics.textureOverlay` could not be registered, use the alternative syntax `p5grain.textureOverlay(textureImage, config, pg)`.* |
 
@@ -514,7 +516,7 @@ Animate the given texture element by randomly shifting its background position.
 | --- | --- | --- |
 | `textureElement` | `HTMLElement\| SVGElement\| p5.Element` | The texture element to be animated. |
 | `config` | `Object` | (optional) Config object to configure the texture animation. |
-| `config.atFrame` | `Number` | (optional) The frame at which the texture should be shifted. When `atFrame` isn't specified, the texture is shifted every 2<sup>nd</sup> frame. (default: `2`) |
+| `config.atFrame` | `Number` | (optional) The frame at which the texture should be shifted. When `atFrame` is not specified, the texture is shifted every 2<sup>nd</sup> frame. (default: `2`) |
 | `config.amount` | `Number` | (optional) The maximum amount of pixels by which the texture should be shifted. The actual amount of pixels which the texture is shifted by is generated randomly. When no amount is specified, the minimum of the main canvas `width` or `height` is used. (default: `min(width, height)`) |
 
 [Go to top ⬆](#top)
