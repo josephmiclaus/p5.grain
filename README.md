@@ -32,7 +32,7 @@ The initial release of the library was accompanied by the article "[All About Th
 <a id="getting_started"></a>
 
 ## Getting started
-Download the latest version from [Releases](https://github.com/josephmiclaus/p5.grain/releases) and embed `p5.grain.js` (~46 KB) or `p5.grain.min.js` (~6 KB) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
+Download the latest version from [Releases](https://github.com/josephmiclaus/p5.grain/releases) and embed either the full version (`p5.grain.js` or `p5.grain.min.js`) or the lite version (`p5.grain.lite.js` or `p5.grain.lite.min.js`) in your project's HTML file *after* loading p5.js but *before* loading your sketch code.
 
 ```html
 <script src="./lib/p5.min.js"></script>
@@ -50,12 +50,12 @@ Download the latest version from [Releases](https://github.com/josephmiclaus/p5.
 
 Use the full version of p5.grain (`p5.grain.js` or `p5.grain.min.js`) while working on your sketch. This version includes error and warning reporting to help with debugging, and therefore has a larger file size. Once your sketch is final and you’re confident that no p5.grain–related errors or warnings can occur, you may want to switch to the lite version (`p5.grain.lite.js` or `p5.grain.lite.min.js`).
 
-| File                   | Size    | Purpose     | Errors & Warnings       |
-| ---------------------- | ------- | ----------- | ----------------------- |
-| `p5.grain.js`          | ~ 44 KB | development | Yes (can be turned off) |
-| `p5.grain.lite.js`     | ~ 29 KB | development | No                      |
-| `p5.grain.min.js`      | ~ 13 KB | production  | Yes (can be turned off) |
-| `p5.grain.lite.min.js` | ~ 6 KB  | production  | No                      |
+| File                   | Size      | Purpose     | Errors & Warnings       |
+| ---------------------- | --------- | ----------- | ----------------------- |
+| `p5.grain.js`          | ~ 44.3 kB | development | Yes (can be turned off) |
+| `p5.grain.lite.js`     | ~ 29.2 kB | development | No                      |
+| `p5.grain.min.js`      | ~ 13.4 kB | production  | Yes (can be turned off) |
+| `p5.grain.lite.min.js` | ~  5.6 kB | production  | No                      |
 
 [Go to top ⬆](#top)
 
